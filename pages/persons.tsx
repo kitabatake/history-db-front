@@ -32,12 +32,9 @@ export default function Home({persons}) {
 
         <main className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
             <Header/>
-            {persons.map((person) => (
-                <div key={person.id}>{person.name}</div>
-            ))}
             <div className="mt-5 flex flex-col bg-white shadow-md px-8 py-6 rounded-3xl w-50 max-w-md">
                 <div className="font-medium self-center text-xl text-gray-800">
-                    人物登録 person!
+                    人物登録
                 </div>
                 <form className="mt-2">
                     <div className="mb-2">
@@ -69,6 +66,17 @@ export default function Home({persons}) {
                         </button>
                     </div>
                 </form>
+            </div>
+            <div className="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200 mt-5">
+                <table className="table-auto w-full">
+                    {persons.map((person) => (
+                        <tr
+                            key={person.id}
+                        >
+                            <td className="p-2 font-medium text-gray-800">{person.name}</td>
+                        </tr>
+                    ))}
+                </table>
             </div>
         </main>
     </div>)
