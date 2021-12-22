@@ -1,28 +1,18 @@
 import Head from 'next/head'
 import Header from "../components/header";
-import {gql} from "@apollo/client";
-import client from "../api-client";
+import {gql, useQuery} from "@apollo/client";
 
-export async function getStaticProps() {
-    const {data} = await client.query({
-        query: gql`
+const persons_query = gql`
             query {
               persons {
                 id,
                 name
               }
-            }
-      `,
-    });
+            }`
 
-    return {
-        props: {
-            persons: data.persons.slice(0, 4),
-        },
-    };
-}
+export default function Home() {
+    const {loading, error, data} = useQuery(persons_query);
 
-export default function Home({persons}) {
     return (<div>
         <Head>
             <title>History DB</title>
@@ -68,15 +58,19 @@ export default function Home({persons}) {
                 </form>
             </div>
             <div className="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200 mt-5">
-                <table className="table-auto w-full">
-                    {persons.map((person) => (
-                        <tr
-                            key={person.id}
-                        >
-                            <td className="p-2 font-medium text-gray-800">{person.name}</td>
-                        </tr>
-                    ))}
-                </table>
+                {loading && (<p>loading ...</p>)}
+                {error && (<p>error ...</p>)}
+                {data && (
+                    <table className="table-auto w-full">
+                        {data.persons.map((person) => (
+                            <tr
+                                key={person.id}
+                            >
+                                <td className="p-2 font-medium text-gray-800">{person.name}</td>
+                            </tr>
+                        ))}
+                    </table>
+                )}
             </div>
         </main>
     </div>)
