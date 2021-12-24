@@ -1,6 +1,7 @@
 import Link from 'next/link'
+import {ReactElement} from "react";
 
-export default function Header() {
+export default function Header(): ReactElement {
     return (<header>
         <div className="flex justify-center items-center">
             <Link href="/">
