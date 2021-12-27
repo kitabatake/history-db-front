@@ -1,19 +1,19 @@
 import Head from 'next/head'
 import Header from "../components/Header";
 import {gql, useQuery} from "@apollo/client";
-import PersonCreateForm from "../components/PersonCreateForm";
 import {ReactElement} from "react";
+import ActivityCreateForm from "../components/ActivityCreateForm";
 
-const persons_query = gql`
+const activities_query = gql`
 query {
-    persons {
+    activities {
         id,
-        name
+        description
     }
 }`;
 
-export default function Persons(): ReactElement {
-    const {loading, error, data} = useQuery(persons_query);
+export default function Activitys(): ReactElement {
+    const {loading, error, data} = useQuery(activities_query);
 
     return (<div>
         <Head>
@@ -24,15 +24,15 @@ export default function Persons(): ReactElement {
 
         <main className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
             <Header/>
-            <PersonCreateForm persons_gql={persons_query}/>
+            <ActivityCreateForm activities_gql={activities_query}/>
             <div className="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200 mt-5">
                 {loading && (<p>loading ...</p>)}
                 {error && (<p>error ...</p>)}
                 {data && (
                     <table className="table-auto w-full">
-                        {data.persons.map((person) => (
-                            <tr key={person.id}>
-                                <td className="p-2 font-medium text-gray-800">{person.name}</td>
+                        {data.activities.map((activity) => (
+                            <tr key={activity.id}>
+                                <td className="p-2 font-medium text-gray-800">{activity.description}</td>
                             </tr>
                         ))}
                     </table>

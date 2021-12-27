@@ -16,6 +16,18 @@ export default function Header(): ReactElement {
                     人物
                 </button>
             </Link>
+            <Link href="/sources">
+                <button
+                    className="h-10 px-2 py-2 text-indigo-600 bg-transparent border-b-2 border-indigo-500 focus:outline-none">
+                    出典
+                </button>
+            </Link>
+            <Link href="/activities">
+                <button
+                    className="h-10 px-2 py-2 text-indigo-600 bg-transparent border-b-2 border-indigo-500 focus:outline-none">
+                    アクティビティ
+                </button>
+            </Link>
         </div>
     </header>);
 }

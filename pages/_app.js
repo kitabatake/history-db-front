@@ -4,15 +4,11 @@ import {
     InMemoryCache,
     ApolloProvider,
 } from "@apollo/client";
-
-const client = new ApolloClient({
-    uri: "http://localhost:3000/graphql",
-    cache: new InMemoryCache(),
-});
+import {apolloClient} from "../apolloClient";
 
 function MyApp({Component, pageProps}) {
     return (
-        <ApolloProvider client={client}>
+        <ApolloProvider client={apolloClient}>
             <Component {...pageProps} />
         </ApolloProvider>
     )
