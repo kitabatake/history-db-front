@@ -30,11 +30,13 @@ export default function Activitys(): ReactElement {
                 {error && (<p>error ...</p>)}
                 {data && (
                     <table className="table-auto w-full">
+                        <tbody>
                         {data.activities.map((activity) => (
                             <tr key={activity.id}>
                                 <td className="p-2 font-medium text-gray-800">{activity.description}</td>
                             </tr>
                         ))}
+                        </tbody>
                     </table>
                 )}
             </div>

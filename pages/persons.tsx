@@ -30,11 +30,13 @@ export default function Persons(): ReactElement {
                 {error && (<p>error ...</p>)}
                 {data && (
                     <table className="table-auto w-full">
+                        <tbody>
                         {data.persons.map((person) => (
                             <tr key={person.id}>
                                 <td className="p-2 font-medium text-gray-800">{person.name}</td>
                             </tr>
                         ))}
+                        </tbody>
                     </table>
                 )}
             </div>

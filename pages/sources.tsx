@@ -30,11 +30,13 @@ export default function Sources(): ReactElement {
                 {error && (<p>error ...</p>)}
                 {data && (
                     <table className="table-auto w-full">
+                        <tbody>
                         {data.sources.map((source) => (
                             <tr key={source.id}>
                                 <td className="p-2 font-medium text-gray-800">{source.name}</td>
                             </tr>
                         ))}
+                        </tbody>
                     </table>
                 )}
             </div>

@@ -2,7 +2,6 @@ import {gql, useMutation} from "@apollo/client";
 import {ReactElement, useState} from "react";
 import PropTypes from 'prop-types'
 import AsyncSelect from 'react-select/async';
-import Option from 'react-select';
 import {apolloClient} from "../apolloClient";
 
 const create_activity_query = gql`
