@@ -1,25 +1,16 @@
 import {gql, useMutation} from "@apollo/client";
 import {ReactElement, useState} from "react";
 import PropTypes from 'prop-types'
-import AsyncSelect from 'react-select/async';
 import {apolloClient} from "../apolloClient";
+import AsyncSelect from "react-select/async";
 
 type Option = {label: string, value: number}
 
-const create_activity_query = gql`
-mutation CreateActivity($description: String!, $source_id: Int, $person_ids: [Int!]) {
-    createActivity(description: $description, source_id: $source_id, person_ids: $person_ids) {
+const create_personRelation_query = gql`
+mutation CreatePersonRelation($description: String!, $person_ids: [Int!]) {
+    createPersonRelation(description: $description, person_ids: $person_ids) {
         id,
         description
-    }
-} 
-`;
-
-const search_sources_query = gql`
-query SearchSources($nameForSearch: String!) {
-    sources(nameForSearch: $nameForSearch) {
-        id,
-        name
     }
 } 
 `;
@@ -32,24 +23,6 @@ query SearchPersons($nameForSearch: String!) {
     }
 } 
 `;
-
-function loadSourceOptions(input, callback) {
-    if (!input) {
-        return Promise.resolve({options: []});
-    }
-
-    return apolloClient.query({
-        query: search_sources_query,
-        variables: {nameForSearch: input}
-    }).then((response) => {
-        callback(response.data.sources.map(source => {
-            return {
-                value: source.id,
-                label: source.name
-            };
-        }))
-    });
-}
 
 function loadPersonOptions(input, callback) {
     if (!input) {
@@ -69,48 +42,37 @@ function loadPersonOptions(input, callback) {
     });
 }
 
-function ActivityCreateForm({activities_gql}): ReactElement {
-    const [createActivity] = useMutation(create_activity_query, {
-        refetchQueries: [activities_gql]
+function PersonRelationCreateForm({personRelations_gql}): ReactElement {
+    const [createPersonRelation] = useMutation(create_personRelation_query, {
+        refetchQueries: [personRelations_gql]
     });
     const [description, setDescription] = useState("");
-    const [source_id, setSourceId] = useState(null);
     const [personIds, setPersonIds] = useState([]);
 
     return (
         <div className="mt-5 flex flex-col bg-white shadow-md px-8 py-6 rounded-3xl w-50 max-w-md">
             <div className="font-medium self-center text-xl text-gray-800">
-                アクティビティ登録
+                関連登録
             </div>
             <form
                 className="mt-2"
                 onSubmit={e => {
                     e.preventDefault();
-                    createActivity({variables: {description: description, source_id: source_id, person_ids: personIds}});
+                    createPersonRelation({variables: {description: description, person_ids: personIds}});
                     setDescription('');
-                    setSourceId(null);
+                    setPersonIds([]);
                 }}
             >
                 <div className="mb-2">
                     <label className="mb-1 text-xs tracking-wide text-gray-600 w-12">
                         概要:
                     </label>
-                    <textarea
+                    <input
+                        type="text"
                         name="description"
                         className="text-sm p-2 rounded-2xl border border-gray-400 bg-gray-50 w-full shrink focus:outline-none focus:border-blue-400"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                    />
-                </div>
-                <div className="mb-2">
-                    <label className="mb-1 text-xs tracking-wide text-gray-600 w-12">
-                        出典:
-                    </label>
-                    <AsyncSelect
-                        name="source_id"
-                        loadOptions={loadSourceOptions}
-                        value={source_id}
-                        onChange={(option) => setSourceId(option.value)}
                     />
                 </div>
                 <div className="mb-2">
@@ -140,8 +102,8 @@ function ActivityCreateForm({activities_gql}): ReactElement {
     )
 }
 
-ActivityCreateForm.propTypes = {
-    activities_gql: PropTypes.object
+PersonRelationCreateForm.propTypes = {
+    personRelations_gql: PropTypes.object
 }
 
-export default ActivityCreateForm;
+export default PersonRelationCreateForm;

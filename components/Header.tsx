@@ -28,6 +28,12 @@ export default function Header(): ReactElement {
                     アクティビティ
                 </button>
             </Link>
+            <Link href="/person-relations">
+                <button
+                    className="h-10 px-2 py-2 text-indigo-600 bg-transparent border-b-2 border-indigo-500 focus:outline-none">
+                    関連
+                </button>
+            </Link>
         </div>
     </header>);
 }
