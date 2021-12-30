@@ -6,7 +6,7 @@ import AsyncSelect from "react-select/async";
 
 type Option = {label: string, value: number}
 
-const create_personRelation_query = gql`
+const createPersonRelationQuery = gql`
 mutation CreatePersonRelation($description: String!, $person_ids: [Int!]) {
     createPersonRelation(description: $description, person_ids: $person_ids) {
         id,
@@ -15,7 +15,7 @@ mutation CreatePersonRelation($description: String!, $person_ids: [Int!]) {
 } 
 `;
 
-const search_persons_query = gql`
+const searchPersonsQuery = gql`
 query SearchPersons($nameForSearch: String!) {
     persons(nameForSearch: $nameForSearch) {
         id,
@@ -30,7 +30,7 @@ function loadPersonOptions(input, callback) {
     }
 
     return apolloClient.query({
-        query: search_persons_query,
+        query: searchPersonsQuery,
         variables: {nameForSearch: input}
     }).then((response) => {
         callback(response.data.persons.map(person => {
@@ -42,9 +42,9 @@ function loadPersonOptions(input, callback) {
     });
 }
 
-function PersonRelationCreateForm({personRelations_gql}): ReactElement {
-    const [createPersonRelation] = useMutation(create_personRelation_query, {
-        refetchQueries: [personRelations_gql]
+function PersonRelationCreateForm({personRelations_gql: personRelationsGql}): ReactElement {
+    const [createPersonRelation] = useMutation(createPersonRelationQuery, {
+        refetchQueries: [personRelationsGql]
     });
     const [description, setDescription] = useState("");
     const [personIds, setPersonIds] = useState([]);
@@ -103,7 +103,7 @@ function PersonRelationCreateForm({personRelations_gql}): ReactElement {
 }
 
 PersonRelationCreateForm.propTypes = {
-    personRelations_gql: PropTypes.object
+    personRelationsGql: PropTypes.object
 }
 
 export default PersonRelationCreateForm;

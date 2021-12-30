@@ -2,7 +2,7 @@ import {gql, useMutation} from "@apollo/client";
 import {ReactElement, useState} from "react";
 import PropTypes from 'prop-types'
 
-const create_source_query = gql`
+const createSourceQuery = gql`
 mutation CreateSource($name: String!) {
     createSource(name: $name) {
         id,
@@ -11,9 +11,9 @@ mutation CreateSource($name: String!) {
 } 
 `;
 
-function SourceCreateForm({sources_gql}): ReactElement {
-    const [createSource] = useMutation(create_source_query, {
-        refetchQueries: [sources_gql]
+function SourceCreateForm({sourcesGql: sourcesGql}): ReactElement {
+    const [createSource] = useMutation(createSourceQuery, {
+        refetchQueries: [sourcesGql]
     });
     const [name, setName] = useState("");
 
@@ -57,7 +57,7 @@ function SourceCreateForm({sources_gql}): ReactElement {
 }
 
 SourceCreateForm.propTypes = {
-    sources_gql: PropTypes.object
+    sourcesGql: PropTypes.object
 }
 
 export default SourceCreateForm;

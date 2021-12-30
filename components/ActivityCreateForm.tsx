@@ -6,7 +6,7 @@ import {apolloClient} from "../apolloClient";
 
 type Option = {label: string, value: number}
 
-const create_activity_query = gql`
+const createActivityQuery = gql`
 mutation CreateActivity($description: String!, $source_id: Int, $person_ids: [Int!]) {
     createActivity(description: $description, source_id: $source_id, person_ids: $person_ids) {
         id,
@@ -15,7 +15,7 @@ mutation CreateActivity($description: String!, $source_id: Int, $person_ids: [In
 } 
 `;
 
-const search_sources_query = gql`
+const searchSourcesQuery = gql`
 query SearchSources($nameForSearch: String!) {
     sources(nameForSearch: $nameForSearch) {
         id,
@@ -24,7 +24,7 @@ query SearchSources($nameForSearch: String!) {
 } 
 `;
 
-const search_persons_query = gql`
+const searchPersonsQuery = gql`
 query SearchPersons($nameForSearch: String!) {
     persons(nameForSearch: $nameForSearch) {
         id,
@@ -39,7 +39,7 @@ function loadSourceOptions(input, callback) {
     }
 
     return apolloClient.query({
-        query: search_sources_query,
+        query: searchSourcesQuery,
         variables: {nameForSearch: input}
     }).then((response) => {
         callback(response.data.sources.map(source => {
@@ -57,7 +57,7 @@ function loadPersonOptions(input, callback) {
     }
 
     return apolloClient.query({
-        query: search_persons_query,
+        query: searchPersonsQuery,
         variables: {nameForSearch: input}
     }).then((response) => {
         callback(response.data.persons.map(person => {
@@ -69,9 +69,9 @@ function loadPersonOptions(input, callback) {
     });
 }
 
-function ActivityCreateForm({activities_gql}): ReactElement {
-    const [createActivity] = useMutation(create_activity_query, {
-        refetchQueries: [activities_gql]
+function ActivityCreateForm({activities_gql: activitiesGql}): ReactElement {
+    const [createActivity] = useMutation(createActivityQuery, {
+        refetchQueries: [activitiesGql]
     });
     const [description, setDescription] = useState("");
     const [source_id, setSourceId] = useState(null);
@@ -141,7 +141,7 @@ function ActivityCreateForm({activities_gql}): ReactElement {
 }
 
 ActivityCreateForm.propTypes = {
-    activities_gql: PropTypes.object
+    activitiesGql: PropTypes.object
 }
 
 export default ActivityCreateForm;
