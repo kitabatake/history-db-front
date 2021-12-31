@@ -3,8 +3,6 @@ import {ReactElement, useState} from "react";
 import PropTypes from 'prop-types'
 import PersonsSelect from "./PersonsSelect";
 
-type Option = {label: string, value: number}
-
 const createPersonRelationQuery = gql`
 mutation CreatePersonRelation($description: String!, $person_ids: [Int!]) {
     createPersonRelation(description: $description, person_ids: $person_ids) {
