@@ -3,8 +3,7 @@ import {ReactElement, useState} from "react";
 import PropTypes from 'prop-types'
 import AsyncSelect from 'react-select/async';
 import {apolloClient} from "../apolloClient";
-
-type Option = {label: string, value: number}
+import PersonsSelect from "./PersonsSelect";
 
 const createActivityQuery = gql`
 mutation CreateActivity($description: String!, $source_id: Int, $person_ids: [Int!]) {
@@ -24,15 +23,6 @@ query SearchSources($nameForSearch: String!) {
 } 
 `;
 
-const searchPersonsQuery = gql`
-query SearchPersons($nameForSearch: String!) {
-    persons(nameForSearch: $nameForSearch) {
-        id,
-        name
-    }
-} 
-`;
-
 function loadSourceOptions(input, callback) {
     if (!input) {
         return Promise.resolve({options: []});
@@ -46,24 +36,6 @@ function loadSourceOptions(input, callback) {
             return {
                 value: source.id,
                 label: source.name
-            };
-        }))
-    });
-}
-
-function loadPersonOptions(input, callback) {
-    if (!input) {
-        return Promise.resolve({options: []});
-    }
-
-    return apolloClient.query({
-        query: searchPersonsQuery,
-        variables: {nameForSearch: input}
-    }).then((response) => {
-        callback(response.data.persons.map(person => {
-            return {
-                value: person.id,
-                label: person.name
             };
         }))
     });
@@ -117,14 +89,7 @@ function ActivityCreateForm({activities_gql: activitiesGql}): ReactElement {
                     <label className="mb-1 text-xs tracking-wide text-gray-600 w-12">
                         人物:
                     </label>
-                    <AsyncSelect<Option, true>
-                        name="person_ids"
-                        loadOptions={loadPersonOptions}
-                        isMulti
-                        onChange={(options: readonly Option[]) => {
-                            setPersonIds(options.map(option => option.value))
-                        }}
-                    />
+                    <PersonsSelect onChange={(personIds) => setPersonIds(personIds)} />
                 </div>
                 <div className="flex w-20 mx-auto">
                     <button

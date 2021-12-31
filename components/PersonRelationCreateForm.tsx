@@ -1,8 +1,7 @@
 import {gql, useMutation} from "@apollo/client";
 import {ReactElement, useState} from "react";
 import PropTypes from 'prop-types'
-import {apolloClient} from "../apolloClient";
-import AsyncSelect from "react-select/async";
+import PersonsSelect from "./PersonsSelect";
 
 type Option = {label: string, value: number}
 
@@ -14,33 +13,6 @@ mutation CreatePersonRelation($description: String!, $person_ids: [Int!]) {
     }
 } 
 `;
-
-const searchPersonsQuery = gql`
-query SearchPersons($nameForSearch: String!) {
-    persons(nameForSearch: $nameForSearch) {
-        id,
-        name
-    }
-} 
-`;
-
-function loadPersonOptions(input, callback) {
-    if (!input) {
-        return Promise.resolve({options: []});
-    }
-
-    return apolloClient.query({
-        query: searchPersonsQuery,
-        variables: {nameForSearch: input}
-    }).then((response) => {
-        callback(response.data.persons.map(person => {
-            return {
-                value: person.id,
-                label: person.name
-            };
-        }))
-    });
-}
 
 function PersonRelationCreateForm({personRelations_gql: personRelationsGql}): ReactElement {
     const [createPersonRelation] = useMutation(createPersonRelationQuery, {
@@ -79,14 +51,7 @@ function PersonRelationCreateForm({personRelations_gql: personRelationsGql}): Re
                     <label className="mb-1 text-xs tracking-wide text-gray-600 w-12">
                         人物:
                     </label>
-                    <AsyncSelect<Option, true>
-                        name="person_ids"
-                        loadOptions={loadPersonOptions}
-                        isMulti
-                        onChange={(options: readonly Option[]) => {
-                            setPersonIds(options.map(option => option.value))
-                        }}
-                    />
+                    <PersonsSelect onChange={(personIds) => setPersonIds(personIds)} />
                 </div>
                 <div className="flex w-20 mx-auto">
                     <button
