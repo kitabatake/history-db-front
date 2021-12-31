@@ -17,8 +17,7 @@ function PersonRelationCreateForm({personRelations_gql: personRelationsGql}): Re
         refetchQueries: [personRelationsGql]
     });
     const [description, setDescription] = useState("");
-    const [personIds, setPersonIds] = useState([]);
-
+    const [selectedPersons, setSelectedPersons] = useState([]);
     return (
         <div className="mt-5 flex flex-col bg-white shadow-md px-8 py-6 rounded-3xl w-50 max-w-md">
             <div className="font-medium self-center text-xl text-gray-800">
@@ -28,9 +27,9 @@ function PersonRelationCreateForm({personRelations_gql: personRelationsGql}): Re
                 className="mt-2"
                 onSubmit={e => {
                     e.preventDefault();
-                    createPersonRelation({variables: {description: description, person_ids: personIds}});
+                    createPersonRelation({variables: {description: description, person_ids: selectedPersons.map(option => option.value)}});
                     setDescription('');
-                    setPersonIds([]);
+                    setSelectedPersons([]);
                 }}
             >
                 <div className="mb-2">
@@ -49,7 +48,9 @@ function PersonRelationCreateForm({personRelations_gql: personRelationsGql}): Re
                     <label className="mb-1 text-xs tracking-wide text-gray-600 w-12">
                         人物:
                     </label>
-                    <PersonsSelect onChange={(personIds) => setPersonIds(personIds)} />
+                    <PersonsSelect
+                        value={selectedPersons}
+                        onChange={(selected) => setSelectedPersons(selected)} />
                 </div>
                 <div className="flex w-20 mx-auto">
                     <button

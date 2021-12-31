@@ -32,19 +32,19 @@ function loadPersonOptions(input, callback) {
     });
 }
 
-function PersonsSelect({onChange}): ReactElement {
+function PersonsSelect({value, onChange}): ReactElement {
     return (
         <AsyncSelect<Option, true>
             loadOptions={loadPersonOptions}
             isMulti
-            onChange={(options: readonly Option[]) => {
-                onChange(options.map(option => option.value))
-            }}
+            value={value}
+            onChange={onChange}
         />
     )
 }
 
 PersonsSelect.propTypes = {
+    value: PropTypes.array,
     onChange: PropTypes.func.isRequired
 }
 

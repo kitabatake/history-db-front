@@ -46,8 +46,8 @@ function ActivityCreateForm({activities_gql: activitiesGql}): ReactElement {
         refetchQueries: [activitiesGql]
     });
     const [description, setDescription] = useState("");
-    const [source_id, setSourceId] = useState(null);
-    const [personIds, setPersonIds] = useState([]);
+    const [sourceId, setSourceId] = useState(null);
+    const [selectedPersons, setSelectedPersons] = useState([]);
 
     return (
         <div className="mt-5 flex flex-col bg-white shadow-md px-8 py-6 rounded-3xl w-50 max-w-md">
@@ -58,9 +58,10 @@ function ActivityCreateForm({activities_gql: activitiesGql}): ReactElement {
                 className="mt-2"
                 onSubmit={e => {
                     e.preventDefault();
-                    createActivity({variables: {description: description, source_id: source_id, person_ids: personIds}});
+                    createActivity({variables: {description: description, source_id: sourceId, person_ids: selectedPersons.map(option => option.value)}});
                     setDescription('');
                     setSourceId(null);
+                    setSelectedPersons([]);
                 }}
             >
                 <div className="mb-2">
@@ -81,7 +82,7 @@ function ActivityCreateForm({activities_gql: activitiesGql}): ReactElement {
                     <AsyncSelect
                         name="source_id"
                         loadOptions={loadSourceOptions}
-                        value={source_id}
+                        value={sourceId}
                         onChange={(option) => setSourceId(option.value)}
                     />
                 </div>
@@ -89,7 +90,9 @@ function ActivityCreateForm({activities_gql: activitiesGql}): ReactElement {
                     <label className="mb-1 text-xs tracking-wide text-gray-600 w-12">
                         人物:
                     </label>
-                    <PersonsSelect onChange={(personIds) => setPersonIds(personIds)} />
+                    <PersonsSelect
+                        value={selectedPersons}
+                        onChange={(selected) => setSelectedPersons(selected)} />
                 </div>
                 <div className="flex w-20 mx-auto">
                     <button
