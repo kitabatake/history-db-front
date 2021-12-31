@@ -12,7 +12,7 @@ mutation CreatePersonRelation($description: String!, $person_ids: [Int!]) {
 } 
 `;
 
-function PersonRelationCreateForm({personRelations_gql: personRelationsGql}): ReactElement {
+function PersonRelationCreateForm({personRelationsGql: personRelationsGql}): ReactElement {
     const [createPersonRelation] = useMutation(createPersonRelationQuery, {
         refetchQueries: [personRelationsGql]
     });

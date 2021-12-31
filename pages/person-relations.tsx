@@ -6,7 +6,7 @@ import {ReactElement, useState} from "react";
 import {apolloClient} from "../apolloClient";
 import PersonRelationCreateForm from "../components/PersonRelationCreateForm";
 
-const person_relations_query = gql`
+const personRelationsQuery = gql`
 query {
     personRelations {
         id,
@@ -15,7 +15,7 @@ query {
 }`;
 
 export default function PersonRelations(): ReactElement {
-    const {loading, error, data} = useQuery(person_relations_query);
+    const {loading, error, data} = useQuery(personRelationsQuery);
 
     return (<div>
         <Head>
@@ -26,7 +26,7 @@ export default function PersonRelations(): ReactElement {
 
         <main className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
             <Header/>
-            <PersonRelationCreateForm personRelationsGql={person_relations_query}/>
+            <PersonRelationCreateForm personRelationsGql={personRelationsQuery}/>
             <div className="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200 mt-5">
                 {loading && (<p>loading ...</p>)}
                 {error && (<p>error ...</p>)}

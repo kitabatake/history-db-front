@@ -4,7 +4,7 @@ import {gql, useQuery} from "@apollo/client";
 import PersonCreateForm from "../components/PersonCreateForm";
 import {ReactElement} from "react";
 
-const persons_query = gql`
+const personsQuery = gql`
 query {
     persons {
         id,
@@ -13,7 +13,7 @@ query {
 }`;
 
 export default function Persons(): ReactElement {
-    const {loading, error, data} = useQuery(persons_query);
+    const {loading, error, data} = useQuery(personsQuery);
 
     return (<div>
         <Head>
@@ -24,7 +24,7 @@ export default function Persons(): ReactElement {
 
         <main className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
             <Header/>
-            <PersonCreateForm personsGql={persons_query}/>
+            <PersonCreateForm personsGql={personsQuery}/>
             <div className="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200 mt-5">
                 {loading && (<p>loading ...</p>)}
                 {error && (<p>error ...</p>)}

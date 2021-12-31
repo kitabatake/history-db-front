@@ -41,7 +41,7 @@ function loadSourceOptions(input, callback) {
     });
 }
 
-function ActivityCreateForm({activities_gql: activitiesGql}): ReactElement {
+function ActivityCreateForm({activitiesGql: activitiesGql}): ReactElement {
     const [createActivity] = useMutation(createActivityQuery, {
         refetchQueries: [activitiesGql]
     });

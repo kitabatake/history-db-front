@@ -4,7 +4,7 @@ import {gql, useQuery} from "@apollo/client";
 import {ReactElement} from "react";
 import ActivityCreateForm from "../components/ActivityCreateForm";
 
-const activities_query = gql`
+const activitiesQuery = gql`
 query {
     activities {
         id,
@@ -13,7 +13,7 @@ query {
 }`;
 
 export default function Activitys(): ReactElement {
-    const {loading, error, data} = useQuery(activities_query);
+    const {loading, error, data} = useQuery(activitiesQuery);
 
     return (<div>
         <Head>
@@ -24,7 +24,7 @@ export default function Activitys(): ReactElement {
 
         <main className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
             <Header/>
-            <ActivityCreateForm activitiesGql={activities_query}/>
+            <ActivityCreateForm activitiesGql={activitiesQuery}/>
             <div className="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200 mt-5">
                 {loading && (<p>loading ...</p>)}
                 {error && (<p>error ...</p>)}

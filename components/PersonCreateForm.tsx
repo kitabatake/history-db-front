@@ -11,7 +11,7 @@ mutation CreatePerson($name: String!, $description: String!) {
 } 
 `;
 
-function PersonCreateForm({persons_gql: personsGql}): ReactElement {
+function PersonCreateForm({personsGql: personsGql}): ReactElement {
     const [createPerson] = useMutation(createPersonQuery, {
         refetchQueries: [personsGql]
     });
