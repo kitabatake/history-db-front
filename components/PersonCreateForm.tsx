@@ -20,7 +20,7 @@ function PersonCreateForm({personsGql: personsGql}): ReactElement {
     const [description, setDescription] = useState("");
 
     return (
-        <div className="mt-5 flex flex-col bg-white shadow-md px-8 py-6 rounded-3xl w-50 max-w-md">
+        <div className="flex flex-col bg-white shadow-md px-8 py-6 rounded-3xl w-50 max-w-md">
             <div className="font-medium self-center text-xl text-gray-800">
                 人物登録
             </div>
