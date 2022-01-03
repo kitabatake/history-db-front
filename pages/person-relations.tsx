@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Header from "../components/Header";
 import {gql, useQuery} from "@apollo/client";
 import PersonCreateForm from "../components/PersonCreateForm";
 import {ReactElement, useState} from "react";
@@ -17,22 +16,33 @@ query {
 export default function PersonRelations(): ReactElement {
     const {loading, error, data} = useQuery(personRelationsQuery);
 
-    return (<div>
-        <PersonRelationCreateForm personRelationsGql={personRelationsQuery}/>
-        <div className="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200 mt-5">
-            {loading && (<p>loading ...</p>)}
-            {error && (<p>error ...</p>)}
-            {data && (
-                <table className="table-auto w-full">
-                    <tbody>
-                    {data.personRelations.map((personRelation) => (
-                        <tr key={personRelation.id}>
-                            <td className="p-2 font-medium text-gray-800">{personRelation.description}</td>
+    return (
+        <div className="flex gap-x-5 w-full">
+            <div className="w-30">
+                <PersonRelationCreateForm personRelationsGql={personRelationsQuery}/>
+            </div>
+            <div className="grow bg-white shadow-md rounded-lg">
+                {loading && (<p>loading ...</p>)}
+                {error && (<p>error ...</p>)}
+                {data && (
+                    <table className="table-auto w-full">
+                        <thead className="text-xs text-cyan-400 bg-cyan-50 text-left">
+                        <tr>
+                            <th className="p-2">ID</th>
+                            <th>説明</th>
                         </tr>
-                    ))}
-                    </tbody>
-                </table>
-            )}
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                        {data.personRelations.map((personRelation) => (
+                            <tr key={personRelation.id}>
+                                <td className="p-2 font-medium text-gray-800">{personRelation.id}</td>
+                                <td className="p-2 font-medium text-gray-800">{personRelation.description}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                )}
+            </div>
         </div>
-    </div>)
+    )
 }

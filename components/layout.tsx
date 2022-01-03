@@ -1,4 +1,3 @@
-import Header from "./Header";
 import Link from "next/link";
 
 export default function Layout({children}) {
@@ -40,6 +39,13 @@ export default function Layout({children}) {
                                 <Link href="/person-relations">
                                     <a className="text-base text-gray-900 font-normal rounded-lg block p-2 hover:bg-yellow-100">
                                         関連
+                                    </a>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/sources">
+                                    <a className="text-base text-gray-900 font-normal rounded-lg block p-2 hover:bg-yellow-100">
+                                        出典
                                     </a>
                                 </Link>
                             </li>

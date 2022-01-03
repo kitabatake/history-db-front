@@ -19,8 +19,8 @@ function PersonRelationCreateForm({personRelationsGql: personRelationsGql}): Rea
     const [description, setDescription] = useState("");
     const [selectedPersons, setSelectedPersons] = useState([]);
     return (
-        <div className="mt-5 flex flex-col bg-white shadow-md px-8 py-6 rounded-3xl w-50 max-w-md">
-            <div className="font-medium self-center text-xl text-gray-800">
+        <div className="flex flex-col bg-white shadow-md px-8 py-6 rounded-lg">
+            <div className="font-medium self-center text-xl text-gold-800">
                 関連登録
             </div>
             <form
@@ -33,19 +33,19 @@ function PersonRelationCreateForm({personRelationsGql: personRelationsGql}): Rea
                 }}
             >
                 <div className="mb-2">
-                    <label className="mb-1 text-xs tracking-wide text-gray-600 w-12">
+                    <label className="mb-1 text-xs tracking-wide text-gold-600 w-12">
                         概要:
                     </label>
                     <input
                         type="text"
                         name="description"
-                        className="text-sm p-2 rounded-2xl border border-gray-400 bg-gray-50 w-full shrink focus:outline-none focus:border-blue-400"
+                        className="text-sm p-2 rounded-lg border border-gold-200 bg-gold-50 w-full shrink focus:outline-none focus:border-gold-400"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     />
                 </div>
                 <div className="mb-2">
-                    <label className="mb-1 text-xs tracking-wide text-gray-600 w-12">
+                    <label className="mb-1 text-xs tracking-wide text-gold-600 w-12">
                         人物:
                     </label>
                     <PersonsSelect
@@ -55,8 +55,8 @@ function PersonRelationCreateForm({personRelationsGql: personRelationsGql}): Rea
                 <div className="flex w-20 mx-auto">
                     <button
                         type="submit"
-                        className="focus:outline-none text-white text-sm sm:text-base bg-blue-500 hover:bg-blue-600 rounded-2xl py-2 w-full transition
-                                      duration-150  ease-in"
+                        className="focus:outline-none text-white tracking-wider text-sm sm:text-base bg-gold-500 hover:bg-gold-600 rounded-lg py-2 w-full transition
+                                      duration-150  ease-in mt-2"
                     >
                         送信
                     </button>

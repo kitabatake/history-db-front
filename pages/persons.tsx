@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Header from "../components/Header";
 import {gql, useQuery} from "@apollo/client";
 import PersonCreateForm from "../components/PersonCreateForm";
 import {ReactElement} from "react";
@@ -8,29 +7,42 @@ const personsQuery = gql`
 query {
     persons {
         id,
-        name
+        name,
+        description
     }
 }`;
 
 export default function Persons(): ReactElement {
     const {loading, error, data} = useQuery(personsQuery);
 
-    return (<div>
-        <PersonCreateForm personsGql={personsQuery}/>
-        <div className="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200 mt-5">
-            {loading && (<p>loading ...</p>)}
-            {error && (<p>error ...</p>)}
-            {data && (
-                <table className="table-auto w-full">
-                    <tbody>
-                    {data.persons.map((person) => (
-                        <tr key={person.id}>
-                            <td className="p-2 font-medium text-gray-800">{person.name}</td>
+    return (
+        <div className="flex gap-x-5 w-full">
+            <div className="w-30">
+                <PersonCreateForm personsGql={personsQuery}/>
+            </div>
+            <div className="grow bg-white shadow-md rounded-lg">
+                {loading && (<p>loading ...</p>)}
+                {error && (<p>error ...</p>)}
+                {data && (
+                    <table className="table-auto w-full">
+                        <thead className="text-xs text-cyan-400 bg-cyan-50 text-left">
+                        <tr>
+                            <th className="p-2">ID</th>
+                            <th>名前</th>
+                            <th>説明</th>
                         </tr>
-                    ))}
-                    </tbody>
-                </table>
-            )}
-        </div>
-    </div>)
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                        {data.persons.map((person) => (
+                            <tr key={person.id}>
+                                <td className="p-2 font-medium text-gray-800">{person.id}</td>
+                                <td className="p-2 font-medium text-gray-800">{person.name}</td>
+                                <td className="p-2 font-medium text-gray-800">{person.description}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                )}
+            </div>
+        </div>)
 }

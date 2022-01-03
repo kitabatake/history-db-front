@@ -1,8 +1,7 @@
-import Head from 'next/head'
-import Header from "../components/Header";
 import {gql, useQuery} from "@apollo/client";
 import {ReactElement} from "react";
 import SourceCreateForm from "../components/SourceCreateForm";
+import PersonRelationCreateForm from "../components/PersonRelationCreateForm";
 
 const sourcesQuery = gql`
 query {
@@ -15,22 +14,33 @@ query {
 export default function Sources(): ReactElement {
     const {loading, error, data} = useQuery(sourcesQuery);
 
-    return (<div>
-        <SourceCreateForm sourcesGql={sourcesQuery}/>
-        <div className="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200 mt-5">
-            {loading && (<p>loading ...</p>)}
-            {error && (<p>error ...</p>)}
-            {data && (
-                <table className="table-auto w-full">
-                    <tbody>
-                    {data.sources.map((source) => (
-                        <tr key={source.id}>
-                            <td className="p-2 font-medium text-gray-800">{source.name}</td>
+    return (
+        <div className="flex gap-x-5 w-full">
+            <div className="w-30">
+                <SourceCreateForm sourcesGql={sourcesQuery}/>
+            </div>
+            <div className="grow bg-white shadow-md rounded-lg">
+                {loading && (<p>loading ...</p>)}
+                {error && (<p>error ...</p>)}
+                {data && (
+                    <table className="table-auto w-full">
+                        <thead className="text-xs text-cyan-400 bg-cyan-50 text-left">
+                        <tr>
+                            <th className="p-2">ID</th>
+                            <th>名前</th>
                         </tr>
-                    ))}
-                    </tbody>
-                </table>
-            )}
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                        {data.sources.map((source) => (
+                            <tr key={source.id}>
+                                <td className="p-2 font-medium text-gray-800">{source.id}</td>
+                                <td className="p-2 font-medium text-gray-800">{source.name}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                )}
+            </div>
         </div>
-    </div>)
+    )
 }
