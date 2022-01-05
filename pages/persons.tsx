@@ -1,7 +1,9 @@
 import Link from "next/link";
-import {gql, useQuery} from "@apollo/client";
+import {gql, useMutation, useQuery} from "@apollo/client";
 import PersonCreateForm from "../components/PersonCreateForm";
 import {ReactElement} from "react";
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import {confirmAlert} from "react-confirm-alert";
 
 const personsQuery = gql`
 query {
@@ -12,9 +14,34 @@ query {
     }
 }`;
 
+const deletePersonQuery = gql`
+mutation DeletePerson($id: Int!) {
+    deletePerson(id: $id) {
+        id
+    }
+} 
+`;
+
 export default function Persons(): ReactElement {
     const {loading, error, data} = useQuery(personsQuery);
-
+    const [deletePersonMutation] = useMutation(deletePersonQuery, {
+        refetchQueries: [personsQuery]
+    });
+    const deletePerson = (person) => {
+        confirmAlert({
+            message: `人物「${person.name}」を本当に削除しますか？`,
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => deletePersonMutation({variables: {id: person.id}})
+                },
+                {
+                    label: 'No',
+                    onClick: () => {}
+                }
+            ]
+        });
+    }
     return (
         <div className="flex gap-x-5 w-full">
             <div className="w-30">
@@ -30,6 +57,7 @@ export default function Persons(): ReactElement {
                             <th className="p-2">ID</th>
                             <th className="p-2">名前</th>
                             <th className="p-2">説明</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
@@ -42,6 +70,14 @@ export default function Persons(): ReactElement {
                                     </Link>
                                 </td>
                                 <td className="p-2 font-medium text-gray-800">{person.description}</td>
+                                <td>
+                                    <button
+                                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 text-xs rounded"
+                                        onClick={() => deletePerson(person)}
+                                    >
+                                        削除
+                                    </button>
+                                </td>
                             </tr>
                         ))}
                         </tbody>
