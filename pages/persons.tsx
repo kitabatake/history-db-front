@@ -1,4 +1,4 @@
-import Head from 'next/head'
+import Link from "next/link";
 import {gql, useQuery} from "@apollo/client";
 import PersonCreateForm from "../components/PersonCreateForm";
 import {ReactElement} from "react";
@@ -28,15 +28,19 @@ export default function Persons(): ReactElement {
                         <thead className="text-xs text-cyan-400 bg-cyan-50 text-left">
                         <tr>
                             <th className="p-2">ID</th>
-                            <th>名前</th>
-                            <th>説明</th>
+                            <th className="p-2">名前</th>
+                            <th className="p-2">説明</th>
                         </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
                         {data.persons.map((person) => (
                             <tr key={person.id}>
                                 <td className="p-2 font-medium text-gray-800">{person.id}</td>
-                                <td className="p-2 font-medium text-gray-800">{person.name}</td>
+                                <td className="p-2 font-medium text-gray-800">
+                                    <Link href={`/persons/${person.id}`}>
+                                        <a>{person.name}</a>
+                                    </Link>
+                                </td>
                                 <td className="p-2 font-medium text-gray-800">{person.description}</td>
                             </tr>
                         ))}

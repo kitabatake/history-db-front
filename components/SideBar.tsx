@@ -17,7 +17,6 @@ export default function SideBar() {
             <ul className="space-y-2 pb-2 px-3 pt-5">
                 <li>
                     <Link href="/">
-                        {/*<a className={aClassName + " " + activeClassName}>*/}
                         <a className={aClassName("/")}>Home</a>
                     </Link>
                 </li>
