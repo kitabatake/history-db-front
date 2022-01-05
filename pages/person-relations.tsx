@@ -27,7 +27,6 @@ export default function PersonRelations(): ReactElement {
     });
     const deletePersonRelation = (personRelation) => {
         confirmAlert({
-            title: 'Confirm to submit',
             message: `本当に削除しますか？`,
             buttons: [
                 {

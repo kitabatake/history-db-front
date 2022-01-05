@@ -27,7 +27,6 @@ export default function Sources(): ReactElement {
     });
     const deleteSource = (source) => {
         confirmAlert({
-            title: 'Confirm to submit',
             message: `出典「${source.name}」を本当に削除しますか？`,
             buttons: [
                 {
