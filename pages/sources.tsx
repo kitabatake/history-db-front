@@ -25,7 +25,6 @@ export default function Sources(): ReactElement {
     const [deleteSourceMutation] = useMutation(deleteSourceQuery, {
         refetchQueries: [sourcesQuery]
     });
-
     const deleteSource = (source) => {
         confirmAlert({
             title: 'Confirm to submit',

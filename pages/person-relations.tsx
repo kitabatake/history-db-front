@@ -1,9 +1,8 @@
-import Head from 'next/head'
-import {gql, useQuery} from "@apollo/client";
-import PersonCreateForm from "../components/PersonCreateForm";
-import {ReactElement, useState} from "react";
-import {apolloClient} from "../apolloClient";
+import {gql, useMutation, useQuery} from "@apollo/client";
+import {ReactElement} from "react";
 import PersonRelationCreateForm from "../components/PersonRelationCreateForm";
+import {confirmAlert} from "react-confirm-alert";
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 const personRelationsQuery = gql`
 query {
@@ -13,8 +12,35 @@ query {
     }
 }`;
 
+const deletePersonRelationQuery = gql`
+mutation DeletePersonRelation($id: Int!) {
+    deletePersonRelation(id: $id) {
+        id
+    }
+} 
+`;
+
 export default function PersonRelations(): ReactElement {
     const {loading, error, data} = useQuery(personRelationsQuery);
+    const [deletePersonRelationMutation] = useMutation(deletePersonRelationQuery, {
+        refetchQueries: [personRelationsQuery]
+    });
+    const deletePersonRelation = (personRelation) => {
+        confirmAlert({
+            title: 'Confirm to submit',
+            message: `本当に削除しますか？`,
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => deletePersonRelationMutation({variables: {id: personRelation.id}})
+                },
+                {
+                    label: 'No',
+                    onClick: () => {}
+                }
+            ]
+        });
+    }
 
     return (
         <div className="flex gap-x-5 w-full">
@@ -30,6 +56,7 @@ export default function PersonRelations(): ReactElement {
                         <tr>
                             <th className="p-2">ID</th>
                             <th>説明</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
@@ -37,6 +64,14 @@ export default function PersonRelations(): ReactElement {
                             <tr key={personRelation.id}>
                                 <td className="p-2 font-medium text-gray-800">{personRelation.id}</td>
                                 <td className="p-2 font-medium text-gray-800">{personRelation.description}</td>
+                                <td>
+                                    <button
+                                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 text-xs rounded"
+                                        onClick={() => deletePersonRelation(personRelation)}
+                                    >
+                                        削除
+                                    </button>
+                                </td>
                             </tr>
                         ))}
                         </tbody>
