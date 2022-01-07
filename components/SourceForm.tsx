@@ -1,16 +1,14 @@
-import PropTypes from "prop-types";
-import SourceUpdateForm from "./SourceUpdateForm";
 import {useState} from "react";
 
 export interface SourceFormData {
     name: string
 }
-interface SourceFormProps {
+interface Props {
     defaultData?: SourceFormData,
     onSubmit: (SourceFormData) => void
 }
 
-export default function SourceForm({defaultData = {name: ""}, onSubmit}: SourceFormProps) {
+export default function SourceForm({defaultData = {name: ""}, onSubmit}: Props) {
     const [name, setName] = useState(defaultData.name);
     return (
         <form

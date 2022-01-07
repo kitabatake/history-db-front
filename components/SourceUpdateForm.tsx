@@ -22,17 +22,17 @@ query getSource($id: Int!) {
 `;
 
 
-interface SourceUpdateFormProps {
+interface Props {
     sourceId: number,
     sourcesGql: DocumentNode,
     onSubmit: () => void
 }
 
-export default function SourceUpdateForm({sourceId, sourcesGql, onSubmit}: SourceUpdateFormProps): ReactElement {
+export default function SourceUpdateForm({sourceId, sourcesGql, onSubmit}: Props): ReactElement {
     const [updateSource] = useMutation(updateSourceQuery, {
         refetchQueries: [sourcesGql]
     });
-    const {loading, error, data} = useQuery(getSourceQuery, {variables: {id: sourceId}});
+    const {data} = useQuery(getSourceQuery, {variables: {id: sourceId}});
 
     return (
         <>
