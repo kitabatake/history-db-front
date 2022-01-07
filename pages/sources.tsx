@@ -3,6 +3,7 @@ import {ReactElement} from "react";
 import SourceCreateForm from "../components/SourceCreateForm";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import SourceList from "../components/SourceList";
+import {Source} from "../types";
 
 const sourcesQuery = gql`
 query {
@@ -12,8 +13,12 @@ query {
     }
 }`;
 
+interface sourcesQueryData {
+    sources: Source[]
+}
+
 export default function Sources(): ReactElement {
-    const {loading, error, data} = useQuery(sourcesQuery);
+    const {loading, error, data} = useQuery<sourcesQueryData>(sourcesQuery);
 
     return (
         <div className="flex gap-x-5 w-full">

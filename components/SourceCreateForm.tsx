@@ -2,6 +2,7 @@ import {gql, useMutation} from "@apollo/client";
 import {ReactElement} from "react";
 import SourceForm, {SourceFormData} from "./SourceForm";
 import {DocumentNode} from "graphql";
+import {Source} from "../types";
 
 const createSourceQuery = gql`
 mutation CreateSource($name: String!) {
@@ -12,12 +13,16 @@ mutation CreateSource($name: String!) {
 } 
 `;
 
+interface createSourceVariables {
+    name: string
+}
+
 interface Props {
     sourcesGql: DocumentNode
 }
 
 export default function SourceCreateForm({sourcesGql} : Props): ReactElement {
-    const [createSource] = useMutation(createSourceQuery, {
+    const [createSource] = useMutation<Source, createSourceVariables>(createSourceQuery, {
         refetchQueries: [sourcesGql]
     });
 

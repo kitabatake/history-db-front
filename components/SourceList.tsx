@@ -1,9 +1,10 @@
 import {ReactElement, useState} from "react";
-import PropTypes from "prop-types";
 import {gql, useMutation} from "@apollo/client";
 import {confirmAlert} from "react-confirm-alert";
 import Dialog from "./Dialog";
 import SourceUpdateForm from "./SourceUpdateForm";
+import {Source} from "../types";
+import {DocumentNode} from "graphql";
 
 const deleteSourceQuery = gql`
 mutation DeleteSource($id: Int!) {
@@ -13,7 +14,12 @@ mutation DeleteSource($id: Int!) {
 } 
 `;
 
-function SourceList({sources, sourcesGql}): ReactElement {
+interface Props {
+    sources: Source[],
+    sourcesGql: DocumentNode
+}
+
+export default function SourceList({sources, sourcesGql}: Props): ReactElement {
     const [sourceIdForUpdate, setSourceIdForUpdate] = useState(null);
     const [deleteSourceMutation] = useMutation(deleteSourceQuery, {
         refetchQueries: [sourcesGql]
@@ -83,10 +89,3 @@ function SourceList({sources, sourcesGql}): ReactElement {
         </>
     );
 }
-
-SourceList.propTypes = {
-    sources: PropTypes.array,
-    sourcesGql: PropTypes.object
-}
-
-export default SourceList;
