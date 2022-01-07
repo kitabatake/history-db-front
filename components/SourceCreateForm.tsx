@@ -4,7 +4,7 @@ import SourceForm, {SourceFormData} from "./SourceForm";
 import {DocumentNode} from "graphql";
 import {Source} from "../types";
 
-const createSourceQuery = gql`
+const createSourceGql = gql`
 mutation CreateSource($name: String!) {
     createSource(name: $name) {
         id,
@@ -22,7 +22,7 @@ interface Props {
 }
 
 export default function SourceCreateForm({sourcesGql} : Props): ReactElement {
-    const [createSource] = useMutation<Source, createSourceVariables>(createSourceQuery, {
+    const [createSource] = useMutation<Source, createSourceVariables>(createSourceGql, {
         refetchQueries: [sourcesGql]
     });
 

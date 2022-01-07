@@ -5,7 +5,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import SourceList from "../components/SourceList";
 import {Source} from "../types";
 
-const sourcesQuery = gql`
+const sourcesGql = gql`
 query {
     sources {
         id,
@@ -18,17 +18,17 @@ interface sourcesQueryData {
 }
 
 export default function Sources(): ReactElement {
-    const {loading, error, data} = useQuery<sourcesQueryData>(sourcesQuery);
+    const {loading, error, data} = useQuery<sourcesQueryData>(sourcesGql);
 
     return (
         <div className="flex gap-x-5 w-full">
             <div className="w-30">
-                <SourceCreateForm sourcesGql={sourcesQuery}/>
+                <SourceCreateForm sourcesGql={sourcesGql}/>
             </div>
             <div className="grow bg-white shadow-md rounded-lg">
                 {loading && (<p>loading ...</p>)}
                 {error && (<p>error ...</p>)}
-                {data && (<SourceList sources={data.sources} sourcesGql={sourcesQuery} />)}
+                {data && (<SourceList sources={data.sources} sourcesGql={sourcesGql} />)}
             </div>
         </div>
     )

@@ -1,11 +1,12 @@
 import {ReactElement, useState} from "react";
 import {gql, useMutation} from "@apollo/client";
 import {confirmAlert} from "react-confirm-alert";
-import SourceUpdateForm from "./SourceUpdateForm";
 import Dialog from "./Dialog";
 import PersonRelationUpdateForm from "./PersonRelationUpdateForm";
+import {PersonRelation} from "../types";
+import {DocumentNode} from "graphql";
 
-const deletePersonRelationQuery = gql`
+const deletePersonRelationGql = gql`
 mutation DeletePersonRelation($id: Int!) {
     deletePersonRelation(id: $id) {
         id
@@ -13,8 +14,13 @@ mutation DeletePersonRelation($id: Int!) {
 } 
 `;
 
-export default function PersonRelationList({personRelations, personRelationsGql}): ReactElement {
-    const [deletePersonRelationMutation] = useMutation(deletePersonRelationQuery, {
+interface Props {
+    personRelations: PersonRelation[],
+    personRelationsGql: DocumentNode
+}
+
+export default function PersonRelationList({personRelations, personRelationsGql}: Props): ReactElement {
+    const [deletePersonRelationMutation] = useMutation(deletePersonRelationGql, {
         refetchQueries: [personRelationsGql]
     });
     const [personRelationIdForUpdate, setPersonRelationIdForUpdate] = useState(null);

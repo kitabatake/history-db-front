@@ -2,8 +2,9 @@ import {ReactElement} from "react";
 import {gql, useMutation, useQuery} from "@apollo/client";
 import {DocumentNode} from "graphql";
 import PersonRelationForm, {PersonRelationFormData} from "./PersonRelationForm";
+import {PersonRelation} from "../types";
 
-const updatePersonRelationQuery = gql`
+const updatePersonRelationGql = gql`
 mutation UpdatePersonRelation($id: Int!, $description: String!, $person_ids: [Int!]) {
     updatePersonRelation(id: $id, description: $description, person_ids: $person_ids) {
         id
@@ -11,7 +12,7 @@ mutation UpdatePersonRelation($id: Int!, $description: String!, $person_ids: [In
 } 
 `;
 
-const getPersonRelationQuery = gql`
+const getPersonRelationGql = gql`
 query getPersonRelation($id: Int!) {
     personRelation(id: $id) {
         id,
@@ -36,16 +37,16 @@ export default function PersonRelationUpdateForm({
                                                      personRelationsGql,
                                                      onSubmit
                                                  }: Props): ReactElement {
-    const [updatePersonRelation] = useMutation(updatePersonRelationQuery, {
+    const [updatePersonRelation] = useMutation(updatePersonRelationGql, {
         refetchQueries: [
             personRelationsGql,
             {
-                query: getPersonRelationQuery,
+                query: getPersonRelationGql,
                 variables: {id: personRelationId}
             }
         ]
     });
-    const {data} = useQuery(getPersonRelationQuery, {variables: {id: personRelationId}});
+    const {data} = useQuery<{personRelation: PersonRelation}>(getPersonRelationGql, {variables: {id: personRelationId}});
     return (
         <>
             <div className="font-medium text-center text-lg text-gold-800">

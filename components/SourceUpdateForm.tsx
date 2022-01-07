@@ -4,7 +4,7 @@ import {DocumentNode} from "graphql";
 import SourceForm, {SourceFormData} from "./SourceForm";
 import {Source} from "../types";
 
-const updateSourceQuery = gql`
+const updateSourceQgl = gql`
 mutation UpdateSource($id: Int!, $name: String!) {
     updateSource(id: $id, name: $name) {
         id,
@@ -13,7 +13,7 @@ mutation UpdateSource($id: Int!, $name: String!) {
 } 
 `;
 
-const getSourceQuery = gql`
+const getSourceGql = gql`
 query getSource($id: Int!) {
     source(id: $id) {
         id,
@@ -22,12 +22,6 @@ query getSource($id: Int!) {
 } 
 `;
 
-interface updateSourceVariables {
-    id: number,
-    name: string
-}
-
-
 interface Props {
     sourceId: number,
     sourcesGql: DocumentNode,
@@ -35,10 +29,10 @@ interface Props {
 }
 
 export default function SourceUpdateForm({sourceId, sourcesGql, onSubmit}: Props): ReactElement {
-    const [updateSource] = useMutation<Source, updateSourceVariables>(updateSourceQuery, {
+    const [updateSource] = useMutation<Source>(updateSourceQgl, {
         refetchQueries: [sourcesGql]
     });
-    const {data} = useQuery(getSourceQuery, {variables: {id: sourceId}});
+    const {data} = useQuery<{source: Source}>(getSourceGql, {variables: {id: sourceId}});
 
     return (
         <>

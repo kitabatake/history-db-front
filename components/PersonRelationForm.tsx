@@ -39,7 +39,7 @@ export default function PersonRelationForm({defaultData = {description: "", pers
                     onChange={(e) => setDescription(e.target.value)}
                 />
             </div>
-            <div className="mb-2">
+            <div className="mb-3">
                 <label className="mb-1 text-xs tracking-wide text-gold-600 w-12">
                     人物:
                 </label>
@@ -47,11 +47,10 @@ export default function PersonRelationForm({defaultData = {description: "", pers
                     value={selectedPersons}
                     onChange={(selected) => setSelectedPersons(selected)} />
             </div>
-            <div className="flex w-20 mx-auto">
+            <div className="text-center">
                 <button
                     type="submit"
-                    className="focus:outline-none text-white tracking-wider text-sm sm:text-base bg-gold-500 hover:bg-gold-600 rounded-lg py-2 w-full transition
-                                      duration-150  ease-in mt-2"
+                    className="focus:outline-none text-white text-sm bg-gold-500 hover:bg-gold-600 rounded-lg py-1 px-3"
                 >
                     送信
                 </button>
