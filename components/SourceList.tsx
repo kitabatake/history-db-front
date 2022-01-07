@@ -50,15 +50,15 @@ function SourceList({sources, sourcesGql}): ReactElement {
                     <tr key={source.id}>
                         <td className="p-2 font-medium text-gray-800">{source.id}</td>
                         <td className="p-2 font-medium text-gray-800">{source.name}</td>
-                        <td>
+                        <td className="space-x-1">
                             <button
-                                className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 text-xs rounded"
+                                className="bg-green-100 hover:bg-green-200 text-green-500 py-1 px-2 text-xs rounded border border-green-200"
                                 onClick={() => setSourceIdForUpdate(source.id)}
                             >
                                 編集
                             </button>
                             <button
-                                className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 text-xs rounded"
+                                className="bg-red-100 hover:bg-red-200 text-red-500 py-1 px-2 text-xs rounded border border-red-200"
                                 onClick={() => deleteSource(source)}
                             >
                                 削除
