@@ -79,7 +79,7 @@ export default function PersonRelationList({personRelations, personRelationsGql}
                 {personRelationIdForUpdate && (
                     <PersonRelationUpdateForm
                         personRelationId={personRelationIdForUpdate}
-                        personRelationsGql={personRelationsGql}
+                        refetchQueries={[personRelationsGql]}
                         onSubmit={() => setPersonRelationIdForUpdate(null)}
                     />
                 )}

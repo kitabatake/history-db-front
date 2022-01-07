@@ -1,9 +1,9 @@
-import {gql, useMutation, useQuery} from "@apollo/client";
+import {gql, useQuery} from "@apollo/client";
 import {ReactElement} from "react";
 import PersonRelationCreateForm from "../components/PersonRelationCreateForm";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import PersonRelationList from "../components/PersonRelationList";
-import {PersonRelation, Source} from "../types";
+import {PersonRelation} from "../types";
 
 const personRelationsGql = gql`
 query {
@@ -24,7 +24,7 @@ export default function PersonRelations(): ReactElement {
     return (
         <div className="flex gap-x-5 w-full">
             <div className="w-30">
-                <PersonRelationCreateForm personRelationsGql={personRelationsGql}/>
+                <PersonRelationCreateForm refetchQueries={[personRelationsGql]}/>
             </div>
             <div className="grow bg-white shadow-md rounded-lg">
                 {loading && (<p>loading ...</p>)}

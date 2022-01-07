@@ -81,7 +81,7 @@ export default function SourceList({sources, sourcesGql}: Props): ReactElement {
                 {sourceIdForUpdate && (
                     <SourceUpdateForm
                         sourceId={sourceIdForUpdate}
-                        sourcesGql={sourcesGql}
+                        refetchQueries={[sourcesGql]}
                         onSubmit={() => setSourceIdForUpdate(null)}
                     />
                 )}

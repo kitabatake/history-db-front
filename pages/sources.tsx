@@ -23,7 +23,7 @@ export default function Sources(): ReactElement {
     return (
         <div className="flex gap-x-5 w-full">
             <div className="w-30">
-                <SourceCreateForm sourcesGql={sourcesGql}/>
+                <SourceCreateForm refetchQueries={[sourcesGql]}/>
             </div>
             <div className="grow bg-white shadow-md rounded-lg">
                 {loading && (<p>loading ...</p>)}

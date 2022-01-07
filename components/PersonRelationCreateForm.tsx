@@ -1,7 +1,7 @@
 import {gql, useMutation} from "@apollo/client";
 import {ReactElement} from "react";
-import {DocumentNode} from "graphql";
-import PersonRelationForm, {PersonRelationFormData} from "./PersonRelationForm";
+import PersonRelationForm from "./PersonRelationForm";
+import {RefetchQueryDescriptor} from "@apollo/client/core/types";
 
 const createPersonRelationQuery = gql`
 mutation CreatePersonRelation($description: String!, $person_ids: [Int!]) {
@@ -13,12 +13,12 @@ mutation CreatePersonRelation($description: String!, $person_ids: [Int!]) {
 `;
 
 interface Props {
-    personRelationsGql: DocumentNode
+    refetchQueries: RefetchQueryDescriptor[]
 }
 
-export default function PersonRelationCreateForm({personRelationsGql}: Props): ReactElement {
+export default function PersonRelationCreateForm({refetchQueries}: Props): ReactElement {
     const [createPersonRelation] = useMutation(createPersonRelationQuery, {
-        refetchQueries: [personRelationsGql]
+        refetchQueries: refetchQueries
     });
 
     return (
