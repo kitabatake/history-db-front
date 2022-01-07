@@ -36,7 +36,7 @@ export default function SourceUpdateForm({sourceId, sourcesGql, onSubmit}: Sourc
 
     return (
         <>
-            <div className="font-medium text-center text-xl text-gold-800">
+            <div className="font-medium text-center text-lg text-gold-800">
                 出典編集
             </div>
             {data && (
