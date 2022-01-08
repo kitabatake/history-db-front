@@ -5,7 +5,8 @@ export interface Source {
 
 export interface Person {
     id: number,
-    name: string
+    name: string,
+    description: string
 }
 
 export interface PersonRelation {
