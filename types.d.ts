@@ -13,3 +13,10 @@ export interface PersonRelation {
     description: string,
     persons: Person[]
 }
+
+export interface Activity {
+    id: number,
+    description: string,
+    persons: Person[]
+    source?: Source
+}
