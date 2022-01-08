@@ -23,7 +23,7 @@ export default function Activities(): ReactElement {
     return (
         <div className="flex gap-x-5 w-full">
             <div className="w-30">
-                <ActivityCreateForm activitiesGql={activitiesGql}/>
+                <ActivityCreateForm refetchQueries={[activitiesGql]}/>
             </div>
             <div className="grow bg-white shadow-md rounded-lg">
                 {loading && (<p>loading ...</p>)}
