@@ -13,15 +13,12 @@ query {
     }
 }`;
 
-
-
 export default function Persons(): ReactElement {
     const {loading, error, data} = useQuery(personsGql);
-
     return (
         <div className="flex gap-x-5 w-full">
             <div className="w-30">
-                <PersonCreateForm personsGql={personsGql}/>
+                <PersonCreateForm refetchQueries={[personsGql]}/>
             </div>
             <div className="grow bg-white shadow-md rounded-lg">
                 {loading && (<p>loading ...</p>)}
