@@ -4,8 +4,8 @@ import PersonRelationForm from "./PersonRelationForm";
 import {RefetchQueryDescriptor} from "@apollo/client/core/types";
 
 const createPersonRelationQuery = gql`
-mutation CreatePersonRelation($description: String!, $person_ids: [Int!]) {
-    createPersonRelation(description: $description, person_ids: $person_ids) {
+mutation CreatePersonRelation($description: String!, $personIds: [Int!]) {
+    createPersonRelation(description: $description, personIds: $personIds) {
         id,
         description
     }
@@ -31,7 +31,7 @@ export default function PersonRelationCreateForm({refetchQueries}: Props): React
                     createPersonRelation({
                         variables: {
                             description: data.description,
-                            person_ids: data.persons.map(person => person.value)
+                            personIds: data.persons.map(person => person.value)
                         }
                     });
                 }}

@@ -4,8 +4,8 @@ import {Activity} from "../types";
 import ActivityForm, {ActivityFormData} from "./ActivityForm";
 
 const updateActivityGql = gql`
-mutation UpdateActivity($id: Int!, $description: String!, $source_id: Int, $person_ids: [Int!]) {
-    updateActivity(id: $id, description: $description, source_id: $source_id, person_ids: $person_ids) {
+mutation UpdateActivity($id: Int!, $description: String!, $sourceId: Int, $personIds: [Int!]) {
+    updateActivity(id: $id, description: $description, sourceId: $sourceId, personIds: $personIds) {
         id
     }
 } 
@@ -58,10 +58,12 @@ export default function ActivityUpdateForm({
                 <ActivityForm
                     defaultData={{
                         description: data.activity.description,
-                        source: {
-                            value: data.activity.source.id,
-                            label: data.activity.source.name
-                        },
+                        source: data.activity.source ?
+                            {
+                                value: data.activity.source.id,
+                                label: data.activity.source.name
+                            }
+                            : null,
                         persons: data.activity.persons.map(person => {
                             return {
                                 value: person.id,
@@ -74,8 +76,8 @@ export default function ActivityUpdateForm({
                             variables: {
                                 id: activityId,
                                 description: data.description,
-                                person_ids: data.persons.map((person: any) => person.value),
-                                source_id: data.source ? data.source.value : null
+                                personIds: data.persons.map((person: any) => person.value),
+                                sourceId: data.source ? data.source.value : null
                             }
                         });
                         onSubmit();

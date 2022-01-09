@@ -1,11 +1,11 @@
 import {gql, useMutation} from "@apollo/client";
 import {ReactElement} from "react";
-import ActivityForm from "./ActivityForm";
+import ActivityForm, {ActivityFormData} from "./ActivityForm";
 import {RefetchQueryDescriptor} from "@apollo/client/core/types";
 
 const createActivityQuery = gql`
-mutation CreateActivity($description: String!, $source_id: Int, $person_ids: [Int!]) {
-    createActivity(description: $description, source_id: $source_id, person_ids: $person_ids) {
+mutation CreateActivity($description: String!, $sourceId: Int, $personIds: [Int!]) {
+    createActivity(description: $description, sourceId: $sourceId, personIds: $personIds) {
         id,
         description
     }
@@ -27,12 +27,12 @@ export default function ActivityCreateForm({refetchQueries}: Props): ReactElemen
                 アクティビティ登録
             </div>
             <ActivityForm
-                onSubmit={(data) => {
+                onSubmit={(data: ActivityFormData) => {
                     createActivity({
                         variables: {
                             description: data.description,
-                            person_ids: data.persons.map(person => person.value),
-                            source_id: data.sourceId
+                            personIds: data.persons.map(person => person.value),
+                            sourceId:  data.source ? data.source.value : null
                         }
                     });
                 }}

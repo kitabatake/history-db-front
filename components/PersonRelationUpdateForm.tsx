@@ -5,8 +5,8 @@ import {PersonRelation} from "../types";
 import {RefetchQueryDescriptor} from "@apollo/client/core/types";
 
 const updatePersonRelationGql = gql`
-mutation UpdatePersonRelation($id: Int!, $description: String!, $person_ids: [Int!]) {
-    updatePersonRelation(id: $id, description: $description, person_ids: $person_ids) {
+mutation UpdatePersonRelation($id: Int!, $description: String!, $personIds: [Int!]) {
+    updatePersonRelation(id: $id, description: $description, personIds: $personIds) {
         id
     }
 } 
@@ -68,7 +68,7 @@ export default function PersonRelationUpdateForm({
                             variables: {
                                 id: personRelationId,
                                 description: data.description,
-                                person_ids: data.persons.map((person: any) => person.value)
+                                personIds: data.persons.map((person: any) => person.value)
                             }
                         });
                         onSubmit();
