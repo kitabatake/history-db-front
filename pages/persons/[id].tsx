@@ -1,7 +1,6 @@
 import {useRouter} from 'next/router'
 import {ReactElement} from "react";
 import {gql, useQuery} from "@apollo/client";
-import PersonCreateForm from "../../components/PersonCreateForm";
 import Link from "next/link";
 
 const personQuery = gql`
@@ -32,8 +31,7 @@ query getPerson($id: Int!) {
 export default function Persons(): ReactElement {
     const router = useRouter()
     const {id} = router.query
-    const {loading, error, data} = useQuery(personQuery, {variables: {id: Number(id)}});
-    console.log(data);
+    const {data} = useQuery(personQuery, {variables: {id: Number(id)}});
     return (
         <div>
             {data && (

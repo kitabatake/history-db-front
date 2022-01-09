@@ -9,7 +9,11 @@ const activitiesGql = gql`
 query {
     activities {
         id,
-        description
+        description,
+        persons {
+            id,
+            name
+        }
     }
 }`;
 

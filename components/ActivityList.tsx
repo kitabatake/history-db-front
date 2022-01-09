@@ -5,6 +5,7 @@ import Dialog from "./Dialog";
 import ActivityUpdateForm from "./ActivityUpdateForm";
 import {Activity} from "../types";
 import {DocumentNode} from "graphql";
+import Link from "next/link";
 
 const deleteActivityQuery = gql`
 mutation DeleteActivity($id: Int!) {
@@ -47,6 +48,7 @@ export default function ActivityList({activities, activitiesGql}: Props): ReactE
                 <tr>
                     <th className="p-2">ID</th>
                     <th>説明</th>
+                    <th>人物</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -55,6 +57,15 @@ export default function ActivityList({activities, activitiesGql}: Props): ReactE
                     <tr key={activity.id}>
                         <td className="p-2 font-medium text-gray-800">{activity.id}</td>
                         <td className="p-2 font-medium text-gray-800">{activity.description}</td>
+                        <td className="p-2 font-medium text-gray-800 space-x-2">
+                            {activity.persons && activity.persons.map((person) => {
+                                return (
+                                    <Link key={person.id} href={`/persons/${person.id}`}>
+                                        <a>{person.name}</a>
+                                    </Link>
+                                )
+                            })}
+                        </td>
                         <td className="space-x-1">
                             <button
                                 className="bg-green-100 hover:bg-green-200 text-green-500 py-1 px-2 text-xs rounded border border-green-200"

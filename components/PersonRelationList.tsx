@@ -5,6 +5,7 @@ import Dialog from "./Dialog";
 import PersonRelationUpdateForm from "./PersonRelationUpdateForm";
 import {PersonRelation} from "../types";
 import {DocumentNode} from "graphql";
+import Link from "next/link";
 
 const deletePersonRelationGql = gql`
 mutation DeletePersonRelation($id: Int!) {
@@ -46,6 +47,7 @@ export default function PersonRelationList({personRelations, personRelationsGql}
                 <tr>
                     <th className="p-2">ID</th>
                     <th>説明</th>
+                    <th>人物</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -54,6 +56,15 @@ export default function PersonRelationList({personRelations, personRelationsGql}
                     <tr key={personRelation.id}>
                         <td className="p-2 font-medium text-gray-800">{personRelation.id}</td>
                         <td className="p-2 font-medium text-gray-800">{personRelation.description}</td>
+                        <td className="p-2 font-medium text-gray-800 space-x-2">
+                            {personRelation.persons && personRelation.persons.map((person) => {
+                                return (
+                                    <Link key={person.id} href={`/persons/${person.id}`}>
+                                        <a>{person.name}</a>
+                                    </Link>
+                                )
+                            })}
+                        </td>
                         <td className="space-x-1">
                             <button
                                 className="bg-green-100 hover:bg-green-200 text-green-500 py-1 px-2 text-xs rounded border border-green-200"

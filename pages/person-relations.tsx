@@ -9,7 +9,11 @@ const personRelationsGql = gql`
 query {
     personRelations {
         id,
-        description
+        description,
+        persons {
+            id,
+            name
+        }
     }
 }`;
 
