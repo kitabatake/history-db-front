@@ -7,7 +7,10 @@ import {gql} from "@apollo/client";
 export interface ActivityFormData {
     description: string,
     persons: Array<{value: number, label: string}>,
-    source?: {value: number, label: string}
+    source?: {value: number, label: string},
+    year?: number,
+    month?: number,
+    day?: number
 }
 interface Props {
     defaultData?: ActivityFormData,
@@ -44,6 +47,9 @@ function loadSourceOptions(input, callback) {
 
 export default function ActivityForm({defaultData = {description: "", persons: []}, onSubmit}: Props): ReactElement {
     const [description, setDescription] = useState(defaultData.description);
+    const [year, setYear] = useState(defaultData.year);
+    const [month, setMonth] = useState(defaultData.month);
+    const [day, setDay] = useState(defaultData.day);
     const [selectedSource, setSelectedSource] = useState(defaultData.source);
     const [selectedPersons, setSelectedPersons] = useState(defaultData.persons);
 
@@ -55,11 +61,17 @@ export default function ActivityForm({defaultData = {description: "", persons: [
                 onSubmit({
                     description: description,
                     persons: selectedPersons,
-                    source: selectedSource
+                    source: selectedSource,
+                    year: year,
+                    month: month,
+                    day: day,
                 });
                 setDescription('');
                 setSelectedSource(null);
                 setSelectedPersons([]);
+                setYear(null);
+                setMonth(null);
+                setDay(null);
             }}
         >
             <div className="mb-2">
@@ -72,6 +84,44 @@ export default function ActivityForm({defaultData = {description: "", persons: [
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                 />
+            </div>
+            <div className="mb-2">
+                <label className="block mb-1 text-xs tracking-wide text-gold-600 w-12">
+                    西暦:
+                </label>
+                <div className="flex gap-1">
+                    <div>
+                        <input
+                            type="text"
+                            className="text-sm p-1 rounded-lg border border-gold-200 bg-gold-50 w-12 focus:outline-none focus:border-gold-400"
+                            value={year}
+                            onChange={(e) => setYear(Number(e.target.value))}
+                        />
+                        <span className="font-xs ml-1">年</span>
+                    </div>
+                    <div>
+                        <select
+                            className="text-sm p-1 rounded-lg border border-gold-200 bg-gold-50 w-12 focus:outline-none focus:border-gold-400"
+                            value={month}
+                            onChange={(e) => setMonth(Number(e.target.value))}
+                        >
+                            <option></option>
+                            {Array.from(Array(12)).map((_, i) => (<option key={i} value={i+1}>{i+1}</option>))}
+                        </select>
+                        <span className="font-xs ml-1">月</span>
+                    </div>
+                    <div>
+                        <select
+                            className="text-sm p-1 rounded-lg border border-gold-200 bg-gold-50 w-12 focus:outline-none focus:border-gold-400"
+                            value={day}
+                            onChange={(e) => setDay(Number(e.target.value))}
+                        >
+                            <option></option>
+                            {Array.from(Array(31)).map((_, i) => (<option key={i} value={i+1}>{i+1}</option>))}
+                        </select>
+                        <span className="font-xs ml-1">日</span>
+                    </div>
+                </div>
             </div>
             <div className="mb-2">
                 <label className="mb-1 text-xs tracking-wide text-gold-600 w-12">

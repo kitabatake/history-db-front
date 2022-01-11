@@ -4,10 +4,9 @@ import ActivityForm, {ActivityFormData} from "./ActivityForm";
 import {RefetchQueryDescriptor} from "@apollo/client/core/types";
 
 const createActivityQuery = gql`
-mutation CreateActivity($description: String!, $sourceId: Int, $personIds: [Int!]) {
-    createActivity(description: $description, sourceId: $sourceId, personIds: $personIds) {
-        id,
-        description
+mutation CreateActivity($description: String!, $sourceId: Int, $personIds: [Int!], $year: Int, $month: Int, $day: Int) {
+    createActivity(description: $description, sourceId: $sourceId, personIds: $personIds, year: $year, month: $month, day: $day) {
+        id
     }
 } 
 `;
@@ -31,6 +30,9 @@ export default function ActivityCreateForm({refetchQueries}: Props): ReactElemen
                     createActivity({
                         variables: {
                             description: data.description,
+                            year: data.year,
+                            month: data.month,
+                            day: data.day,
                             personIds: data.persons.map(person => person.value),
                             sourceId:  data.source ? data.source.value : null
                         }

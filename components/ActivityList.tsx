@@ -36,7 +36,8 @@ export default function ActivityList({activities, activitiesGql}: Props): ReactE
                 },
                 {
                     label: 'No',
-                    onClick: () => {}
+                    onClick: () => {
+                    }
                 }
             ]
         });
@@ -49,6 +50,7 @@ export default function ActivityList({activities, activitiesGql}: Props): ReactE
                     <th className="p-2">ID</th>
                     <th>説明</th>
                     <th>人物</th>
+                    <th>日時</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -65,6 +67,11 @@ export default function ActivityList({activities, activitiesGql}: Props): ReactE
                                     </Link>
                                 )
                             })}
+                        </td>
+                        <td>
+                            {activity.year && (<span>{activity.year}年</span>)}
+                            {activity.month && (<span>{activity.month}月</span>)}
+                            {activity.day && (<span>{activity.day}日</span>)}
                         </td>
                         <td className="space-x-1">
                             <button

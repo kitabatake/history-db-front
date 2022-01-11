@@ -10,6 +10,9 @@ query {
     activities {
         id,
         description,
+        year,
+        month,
+        day,
         persons {
             id,
             name

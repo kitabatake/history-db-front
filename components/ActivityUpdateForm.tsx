@@ -4,8 +4,8 @@ import {Activity} from "../types";
 import ActivityForm, {ActivityFormData} from "./ActivityForm";
 
 const updateActivityGql = gql`
-mutation UpdateActivity($id: Int!, $description: String!, $sourceId: Int, $personIds: [Int!]) {
-    updateActivity(id: $id, description: $description, sourceId: $sourceId, personIds: $personIds) {
+mutation UpdateActivity($id: Int!, $description: String!, $sourceId: Int, $personIds: [Int!], $year: Int, $month: Int, $day: Int) {
+    updateActivity(id: $id, description: $description, sourceId: $sourceId, personIds: $personIds, year: $year, month: $month, day: $day) {
         id
     }
 } 
@@ -16,6 +16,9 @@ query getActivity($id: Int!) {
     activity(id: $id) {
         id,
         description,
+        year,
+        month,
+        day,
         persons {
             id,
             name
@@ -58,6 +61,9 @@ export default function ActivityUpdateForm({
                 <ActivityForm
                     defaultData={{
                         description: data.activity.description,
+                        year: data.activity.year,
+                        month: data.activity.month,
+                        day: data.activity.day,
                         source: data.activity.source ?
                             {
                                 value: data.activity.source.id,
@@ -76,6 +82,9 @@ export default function ActivityUpdateForm({
                             variables: {
                                 id: activityId,
                                 description: data.description,
+                                year: data.year,
+                                month: data.month,
+                                day: data.day,
                                 personIds: data.persons.map((person: any) => person.value),
                                 sourceId: data.source ? data.source.value : null
                             }

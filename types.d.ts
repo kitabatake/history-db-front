@@ -19,5 +19,8 @@ export interface Activity {
     id: number,
     description: string,
     persons: Person[]
-    source?: Source
+    source?: Source,
+    year?: number,
+    month?: number,
+    day?: number,
 }
