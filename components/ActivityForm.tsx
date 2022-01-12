@@ -3,6 +3,7 @@ import AsyncSelect from "react-select/async";
 import PersonsSelect from "./PersonsSelect";
 import {apolloClient} from "../apolloClient";
 import {gql} from "@apollo/client";
+import {range} from "../lib/util";
 
 export interface ActivityFormData {
     description: string,
@@ -106,7 +107,7 @@ export default function ActivityForm({defaultData = {description: "", persons: [
                             onChange={(e) => setMonth(Number(e.target.value))}
                         >
                             <option></option>
-                            {Array.from(Array(12)).map((_, i) => (<option key={i} value={i+1}>{i+1}</option>))}
+                            {range(1, 12).map(n => (<option key={n} value={n}>{n}</option>))}
                         </select>
                         <span className="font-xs ml-1">月</span>
                     </div>
@@ -117,7 +118,7 @@ export default function ActivityForm({defaultData = {description: "", persons: [
                             onChange={(e) => setDay(Number(e.target.value))}
                         >
                             <option></option>
-                            {Array.from(Array(31)).map((_, i) => (<option key={i} value={i+1}>{i+1}</option>))}
+                            {range(1, 31).map(n => (<option key={n} value={n}>{n}</option>))}
                         </select>
                         <span className="font-xs ml-1">日</span>
                     </div>
