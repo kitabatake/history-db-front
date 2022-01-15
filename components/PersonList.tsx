@@ -1,29 +1,20 @@
 import {ReactElement, useState} from "react";
-import {Person} from "../types";
 import {RefetchQueryDescriptor} from "@apollo/client/core/types";
-import {gql, useMutation} from "@apollo/client";
 import {confirmAlert} from "react-confirm-alert";
 import Link from "next/link";
 import Dialog from "./Dialog";
 import {DocumentNode} from "graphql";
 import {PersonUpdateForm} from "./PersonUpdateForm";
-
-const deletePersonQuery = gql`
-mutation DeletePerson($id: Int!) {
-    deletePerson(id: $id) {
-        id
-    }
-} 
-`;
+import {GetPersonsQuery, useDeletePersonMutation} from "../src/generated/graphql";
 
 interface Props {
-    persons: Person[],
+    persons: GetPersonsQuery["persons"],
     personsGql: DocumentNode,
     refetchQueriesOnDelete: RefetchQueryDescriptor[]
 }
 export default function PersonList({persons, personsGql, refetchQueriesOnDelete}: Props): ReactElement {
     const [personIdForUpdate, setPersonIdForUpdate] = useState(null);
-    const [deletePersonMutation] = useMutation(deletePersonQuery, {
+    const [deletePersonMutation] = useDeletePersonMutation({
         refetchQueries: refetchQueriesOnDelete
     });
     const deletePerson = (person) => {

@@ -1,25 +1,7 @@
-import {gql, useMutation, useQuery} from "@apollo/client";
 import {RefetchQueryDescriptor} from "@apollo/client/core/types";
-import {Person} from "../types";
 import PersonForm, {PersonFormData} from "./PersonForm";
-
-const updatePersonGql = gql`
-mutation UpdatePerson($id: Int!, $name: String!, $description: String!) {
-    updatePerson(id: $id, name: $name, description: $description) {
-        id
-    }
-} 
-`;
-
-const getPersonGql = gql`
-query getPerson($id: Int!) {
-    person(id: $id) {
-        id,
-        name,
-        description
-    }
-} 
-`;
+import {useGetPersonQuery, useUpdatePersonMutation} from "../src/generated/graphql";
+import {GET_PERSON_QUERY} from "../graphqls/persons";
 
 interface Props {
     personId: number,
@@ -28,11 +10,11 @@ interface Props {
 }
 
 export function PersonUpdateForm({personId, refetchQueries, onSubmit}: Props) {
-    const {data} = useQuery<{ person: Person }>(getPersonGql, {variables: {id: personId}});
-    const [updatePerson] = useMutation(updatePersonGql, {
+    const {data} = useGetPersonQuery({variables: {id: personId}});
+    const [updatePerson] = useUpdatePersonMutation({
         refetchQueries: [
             {
-                query: getPersonGql,
+                query: GET_PERSON_QUERY,
                 variables: {id: personId}
             },
             ...refetchQueries

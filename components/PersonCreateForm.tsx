@@ -1,23 +1,14 @@
-import {gql, useMutation} from "@apollo/client";
 import {ReactElement} from "react";
 import PersonForm, {PersonFormData} from "./PersonForm";
 import {RefetchQueryDescriptor} from "@apollo/client/core/types";
-
-const createPersonQuery = gql`
-mutation CreatePerson($name: String!, $description: String!) {
-    createPerson(name: $name, description: $description) {
-        id,
-        name
-    }
-} 
-`;
+import {useCreatePersonMutation} from "../src/generated/graphql";
 
 interface Props {
     refetchQueries: RefetchQueryDescriptor[]
 }
 
 export default function PersonCreateForm({refetchQueries}: Props): ReactElement {
-    const [createPerson] = useMutation(createPersonQuery, {
+    const [createPerson] = useCreatePersonMutation({
         refetchQueries: refetchQueries
     });
 
