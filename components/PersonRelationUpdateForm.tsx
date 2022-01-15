@@ -6,13 +6,13 @@ import {GET_PERSON_RELATION_QUERY} from "../graphqls/personRelations";
 
 interface Props {
     personRelationId: number,
-    refetchQueries: RefetchQueryDescriptor[],
+    refetchQueriesOnUpdate: RefetchQueryDescriptor[],
     onSubmit: () => void
 }
 
 export default function PersonRelationUpdateForm({
                                                      personRelationId,
-                                                     refetchQueries,
+                                                     refetchQueriesOnUpdate,
                                                      onSubmit
                                                  }: Props): ReactElement {
     const [updatePersonRelation] = useUpdatePersonRelationMutation({
@@ -21,7 +21,7 @@ export default function PersonRelationUpdateForm({
                 query: GET_PERSON_RELATION_QUERY,
                 variables: {id: personRelationId}
             },
-            ...refetchQueries
+            ...refetchQueriesOnUpdate
         ]
     });
     const {data} = useGetPersonRelationQuery({variables: {id: personRelationId}});
