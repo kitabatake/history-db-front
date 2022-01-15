@@ -4,12 +4,12 @@ import {RefetchQueryDescriptor} from "@apollo/client/core/types";
 import {useCreateActivityMutation} from "../src/generated/graphql";
 
 interface Props {
-    refetchQueries: RefetchQueryDescriptor[]
+    refetchQueriesOnCreate: RefetchQueryDescriptor[]
 }
 
-export default function ActivityCreateForm({refetchQueries}: Props): ReactElement {
+export default function ActivityCreateForm({refetchQueriesOnCreate}: Props): ReactElement {
     const [createActivity] = useCreateActivityMutation({
-        refetchQueries: refetchQueries
+        refetchQueries: refetchQueriesOnCreate
     });
 
     return (

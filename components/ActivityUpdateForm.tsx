@@ -5,13 +5,13 @@ import {GET_ACTIVITY_QUERY} from "../graphqls/activitie";
 
 interface Props {
     activityId: number,
-    refetchQueries: RefetchQueryDescriptor[],
+    refetchQueriesOnUpdate: RefetchQueryDescriptor[],
     onSubmit: () => void
 }
 
 export default function ActivityUpdateForm({
                                                activityId,
-                                               refetchQueries,
+                                               refetchQueriesOnUpdate,
                                                onSubmit
                                            }: Props) {
     const {data} = useGetActivityQuery({variables: {id: activityId}});
@@ -21,7 +21,7 @@ export default function ActivityUpdateForm({
                 query: GET_ACTIVITY_QUERY,
                 variables: {id: activityId}
             },
-            ...refetchQueries
+            ...refetchQueriesOnUpdate
         ]
     });
     return (
