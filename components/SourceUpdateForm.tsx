@@ -5,13 +5,13 @@ import {useGetSourceQuery, useUpdateSourceMutation} from "../src/generated/graph
 
 interface Props {
     sourceId: number,
-    refetchQueries: RefetchQueryDescriptor[],
+    refetchQueriesOnUpdate: RefetchQueryDescriptor[],
     onSubmit: () => void
 }
 
-export default function SourceUpdateForm({sourceId, refetchQueries, onSubmit}: Props): ReactElement {
+export default function SourceUpdateForm({sourceId, refetchQueriesOnUpdate, onSubmit}: Props): ReactElement {
     const [updateSource] = useUpdateSourceMutation({
-        refetchQueries: refetchQueries
+        refetchQueries: refetchQueriesOnUpdate
     });
     const {data} = useGetSourceQuery({variables: {id: sourceId}});
 

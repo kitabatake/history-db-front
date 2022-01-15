@@ -5,7 +5,6 @@ import PersonList from "../components/PersonList";
 import {GET_PERSONS_QUERY} from "../graphqls/persons";
 
 export default function Persons(): ReactElement {
-    // const {loading, error, data} = useGetPersonsQuery();
     return (
         <div className="flex gap-x-5 w-full">
             <div className="w-30">
