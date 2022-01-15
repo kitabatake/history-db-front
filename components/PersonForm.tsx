@@ -21,8 +21,6 @@ export default function PersonForm({defaultData = {name: "", description: ""}, o
                     name: name,
                     description: description
                 })
-                setName('');
-                setDescription('');
             }}
         >
             <div className="mb-2">

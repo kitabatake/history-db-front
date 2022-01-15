@@ -78,7 +78,7 @@ export default function PersonList(): ReactElement {
                     <PersonUpdateForm
                         personId={personIdForUpdate}
                         refetchQueriesOnUpdate={[GET_PERSONS_QUERY]}
-                        onSubmit={() => setPersonIdForUpdate(null)}
+                        onUpdated={() => setPersonIdForUpdate(null)}
                     />
                 )}
             </Dialog>

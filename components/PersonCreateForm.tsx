@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function PersonCreateForm({refetchQueriesOnCreate}: Props): ReactElement {
-    const [createPerson] = useCreatePersonMutation({
+    const [createPerson,  { error }] = useCreatePersonMutation({
         refetchQueries: refetchQueriesOnCreate
     });
 
@@ -17,6 +17,11 @@ export default function PersonCreateForm({refetchQueriesOnCreate}: Props): React
             <div className="font-medium text-xl text-gold-800">
                 人物登録
             </div>
+            {error && (
+                <div className="my-1 text-red-500 bg-red-100 p-2 text-sm rounded-lg border border-red-200">
+                    {error.message}
+                </div>
+            )}
             <PersonForm
                 onSubmit={(data: PersonFormData) => {
                     createPerson({variables: {name: data.name, description: data.description}});
