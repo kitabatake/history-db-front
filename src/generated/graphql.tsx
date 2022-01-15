@@ -1,5 +1,6 @@
-import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
+import {gql} from '@apollo/client';
+
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -228,6 +229,47 @@ export type DeleteActivityMutationVariables = Exact<{
 
 export type DeleteActivityMutation = { __typename?: 'Mutation', deleteActivity: { __typename?: 'Activity', id: number } };
 
+export type GetSourceQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetSourceQuery = { __typename?: 'Query', source: { __typename?: 'Source', id: number, name: string } };
+
+export type GetSourcesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetSourcesQuery = { __typename?: 'Query', sources: Array<{ __typename?: 'Source', id: number, name: string }> };
+
+export type SearchSourcesQueryVariables = Exact<{
+  nameForSearch: Scalars['String'];
+}>;
+
+
+export type SearchSourcesQuery = { __typename?: 'Query', sources: Array<{ __typename?: 'Source', id: number, name: string }> };
+
+export type CreateSourceMutationVariables = Exact<{
+  name: Scalars['String'];
+}>;
+
+
+export type CreateSourceMutation = { __typename?: 'Mutation', createSource: { __typename?: 'Source', id: number, name: string } };
+
+export type UpdateSourceMutationVariables = Exact<{
+  id: Scalars['Int'];
+  name: Scalars['String'];
+}>;
+
+
+export type UpdateSourceMutation = { __typename?: 'Mutation', updateSource: { __typename?: 'Source', id: number, name: string } };
+
+export type DeleteSourceMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteSourceMutation = { __typename?: 'Mutation', deleteSource: { __typename?: 'Source', id: number } };
+
 
 export const GetActivitiesDocument = gql`
     query GetActivities {
@@ -443,3 +485,212 @@ export function useDeleteActivityMutation(baseOptions?: Apollo.MutationHookOptio
 export type DeleteActivityMutationHookResult = ReturnType<typeof useDeleteActivityMutation>;
 export type DeleteActivityMutationResult = Apollo.MutationResult<DeleteActivityMutation>;
 export type DeleteActivityMutationOptions = Apollo.BaseMutationOptions<DeleteActivityMutation, DeleteActivityMutationVariables>;
+export const GetSourceDocument = gql`
+    query getSource($id: Int!) {
+  source(id: $id) {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetSourceQuery__
+ *
+ * To run a query within a React component, call `useGetSourceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSourceQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSourceQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetSourceQuery(baseOptions: Apollo.QueryHookOptions<GetSourceQuery, GetSourceQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSourceQuery, GetSourceQueryVariables>(GetSourceDocument, options);
+      }
+export function useGetSourceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSourceQuery, GetSourceQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSourceQuery, GetSourceQueryVariables>(GetSourceDocument, options);
+        }
+export type GetSourceQueryHookResult = ReturnType<typeof useGetSourceQuery>;
+export type GetSourceLazyQueryHookResult = ReturnType<typeof useGetSourceLazyQuery>;
+export type GetSourceQueryResult = Apollo.QueryResult<GetSourceQuery, GetSourceQueryVariables>;
+export const GetSourcesDocument = gql`
+    query getSources {
+  sources {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetSourcesQuery__
+ *
+ * To run a query within a React component, call `useGetSourcesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSourcesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSourcesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetSourcesQuery(baseOptions?: Apollo.QueryHookOptions<GetSourcesQuery, GetSourcesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSourcesQuery, GetSourcesQueryVariables>(GetSourcesDocument, options);
+      }
+export function useGetSourcesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSourcesQuery, GetSourcesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSourcesQuery, GetSourcesQueryVariables>(GetSourcesDocument, options);
+        }
+export type GetSourcesQueryHookResult = ReturnType<typeof useGetSourcesQuery>;
+export type GetSourcesLazyQueryHookResult = ReturnType<typeof useGetSourcesLazyQuery>;
+export type GetSourcesQueryResult = Apollo.QueryResult<GetSourcesQuery, GetSourcesQueryVariables>;
+export const SearchSourcesDocument = gql`
+    query SearchSources($nameForSearch: String!) {
+  sources(nameForSearch: $nameForSearch) {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useSearchSourcesQuery__
+ *
+ * To run a query within a React component, call `useSearchSourcesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchSourcesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchSourcesQuery({
+ *   variables: {
+ *      nameForSearch: // value for 'nameForSearch'
+ *   },
+ * });
+ */
+export function useSearchSourcesQuery(baseOptions: Apollo.QueryHookOptions<SearchSourcesQuery, SearchSourcesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchSourcesQuery, SearchSourcesQueryVariables>(SearchSourcesDocument, options);
+      }
+export function useSearchSourcesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchSourcesQuery, SearchSourcesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchSourcesQuery, SearchSourcesQueryVariables>(SearchSourcesDocument, options);
+        }
+export type SearchSourcesQueryHookResult = ReturnType<typeof useSearchSourcesQuery>;
+export type SearchSourcesLazyQueryHookResult = ReturnType<typeof useSearchSourcesLazyQuery>;
+export type SearchSourcesQueryResult = Apollo.QueryResult<SearchSourcesQuery, SearchSourcesQueryVariables>;
+export const CreateSourceDocument = gql`
+    mutation CreateSource($name: String!) {
+  createSource(name: $name) {
+    id
+    name
+  }
+}
+    `;
+export type CreateSourceMutationFn = Apollo.MutationFunction<CreateSourceMutation, CreateSourceMutationVariables>;
+
+/**
+ * __useCreateSourceMutation__
+ *
+ * To run a mutation, you first call `useCreateSourceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSourceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createSourceMutation, { data, loading, error }] = useCreateSourceMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useCreateSourceMutation(baseOptions?: Apollo.MutationHookOptions<CreateSourceMutation, CreateSourceMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateSourceMutation, CreateSourceMutationVariables>(CreateSourceDocument, options);
+      }
+export type CreateSourceMutationHookResult = ReturnType<typeof useCreateSourceMutation>;
+export type CreateSourceMutationResult = Apollo.MutationResult<CreateSourceMutation>;
+export type CreateSourceMutationOptions = Apollo.BaseMutationOptions<CreateSourceMutation, CreateSourceMutationVariables>;
+export const UpdateSourceDocument = gql`
+    mutation UpdateSource($id: Int!, $name: String!) {
+  updateSource(id: $id, name: $name) {
+    id
+    name
+  }
+}
+    `;
+export type UpdateSourceMutationFn = Apollo.MutationFunction<UpdateSourceMutation, UpdateSourceMutationVariables>;
+
+/**
+ * __useUpdateSourceMutation__
+ *
+ * To run a mutation, you first call `useUpdateSourceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSourceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSourceMutation, { data, loading, error }] = useUpdateSourceMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useUpdateSourceMutation(baseOptions?: Apollo.MutationHookOptions<UpdateSourceMutation, UpdateSourceMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateSourceMutation, UpdateSourceMutationVariables>(UpdateSourceDocument, options);
+      }
+export type UpdateSourceMutationHookResult = ReturnType<typeof useUpdateSourceMutation>;
+export type UpdateSourceMutationResult = Apollo.MutationResult<UpdateSourceMutation>;
+export type UpdateSourceMutationOptions = Apollo.BaseMutationOptions<UpdateSourceMutation, UpdateSourceMutationVariables>;
+export const DeleteSourceDocument = gql`
+    mutation DeleteSource($id: Int!) {
+  deleteSource(id: $id) {
+    id
+  }
+}
+    `;
+export type DeleteSourceMutationFn = Apollo.MutationFunction<DeleteSourceMutation, DeleteSourceMutationVariables>;
+
+/**
+ * __useDeleteSourceMutation__
+ *
+ * To run a mutation, you first call `useDeleteSourceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteSourceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteSourceMutation, { data, loading, error }] = useDeleteSourceMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteSourceMutation(baseOptions?: Apollo.MutationHookOptions<DeleteSourceMutation, DeleteSourceMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteSourceMutation, DeleteSourceMutationVariables>(DeleteSourceDocument, options);
+      }
+export type DeleteSourceMutationHookResult = ReturnType<typeof useDeleteSourceMutation>;
+export type DeleteSourceMutationResult = Apollo.MutationResult<DeleteSourceMutation>;
+export type DeleteSourceMutationOptions = Apollo.BaseMutationOptions<DeleteSourceMutation, DeleteSourceMutationVariables>;

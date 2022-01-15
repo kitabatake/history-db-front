@@ -2,8 +2,8 @@ import {ReactElement, useState} from "react";
 import AsyncSelect from "react-select/async";
 import PersonsSelect from "./PersonsSelect";
 import {apolloClient} from "../apolloClient";
-import {gql} from "@apollo/client";
 import {range} from "../lib/util";
+import {SEARCH_SOURCES_QUERY} from "../graphqls/sources";
 
 export interface ActivityFormData {
     description: string,
@@ -18,22 +18,13 @@ interface Props {
     onSubmit: (ActivityFormData) => void
 }
 
-const searchSourcesGql = gql`
-query SearchSources($nameForSearch: String!) {
-    sources(nameForSearch: $nameForSearch) {
-        id,
-        name
-    }
-} 
-`;
-
 function loadSourceOptions(input, callback) {
     if (!input) {
         return Promise.resolve({options: []});
     }
 
     return apolloClient.query({
-        query: searchSourcesGql,
+        query: SEARCH_SOURCES_QUERY,
         variables: {nameForSearch: input}
     }).then((response) => {
         callback(response.data.sources.map(source => {
@@ -44,7 +35,6 @@ function loadSourceOptions(input, callback) {
         }))
     });
 }
-
 
 export default function ActivityForm({defaultData = {description: "", persons: []}, onSubmit}: Props): ReactElement {
     const [description, setDescription] = useState(defaultData.description);
