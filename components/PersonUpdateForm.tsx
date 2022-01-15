@@ -1,17 +1,24 @@
-import {InternalRefetchQueriesInclude} from "@apollo/client/core/types";
+import {RefetchQueryDescriptor} from "@apollo/client/core/types";
 import PersonForm, {PersonFormData} from "./PersonForm";
 import {useGetPersonQuery, useUpdatePersonMutation} from "../src/generated/graphql";
+import {GET_PERSON_QUERY} from "../graphqls/persons";
 
 interface Props {
     personId: number,
-    refetchQueriesOnUpdate: InternalRefetchQueriesInclude,
+    refetchQueriesOnUpdate: RefetchQueryDescriptor[],
     onSubmit: () => void
 }
 
 export function PersonUpdateForm({personId, refetchQueriesOnUpdate, onSubmit}: Props) {
     const {data} = useGetPersonQuery({variables: {id: personId}});
     const [updatePerson] = useUpdatePersonMutation({
-        refetchQueries: refetchQueriesOnUpdate
+        refetchQueries: [
+            {
+                query: GET_PERSON_QUERY,
+                variables: {id: personId}
+            },
+            ...refetchQueriesOnUpdate
+        ]
     });
     return (
         <>

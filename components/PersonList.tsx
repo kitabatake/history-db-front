@@ -4,7 +4,7 @@ import Link from "next/link";
 import Dialog from "./Dialog";
 import {PersonUpdateForm} from "./PersonUpdateForm";
 import {useDeletePersonMutation, useGetPersonsQuery} from "../src/generated/graphql";
-import {GET_PERSON_QUERY, GET_PERSONS_QUERY} from "../graphqls/persons";
+import {GET_PERSONS_QUERY} from "../graphqls/persons";
 
 export default function PersonList(): ReactElement {
     const {loading, error, data} = useGetPersonsQuery();
@@ -77,13 +77,7 @@ export default function PersonList(): ReactElement {
                 {personIdForUpdate && (
                     <PersonUpdateForm
                         personId={personIdForUpdate}
-                        refetchQueriesOnUpdate={[
-                            GET_PERSONS_QUERY,
-                            {
-                                query: GET_PERSON_QUERY,
-                                variables: {id: personIdForUpdate}
-                            }
-                        ]}
+                        refetchQueriesOnUpdate={[GET_PERSONS_QUERY]}
                         onSubmit={() => setPersonIdForUpdate(null)}
                     />
                 )}
