@@ -4,12 +4,12 @@ import {RefetchQueryDescriptor} from "@apollo/client/core/types";
 import {useCreatePersonMutation} from "../src/generated/graphql";
 
 interface Props {
-    refetchQueries: RefetchQueryDescriptor[]
+    refetchQueriesOnCreate: RefetchQueryDescriptor[]
 }
 
-export default function PersonCreateForm({refetchQueries}: Props): ReactElement {
+export default function PersonCreateForm({refetchQueriesOnCreate}: Props): ReactElement {
     const [createPerson] = useCreatePersonMutation({
-        refetchQueries: refetchQueries
+        refetchQueries: refetchQueriesOnCreate
     });
 
     return (
