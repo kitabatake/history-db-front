@@ -1,22 +1,14 @@
-import {gql, useMutation} from "@apollo/client";
 import {ReactElement} from "react";
 import ActivityForm, {ActivityFormData} from "./ActivityForm";
 import {RefetchQueryDescriptor} from "@apollo/client/core/types";
-
-const createActivityQuery = gql`
-mutation CreateActivity($description: String!, $sourceId: Int, $personIds: [Int!], $year: Int, $month: Int, $day: Int) {
-    createActivity(description: $description, sourceId: $sourceId, personIds: $personIds, year: $year, month: $month, day: $day) {
-        id
-    }
-} 
-`;
+import {useCreateActivityMutation} from "../src/generated/graphql";
 
 interface Props {
     refetchQueries: RefetchQueryDescriptor[]
 }
 
 export default function ActivityCreateForm({refetchQueries}: Props): ReactElement {
-    const [createActivity] = useMutation(createActivityQuery, {
+    const [createActivity] = useCreateActivityMutation({
         refetchQueries: refetchQueries
     });
 

@@ -1,35 +1,7 @@
 import {RefetchQueryDescriptor} from "@apollo/client/core/types";
-import {gql, useMutation, useQuery} from "@apollo/client";
-import {Activity} from "../types";
 import ActivityForm, {ActivityFormData} from "./ActivityForm";
-
-const updateActivityGql = gql`
-mutation UpdateActivity($id: Int!, $description: String!, $sourceId: Int, $personIds: [Int!], $year: Int, $month: Int, $day: Int) {
-    updateActivity(id: $id, description: $description, sourceId: $sourceId, personIds: $personIds, year: $year, month: $month, day: $day) {
-        id
-    }
-} 
-`;
-
-const getActivityGql = gql`
-query getActivity($id: Int!) {
-    activity(id: $id) {
-        id,
-        description,
-        year,
-        month,
-        day,
-        persons {
-            id,
-            name
-        },
-        source {
-            id,
-            name
-        }
-    }
-} 
-`;
+import {useGetActivityQuery, useUpdateActivityMutation} from "../src/generated/graphql";
+import {GET_ACTIVITY_QUERY} from "../graphqls/activitie";
 
 interface Props {
     activityId: number,
@@ -42,11 +14,11 @@ export default function ActivityUpdateForm({
                                                refetchQueries,
                                                onSubmit
                                            }: Props) {
-    const {data} = useQuery<{ activity: Activity }>(getActivityGql, {variables: {id: activityId}});
-    const [updateActivity] = useMutation(updateActivityGql, {
+    const {data} = useGetActivityQuery({variables: {id: activityId}});
+    const [updateActivity] = useUpdateActivityMutation({
         refetchQueries: [
             {
-                query: getActivityGql,
+                query: GET_ACTIVITY_QUERY,
                 variables: {id: activityId}
             },
             ...refetchQueries

@@ -1,29 +1,20 @@
 import {ReactElement, useState} from "react";
-import {gql, useMutation} from "@apollo/client";
 import {confirmAlert} from "react-confirm-alert";
 import Dialog from "./Dialog";
 import ActivityUpdateForm from "./ActivityUpdateForm";
-import {Activity} from "../types";
+import {GetActivitiesQuery, useDeleteActivityMutation} from "../src/generated/graphql";
 import {DocumentNode} from "graphql";
 import Link from "next/link";
 
-const deleteActivityQuery = gql`
-mutation DeleteActivity($id: Int!) {
-    deleteActivity(id: $id) {
-        id
-    }
-} 
-`;
-
 interface Props {
-    activities: Activity[],
+    activities: GetActivitiesQuery["activities"],
     activitiesGql: DocumentNode
 }
 
 export default function ActivityList({activities, activitiesGql}: Props): ReactElement {
 
     const [activityIdForUpdate, setActivityIdForUpdate] = useState(null);
-    const [deleteActivityMutation] = useMutation(deleteActivityQuery, {
+    const [deleteActivityMutation] = useDeleteActivityMutation({
         refetchQueries: [activitiesGql]
     });
     const deleteActivity = (activity) => {
