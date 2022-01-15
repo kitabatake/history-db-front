@@ -1,30 +1,8 @@
 import {ReactElement} from "react";
-import {gql, useMutation, useQuery} from "@apollo/client";
 import PersonRelationForm, {PersonRelationFormData} from "./PersonRelationForm";
-import {PersonRelation} from "../types";
 import {RefetchQueryDescriptor} from "@apollo/client/core/types";
-
-const updatePersonRelationGql = gql`
-mutation UpdatePersonRelation($id: Int!, $description: String!, $personIds: [Int!]) {
-    updatePersonRelation(id: $id, description: $description, personIds: $personIds) {
-        id
-    }
-} 
-`;
-
-const getPersonRelationGql = gql`
-query getPersonRelation($id: Int!) {
-    personRelation(id: $id) {
-        id,
-        description,
-        persons {
-            id,
-            name
-        }
-    }
-} 
-`;
-
+import {useGetPersonRelationQuery, useUpdatePersonRelationMutation} from "../src/generated/graphql";
+import {GET_PERSON_RELATION_QUERY} from "../graphqls/personRelations";
 
 interface Props {
     personRelationId: number,
@@ -37,16 +15,16 @@ export default function PersonRelationUpdateForm({
                                                      refetchQueries,
                                                      onSubmit
                                                  }: Props): ReactElement {
-    const [updatePersonRelation] = useMutation(updatePersonRelationGql, {
+    const [updatePersonRelation] = useUpdatePersonRelationMutation({
         refetchQueries: [
             {
-                query: getPersonRelationGql,
+                query: GET_PERSON_RELATION_QUERY,
                 variables: {id: personRelationId}
             },
             ...refetchQueries
         ]
     });
-    const {data} = useQuery<{personRelation: PersonRelation}>(getPersonRelationGql, {variables: {id: personRelationId}});
+    const {data} = useGetPersonRelationQuery({variables: {id: personRelationId}});
     return (
         <>
             <div className="font-medium text-center text-lg text-gold-800">

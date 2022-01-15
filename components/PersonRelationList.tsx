@@ -1,28 +1,20 @@
 import {ReactElement, useState} from "react";
-import {gql, useMutation} from "@apollo/client";
 import {confirmAlert} from "react-confirm-alert";
 import Dialog from "./Dialog";
 import PersonRelationUpdateForm from "./PersonRelationUpdateForm";
-import {PersonRelation} from "../types";
-import {DocumentNode} from "graphql";
 import Link from "next/link";
-
-const deletePersonRelationGql = gql`
-mutation DeletePersonRelation($id: Int!) {
-    deletePersonRelation(id: $id) {
-        id
-    }
-} 
-`;
+import {GetPersonRelationsQuery, useDeletePersonRelationMutation} from "../src/generated/graphql";
+import {RefetchQueryDescriptor} from "@apollo/client/core/types";
+import {GET_PERSON_RELATIONS_QUERY} from "../graphqls/personRelations";
 
 interface Props {
-    personRelations: PersonRelation[],
-    personRelationsGql: DocumentNode
+    personRelations: GetPersonRelationsQuery["personRelations"],
+    refetchQueriesOnDelete: RefetchQueryDescriptor[]
 }
 
-export default function PersonRelationList({personRelations, personRelationsGql}: Props): ReactElement {
-    const [deletePersonRelationMutation] = useMutation(deletePersonRelationGql, {
-        refetchQueries: [personRelationsGql]
+export default function PersonRelationList({personRelations, refetchQueriesOnDelete}: Props): ReactElement {
+    const [deletePersonRelationMutation] = useDeletePersonRelationMutation({
+        refetchQueries: refetchQueriesOnDelete
     });
     const [personRelationIdForUpdate, setPersonRelationIdForUpdate] = useState(null);
     const deletePersonRelation = (personRelation) => {
@@ -90,7 +82,7 @@ export default function PersonRelationList({personRelations, personRelationsGql}
                 {personRelationIdForUpdate && (
                     <PersonRelationUpdateForm
                         personRelationId={personRelationIdForUpdate}
-                        refetchQueries={[personRelationsGql]}
+                        refetchQueries={[GET_PERSON_RELATIONS_QUERY]}
                         onSubmit={() => setPersonRelationIdForUpdate(null)}
                     />
                 )}

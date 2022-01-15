@@ -229,6 +229,42 @@ export type DeleteActivityMutationVariables = Exact<{
 
 export type DeleteActivityMutation = { __typename?: 'Mutation', deleteActivity: { __typename?: 'Activity', id: number } };
 
+export type GetPersonRelationQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetPersonRelationQuery = { __typename?: 'Query', personRelation: { __typename?: 'PersonRelation', id: number, description: string, persons: Array<{ __typename?: 'Person', id: number, name: string }> } };
+
+export type GetPersonRelationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetPersonRelationsQuery = { __typename?: 'Query', personRelations: Array<{ __typename?: 'PersonRelation', id: number, description: string, persons: Array<{ __typename?: 'Person', id: number, name: string }> }> };
+
+export type CreatePersonRelationMutationVariables = Exact<{
+  description: Scalars['String'];
+  personIds?: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>;
+}>;
+
+
+export type CreatePersonRelationMutation = { __typename?: 'Mutation', createPersonRelation: { __typename?: 'PersonRelation', id: number, description: string } };
+
+export type UpdatePersonRelationMutationVariables = Exact<{
+  id: Scalars['Int'];
+  description: Scalars['String'];
+  personIds?: InputMaybe<Array<Scalars['Int']> | Scalars['Int']>;
+}>;
+
+
+export type UpdatePersonRelationMutation = { __typename?: 'Mutation', updatePersonRelation: { __typename?: 'PersonRelation', id: number } };
+
+export type DeletePersonRelationMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeletePersonRelationMutation = { __typename?: 'Mutation', deletePersonRelation: { __typename?: 'PersonRelation', id: number } };
+
 export type GetSourceQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -485,6 +521,188 @@ export function useDeleteActivityMutation(baseOptions?: Apollo.MutationHookOptio
 export type DeleteActivityMutationHookResult = ReturnType<typeof useDeleteActivityMutation>;
 export type DeleteActivityMutationResult = Apollo.MutationResult<DeleteActivityMutation>;
 export type DeleteActivityMutationOptions = Apollo.BaseMutationOptions<DeleteActivityMutation, DeleteActivityMutationVariables>;
+export const GetPersonRelationDocument = gql`
+    query GetPersonRelation($id: Int!) {
+  personRelation(id: $id) {
+    id
+    description
+    persons {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetPersonRelationQuery__
+ *
+ * To run a query within a React component, call `useGetPersonRelationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPersonRelationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPersonRelationQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetPersonRelationQuery(baseOptions: Apollo.QueryHookOptions<GetPersonRelationQuery, GetPersonRelationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPersonRelationQuery, GetPersonRelationQueryVariables>(GetPersonRelationDocument, options);
+      }
+export function useGetPersonRelationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPersonRelationQuery, GetPersonRelationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPersonRelationQuery, GetPersonRelationQueryVariables>(GetPersonRelationDocument, options);
+        }
+export type GetPersonRelationQueryHookResult = ReturnType<typeof useGetPersonRelationQuery>;
+export type GetPersonRelationLazyQueryHookResult = ReturnType<typeof useGetPersonRelationLazyQuery>;
+export type GetPersonRelationQueryResult = Apollo.QueryResult<GetPersonRelationQuery, GetPersonRelationQueryVariables>;
+export const GetPersonRelationsDocument = gql`
+    query GetPersonRelations {
+  personRelations {
+    id
+    description
+    persons {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetPersonRelationsQuery__
+ *
+ * To run a query within a React component, call `useGetPersonRelationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPersonRelationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPersonRelationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetPersonRelationsQuery(baseOptions?: Apollo.QueryHookOptions<GetPersonRelationsQuery, GetPersonRelationsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPersonRelationsQuery, GetPersonRelationsQueryVariables>(GetPersonRelationsDocument, options);
+      }
+export function useGetPersonRelationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPersonRelationsQuery, GetPersonRelationsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPersonRelationsQuery, GetPersonRelationsQueryVariables>(GetPersonRelationsDocument, options);
+        }
+export type GetPersonRelationsQueryHookResult = ReturnType<typeof useGetPersonRelationsQuery>;
+export type GetPersonRelationsLazyQueryHookResult = ReturnType<typeof useGetPersonRelationsLazyQuery>;
+export type GetPersonRelationsQueryResult = Apollo.QueryResult<GetPersonRelationsQuery, GetPersonRelationsQueryVariables>;
+export const CreatePersonRelationDocument = gql`
+    mutation CreatePersonRelation($description: String!, $personIds: [Int!]) {
+  createPersonRelation(description: $description, personIds: $personIds) {
+    id
+    description
+  }
+}
+    `;
+export type CreatePersonRelationMutationFn = Apollo.MutationFunction<CreatePersonRelationMutation, CreatePersonRelationMutationVariables>;
+
+/**
+ * __useCreatePersonRelationMutation__
+ *
+ * To run a mutation, you first call `useCreatePersonRelationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePersonRelationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPersonRelationMutation, { data, loading, error }] = useCreatePersonRelationMutation({
+ *   variables: {
+ *      description: // value for 'description'
+ *      personIds: // value for 'personIds'
+ *   },
+ * });
+ */
+export function useCreatePersonRelationMutation(baseOptions?: Apollo.MutationHookOptions<CreatePersonRelationMutation, CreatePersonRelationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreatePersonRelationMutation, CreatePersonRelationMutationVariables>(CreatePersonRelationDocument, options);
+      }
+export type CreatePersonRelationMutationHookResult = ReturnType<typeof useCreatePersonRelationMutation>;
+export type CreatePersonRelationMutationResult = Apollo.MutationResult<CreatePersonRelationMutation>;
+export type CreatePersonRelationMutationOptions = Apollo.BaseMutationOptions<CreatePersonRelationMutation, CreatePersonRelationMutationVariables>;
+export const UpdatePersonRelationDocument = gql`
+    mutation UpdatePersonRelation($id: Int!, $description: String!, $personIds: [Int!]) {
+  updatePersonRelation(id: $id, description: $description, personIds: $personIds) {
+    id
+  }
+}
+    `;
+export type UpdatePersonRelationMutationFn = Apollo.MutationFunction<UpdatePersonRelationMutation, UpdatePersonRelationMutationVariables>;
+
+/**
+ * __useUpdatePersonRelationMutation__
+ *
+ * To run a mutation, you first call `useUpdatePersonRelationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePersonRelationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePersonRelationMutation, { data, loading, error }] = useUpdatePersonRelationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      description: // value for 'description'
+ *      personIds: // value for 'personIds'
+ *   },
+ * });
+ */
+export function useUpdatePersonRelationMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePersonRelationMutation, UpdatePersonRelationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdatePersonRelationMutation, UpdatePersonRelationMutationVariables>(UpdatePersonRelationDocument, options);
+      }
+export type UpdatePersonRelationMutationHookResult = ReturnType<typeof useUpdatePersonRelationMutation>;
+export type UpdatePersonRelationMutationResult = Apollo.MutationResult<UpdatePersonRelationMutation>;
+export type UpdatePersonRelationMutationOptions = Apollo.BaseMutationOptions<UpdatePersonRelationMutation, UpdatePersonRelationMutationVariables>;
+export const DeletePersonRelationDocument = gql`
+    mutation DeletePersonRelation($id: Int!) {
+  deletePersonRelation(id: $id) {
+    id
+  }
+}
+    `;
+export type DeletePersonRelationMutationFn = Apollo.MutationFunction<DeletePersonRelationMutation, DeletePersonRelationMutationVariables>;
+
+/**
+ * __useDeletePersonRelationMutation__
+ *
+ * To run a mutation, you first call `useDeletePersonRelationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePersonRelationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deletePersonRelationMutation, { data, loading, error }] = useDeletePersonRelationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeletePersonRelationMutation(baseOptions?: Apollo.MutationHookOptions<DeletePersonRelationMutation, DeletePersonRelationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeletePersonRelationMutation, DeletePersonRelationMutationVariables>(DeletePersonRelationDocument, options);
+      }
+export type DeletePersonRelationMutationHookResult = ReturnType<typeof useDeletePersonRelationMutation>;
+export type DeletePersonRelationMutationResult = Apollo.MutationResult<DeletePersonRelationMutation>;
+export type DeletePersonRelationMutationOptions = Apollo.BaseMutationOptions<DeletePersonRelationMutation, DeletePersonRelationMutationVariables>;
 export const GetSourceDocument = gql`
     query getSource($id: Int!) {
   source(id: $id) {
