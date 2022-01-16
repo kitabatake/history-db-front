@@ -31,6 +31,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createActivity: Activity;
   createPerson: Person;
+  createPersonAlias: PersonRelation;
   createPersonRelation: PersonRelation;
   createSource: Source;
   deleteActivity: Activity;
@@ -57,6 +58,12 @@ export type MutationCreateActivityArgs = {
 export type MutationCreatePersonArgs = {
   description: Scalars['String'];
   name: Scalars['String'];
+};
+
+
+export type MutationCreatePersonAliasArgs = {
+  alias: Scalars['String'];
+  personId: Scalars['Int'];
 };
 
 
@@ -124,10 +131,18 @@ export type MutationUpdateSourceArgs = {
 export type Person = {
   __typename?: 'Person';
   activities: Array<Activity>;
+  aliases: Array<PersonAlias>;
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   name: Scalars['String'];
   relations: Array<PersonRelation>;
+};
+
+export type PersonAlias = {
+  __typename?: 'PersonAlias';
+  alias: Scalars['String'];
+  id: Scalars['Int'];
+  person: Person;
 };
 
 export type PersonRelation = {
@@ -271,6 +286,13 @@ export type GetPersonQueryVariables = Exact<{
 
 
 export type GetPersonQuery = { __typename?: 'Query', person: { __typename?: 'Person', id: number, name: string, description?: string | null | undefined } };
+
+export type GetPersonWithDetailsQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetPersonWithDetailsQuery = { __typename?: 'Query', person: { __typename?: 'Person', id: number, name: string, description?: string | null | undefined, relations: Array<{ __typename?: 'PersonRelation', id: number, description: string, persons: Array<{ __typename?: 'Person', id: number, name: string }> }>, activities: Array<{ __typename?: 'Activity', id: number, description: string, persons: Array<{ __typename?: 'Person', id: number, name: string }> }>, aliases: Array<{ __typename?: 'PersonAlias', id: number, alias: string }> } };
 
 export type GetPersonsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -776,6 +798,63 @@ export function useGetPersonLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type GetPersonQueryHookResult = ReturnType<typeof useGetPersonQuery>;
 export type GetPersonLazyQueryHookResult = ReturnType<typeof useGetPersonLazyQuery>;
 export type GetPersonQueryResult = Apollo.QueryResult<GetPersonQuery, GetPersonQueryVariables>;
+export const GetPersonWithDetailsDocument = gql`
+    query getPersonWithDetails($id: Int!) {
+  person(id: $id) {
+    id
+    name
+    description
+    relations {
+      id
+      description
+      persons {
+        id
+        name
+      }
+    }
+    activities {
+      id
+      description
+      persons {
+        id
+        name
+      }
+    }
+    aliases {
+      id
+      alias
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetPersonWithDetailsQuery__
+ *
+ * To run a query within a React component, call `useGetPersonWithDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPersonWithDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPersonWithDetailsQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetPersonWithDetailsQuery(baseOptions: Apollo.QueryHookOptions<GetPersonWithDetailsQuery, GetPersonWithDetailsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPersonWithDetailsQuery, GetPersonWithDetailsQueryVariables>(GetPersonWithDetailsDocument, options);
+      }
+export function useGetPersonWithDetailsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPersonWithDetailsQuery, GetPersonWithDetailsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPersonWithDetailsQuery, GetPersonWithDetailsQueryVariables>(GetPersonWithDetailsDocument, options);
+        }
+export type GetPersonWithDetailsQueryHookResult = ReturnType<typeof useGetPersonWithDetailsQuery>;
+export type GetPersonWithDetailsLazyQueryHookResult = ReturnType<typeof useGetPersonWithDetailsLazyQuery>;
+export type GetPersonWithDetailsQueryResult = Apollo.QueryResult<GetPersonWithDetailsQuery, GetPersonWithDetailsQueryVariables>;
 export const GetPersonsDocument = gql`
     query GetPersons {
   persons {

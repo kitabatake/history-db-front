@@ -10,6 +10,35 @@ export const GET_PERSON_QUERY = gql`
     }
 `;
 
+export const GET_PERSON_WITH_DETAILS_QUERY = gql`
+    query getPersonWithDetails($id: Int!) {
+        person(id: $id) {
+            id,
+            name,
+            description,
+            relations {
+                id,
+                description,
+                persons {
+                    id,
+                    name
+                }
+            },
+            activities {
+                id,
+                description,
+                persons {
+                    id,
+                    name
+                }
+            },
+            aliases {
+                id,
+                alias
+            }
+        }
+    }`;
+
 export const GET_PERSONS_QUERY = gql`
     query GetPersons {
         persons {

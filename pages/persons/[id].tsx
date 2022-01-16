@@ -1,37 +1,12 @@
 import {useRouter} from 'next/router'
 import {ReactElement} from "react";
-import {gql, useQuery} from "@apollo/client";
 import Link from "next/link";
-
-const personQuery = gql`
-query getPerson($id: Int!) {
-    person(id: $id) {
-        id,
-        name,
-        description,
-        relations {
-            id,
-            description,
-            persons {
-                id,
-                name
-            }
-        },
-        activities {
-            id,
-            description,
-            persons {
-                id,
-                name
-            }
-        }
-    }
-}`;
+import {useGetPersonWithDetailsQuery} from "../../src/generated/graphql";
 
 export default function Persons(): ReactElement {
     const router = useRouter()
     const {id} = router.query
-    const {data} = useQuery(personQuery, {variables: {id: Number(id)}});
+    const {data} = useGetPersonWithDetailsQuery({variables: {id: Number(id)}});
     return (
         <div>
             {data && (
@@ -49,6 +24,14 @@ export default function Persons(): ReactElement {
                                 <th>
                                     <th className="w-30 text-xs text-cyan-400 bg-cyan-50 text-left p-2">名前</th>
                                     <td className="p-2 font-medium text-gray-800">{data.person.name}</td>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <th className="w-30 text-xs text-cyan-400 bg-cyan-50 text-left p-2">別名</th>
+                                    <td className="p-2 font-medium text-gray-800 space-x-1">{
+                                        data.person.aliases.map((alias, i) => (<span key={i}>{alias.alias}</span>))
+                                    }</td>
                                 </th>
                             </tr>
                             <tr>
