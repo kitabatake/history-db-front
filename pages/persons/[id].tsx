@@ -2,10 +2,11 @@ import {useRouter} from 'next/router'
 import {ReactElement} from "react";
 import Link from "next/link";
 import {useGetPersonWithDetailsQuery} from "../../src/generated/graphql";
+import {PersonAliasList} from "../../components/PersonAliasList";
 
 export default function Persons(): ReactElement {
     const router = useRouter()
-    const {id} = router.query
+    const {id} = router.query;
     const {data} = useGetPersonWithDetailsQuery({variables: {id: Number(id)}});
     return (
         <div>
@@ -29,9 +30,9 @@ export default function Persons(): ReactElement {
                             <tr>
                                 <th>
                                     <th className="w-30 text-xs text-cyan-400 bg-cyan-50 text-left p-2">別名</th>
-                                    <td className="p-2 font-medium text-gray-800 space-x-1">{
-                                        data.person.aliases.map((alias, i) => (<span key={i}>{alias.alias}</span>))
-                                    }</td>
+                                    <td className="p-2 font-medium text-gray-800 w-full">
+                                        <PersonAliasList personId={Number(id)} />
+                                    </td>
                                 </th>
                             </tr>
                             <tr>
