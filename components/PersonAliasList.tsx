@@ -39,7 +39,7 @@ export const PersonAliasList = ({personId}: Props): ReactElement => {
                         </div>
                     ))}
                     <form
-                        className="p-1 bg-gold-100 w-40 flex rounded"
+                        className="p-1 bg-gold-100 w-40 flex rounded ml-2"
                         onSubmit={(e) => {
                             e.preventDefault();
                             setNewAlias("");

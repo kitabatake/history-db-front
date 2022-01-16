@@ -14,32 +14,28 @@ export default function Persons(): ReactElement {
                 <div className="flex gap-x-5 w-full">
                     <div className="grow w-1/4 bg-white shadow-md rounded-lg">
                         <table className="table-fixed w-full">
+                            <colgroup>
+                                <col className="w-12" />
+                                <col className="w-fit" />
+                            </colgroup>
                             <tbody>
                             <tr>
-                                <th>
-                                    <th className="w-30 text-xs text-cyan-400 bg-cyan-50 text-left p-2">ID</th>
-                                    <td className="p-2 font-medium text-gray-800">{data.person.id}</td>
-                                </th>
+                                <th className="w-30 text-xs text-cyan-400 bg-cyan-50 text-left p-2 border border-cyan-100">ID</th>
+                                <td className="p-2 font-medium text-gray-800 border border-cyan-100">{data.person.id}</td>
                             </tr>
                             <tr>
-                                <th>
-                                    <th className="w-30 text-xs text-cyan-400 bg-cyan-50 text-left p-2">名前</th>
-                                    <td className="p-2 font-medium text-gray-800">{data.person.name}</td>
-                                </th>
+                                <th className="w-30 text-xs text-cyan-400 bg-cyan-50 text-left p-2 border border-cyan-100">名前</th>
+                                <td className="p-2 font-medium text-gray-800 border border-cyan-100">{data.person.name}</td>
                             </tr>
                             <tr>
-                                <th>
-                                    <th className="w-30 text-xs text-cyan-400 bg-cyan-50 text-left p-2">別名</th>
-                                    <td className="p-2 font-medium text-gray-800 w-full">
-                                        <PersonAliasList personId={Number(id)} />
-                                    </td>
-                                </th>
+                                <th className="w-30 text-xs text-cyan-400 bg-cyan-50 text-left p-2 border border-cyan-100">別名</th>
+                                <td className="p-2 font-medium text-gray-800 w-full border border-cyan-100">
+                                    <PersonAliasList personId={Number(id)} />
+                                </td>
                             </tr>
                             <tr>
-                                <th>
-                                    <th className="w-30 text-xs text-cyan-400 bg-cyan-50 text-left p-2">説明</th>
-                                    <td className="p-2 font-medium text-gray-800">{data.person.description}</td>
-                                </th>
+                                <th className="w-30 text-xs text-cyan-400 bg-cyan-50 text-left p-2 border border-cyan-100">説明</th>
+                                <td className="p-2 font-medium text-gray-800 border border-cyan-100">{data.person.description}</td>
                             </tr>
                             </tbody>
                         </table>
