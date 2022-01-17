@@ -1,5 +1,5 @@
 import {ReactElement} from "react";
-import PersonRelationCreateForm from "../components/PersonRelationCreateForm";
+import PersonRelationCreateForm from "../components/form/PersonRelationCreateForm";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import PersonRelationList from "../components/PersonRelationList";
 import {GET_PERSON_RELATIONS_QUERY} from "../graphqls/personRelations";

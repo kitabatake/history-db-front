@@ -1,9 +1,9 @@
 import {ReactElement, useState} from "react";
 import AsyncSelect from "react-select/async";
-import PersonsSelect from "./PersonsSelect";
-import {apolloClient} from "../apolloClient";
-import {range} from "../lib/util";
-import {SEARCH_SOURCES_QUERY} from "../graphqls/sources";
+import PersonsSelect from "../PersonsSelect";
+import {apolloClient} from "../../apolloClient";
+import {range} from "../../lib/util";
+import {SEARCH_SOURCES_QUERY} from "../../graphqls/sources";
 
 export interface ActivityFormData {
     description: string,

@@ -1,5 +1,5 @@
 import {ReactElement} from "react";
-import SourceCreateForm from "../components/SourceCreateForm";
+import SourceCreateForm from "../components/form/SourceCreateForm";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import SourceList from "../components/SourceList";
 import {GET_SOURCES_QUERY} from "../graphqls/sources";

@@ -1,7 +1,7 @@
 import {ReactElement, useState} from "react";
 import {confirmAlert} from "react-confirm-alert";
 import Dialog from "./Dialog";
-import PersonRelationUpdateForm from "./PersonRelationUpdateForm";
+import PersonRelationUpdateForm from "./form/PersonRelationUpdateForm";
 import Link from "next/link";
 import {useDeletePersonRelationMutation, useGetPersonRelationsQuery} from "../src/generated/graphql";
 import {GET_PERSON_RELATIONS_QUERY} from "../graphqls/personRelations";

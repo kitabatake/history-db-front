@@ -1,8 +1,8 @@
 import {ReactElement} from "react";
 import PersonRelationForm, {PersonRelationFormData} from "./PersonRelationForm";
 import {RefetchQueryDescriptor} from "@apollo/client/core/types";
-import {useGetPersonRelationQuery, useUpdatePersonRelationMutation} from "../src/generated/graphql";
-import {GET_PERSON_RELATION_QUERY} from "../graphqls/personRelations";
+import {useGetPersonRelationQuery, useUpdatePersonRelationMutation} from "../../src/generated/graphql";
+import {GET_PERSON_RELATION_QUERY} from "../../graphqls/personRelations";
 
 interface Props {
     personRelationId: number,

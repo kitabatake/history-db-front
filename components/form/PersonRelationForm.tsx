@@ -1,6 +1,5 @@
-import {DocumentNode} from "graphql";
 import {ReactElement, useState} from "react";
-import PersonsSelect from "./PersonsSelect";
+import PersonsSelect from "../PersonsSelect";
 
 export interface PersonRelationFormData {
     description: string,

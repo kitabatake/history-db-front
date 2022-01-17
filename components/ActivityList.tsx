@@ -1,7 +1,7 @@
 import {ReactElement, useState} from "react";
 import {confirmAlert} from "react-confirm-alert";
 import Dialog from "./Dialog";
-import ActivityUpdateForm from "./ActivityUpdateForm";
+import ActivityUpdateForm from "./form/ActivityUpdateForm";
 import {useDeleteActivityMutation, useGetActivitiesQuery} from "../src/generated/graphql";
 import Link from "next/link";
 import {GET_ACTIVITIES_QUERY} from "../graphqls/activitie";

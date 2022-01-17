@@ -1,5 +1,5 @@
 import {ReactElement} from "react";
-import ActivityCreateForm from "../components/ActivityCreateForm";
+import ActivityCreateForm from "../components/form/ActivityCreateForm";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import ActivityList from "../components/ActivityList";
 // import {Activity} from "../types";

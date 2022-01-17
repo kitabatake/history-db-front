@@ -1,10 +1,6 @@
 import '../styles/globals.css'
-import Layout from "../components/layout";
-import {
-    ApolloClient,
-    InMemoryCache,
-    ApolloProvider,
-} from "@apollo/client";
+import Layout from "../components/Layout";
+import {ApolloProvider,} from "@apollo/client";
 import {apolloClient} from "../apolloClient";
 import Head from "next/head";
 

@@ -1,7 +1,7 @@
 import {ReactElement} from "react";
 import PersonRelationForm from "./PersonRelationForm";
 import {RefetchQueryDescriptor} from "@apollo/client/core/types";
-import {useCreatePersonRelationMutation} from "../src/generated/graphql";
+import {useCreatePersonRelationMutation} from "../../src/generated/graphql";
 
 interface Props {
     refetchQueriesOnCreate: RefetchQueryDescriptor[]

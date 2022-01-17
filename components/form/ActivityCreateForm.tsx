@@ -1,7 +1,7 @@
 import {ReactElement} from "react";
 import ActivityForm, {ActivityFormData} from "./ActivityForm";
 import {RefetchQueryDescriptor} from "@apollo/client/core/types";
-import {useCreateActivityMutation} from "../src/generated/graphql";
+import {useCreateActivityMutation} from "../../src/generated/graphql";
 
 interface Props {
     refetchQueriesOnCreate: RefetchQueryDescriptor[]

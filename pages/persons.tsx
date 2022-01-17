@@ -1,4 +1,4 @@
-import PersonCreateForm from "../components/PersonCreateForm";
+import PersonCreateForm from "../components/form/PersonCreateForm";
 import {ReactElement} from "react";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import PersonList from "../components/PersonList";

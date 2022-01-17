@@ -1,7 +1,7 @@
 import {RefetchQueryDescriptor} from "@apollo/client/core/types";
 import PersonForm, {PersonFormData} from "./PersonForm";
-import {useGetPersonQuery, useUpdatePersonMutation} from "../src/generated/graphql";
-import {GET_PERSON_QUERY} from "../graphqls/persons";
+import {useGetPersonQuery, useUpdatePersonMutation} from "../../src/generated/graphql";
+import {GET_PERSON_QUERY} from "../../graphqls/persons";
 
 interface Props {
     personId: number,

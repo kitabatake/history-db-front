@@ -1,7 +1,7 @@
 import {ReactElement} from "react";
 import SourceForm, {SourceFormData} from "./SourceForm";
 import {RefetchQueryDescriptor} from "@apollo/client/core/types";
-import {useGetSourceQuery, useUpdateSourceMutation} from "../src/generated/graphql";
+import {useGetSourceQuery, useUpdateSourceMutation} from "../../src/generated/graphql";
 
 interface Props {
     sourceId: number,

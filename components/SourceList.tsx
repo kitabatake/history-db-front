@@ -1,7 +1,7 @@
 import {ReactElement, useState} from "react";
 import {confirmAlert} from "react-confirm-alert";
 import Dialog from "./Dialog";
-import SourceUpdateForm from "./SourceUpdateForm";
+import SourceUpdateForm from "./form/SourceUpdateForm";
 import {useDeleteSourceMutation, useGetSourcesQuery} from "../src/generated/graphql";
 import {GET_SOURCES_QUERY} from "../graphqls/sources";
 

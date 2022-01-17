@@ -2,7 +2,7 @@ import {ReactElement, useState} from "react";
 import {confirmAlert} from "react-confirm-alert";
 import Link from "next/link";
 import Dialog from "./Dialog";
-import {PersonUpdateForm} from "./PersonUpdateForm";
+import {PersonUpdateForm} from "./form/PersonUpdateForm";
 import {useDeletePersonMutation, useGetPersonsQuery} from "../src/generated/graphql";
 import {GET_PERSONS_QUERY} from "../graphqls/persons";
 

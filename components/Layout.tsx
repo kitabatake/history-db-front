@@ -1,4 +1,3 @@
-import Link from "next/link";
 import SideBar from "./SideBar";
 
 export default function Layout({children}) {
