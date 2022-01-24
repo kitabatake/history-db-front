@@ -1,27 +1,29 @@
-import {ReactElement, useState} from "react";
+import {ReactElement} from "react";
+import {useForm} from "react-hook-form";
+import classNames from 'classnames'
 
 export interface PersonFormData {
     name: string,
     description: string,
 }
+
 interface Props {
     defaultData?: PersonFormData,
     onSubmit: (PersonFormData) => void
 }
 
 export default function PersonForm({defaultData = {name: "", description: ""}, onSubmit}: Props): ReactElement {
-    const [name, setName] = useState(defaultData.name);
-    const [description, setDescription] = useState(defaultData.description);
+    const {register, reset, handleSubmit, formState: {errors}} = useForm<PersonFormData>();
     return (
         <form
             className="mt-2"
-            onSubmit={e => {
-                e.preventDefault();
+            onSubmit={handleSubmit(data => {
                 onSubmit({
-                    name: name,
-                    description: description
-                })
-            }}
+                    name: data.name,
+                    description: data.description
+                });
+                reset();
+            })}
         >
             <div className="mb-2">
                 <label className="mb-1 text-xs tracking-wide text-gold-600 w-12">
@@ -29,10 +31,17 @@ export default function PersonForm({defaultData = {name: "", description: ""}, o
                 </label>
                 <input
                     type="text"
-                    name="name"
-                    className="text-sm p-2 rounded-lg border border-gold-200 bg-gold-50 w-full shrink focus:outline-none focus:border-gold-400"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    {...register("name", { required: true })}
+                    className={classNames(
+                        "text-sm p-2 rounded-lg border w-full shrink",
+                        {
+                            'bg-gold-50': !errors.name,
+                            'border-gold-200': !errors.name,
+                            'bg-red-50': errors.name,
+                            'border-red-200': errors.name,
+                        }
+                    )}
+                    defaultValue={defaultData.name}
                 />
             </div>
             <div className="mb-3">
@@ -40,10 +49,9 @@ export default function PersonForm({defaultData = {name: "", description: ""}, o
                     説明:
                 </label>
                 <textarea
-                    name="description"
+                    {...register("description")}
                     className="text-sm p-2 rounded-lg border border-gold-200 bg-gold-50 w-full shrink focus:outline-none focus:border-gold-400"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    defaultValue={defaultData.description}
                 />
             </div>
             <div className="text-center">
