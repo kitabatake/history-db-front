@@ -1,5 +1,6 @@
-import {ReactElement, useState} from "react";
+import {ReactElement} from "react";
 import PersonsSelect from "../PersonsSelect";
+import {Controller, useForm} from "react-hook-form";
 
 export interface PersonRelationFormData {
     description: string,
@@ -11,20 +12,17 @@ interface Props {
 }
 
 export default function PersonRelationForm({defaultData = {description: "", persons: []}, onSubmit}: Props): ReactElement {
-    const [description, setDescription] = useState(defaultData.description);
-    const [selectedPersons, setSelectedPersons] = useState(defaultData.persons);
+    const {register, control, reset, handleSubmit, formState: {errors}} = useForm<PersonRelationFormData>();
     return (
         <form
             className="mt-2"
-            onSubmit={e => {
-                e.preventDefault();
-                setDescription('');
-                setSelectedPersons([]);
+            onSubmit={handleSubmit(data => {
                 onSubmit({
-                    description: description,
-                    persons: selectedPersons
+                    description: data.description,
+                    persons: data.persons
                 });
-            }}
+                reset();
+            })}
         >
             <div className="mb-2">
                 <label className="mb-1 text-xs tracking-wide text-gold-600 w-12">
@@ -32,19 +30,25 @@ export default function PersonRelationForm({defaultData = {description: "", pers
                 </label>
                 <input
                     type="text"
-                    name="description"
+                    {...register("description")}
+                    defaultValue={defaultData.description}
                     className="text-sm p-2 rounded-lg border border-gold-200 bg-gold-50 w-full shrink focus:outline-none focus:border-gold-400"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
                 />
             </div>
             <div className="mb-3">
                 <label className="mb-1 text-xs tracking-wide text-gold-600 w-12">
                     人物:
                 </label>
-                <PersonsSelect
-                    value={selectedPersons}
-                    onChange={(selected) => setSelectedPersons(selected)} />
+                <Controller
+                    name="persons"
+                    control={control}
+                    defaultValue={defaultData.persons}
+                    render={({ field }) =>(
+                        <PersonsSelect
+                            {...field}
+                        />
+                    )}
+                />
             </div>
             <div className="text-center">
                 <button
