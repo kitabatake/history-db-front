@@ -10,18 +10,23 @@
   },
   "dependencies": {
     "@apollo/client": "^3.5.6",
+    "@chakra-ui/react": "^1.8.1",
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
     "@graphql-codegen/cli": "^2.3.1",
     "@headlessui/react": "^1.4.2",
     "classnames": "^2.3.1",
+    "framer-motion": "^5.6.0",
     "graphql": "^16.2.0",
     "next": "12.0.7",
     "react": "17.0.2",
     "react-confirm-alert": "^2.7.0",
     "react-dom": "17.0.2",
     "react-hook-form": "^7.25.0",
+    "react-icons": "^4.3.1",
     "react-select": "^5.2.1"
   },
   "devDependencies": {
