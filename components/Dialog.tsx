@@ -1,4 +1,4 @@
-import {ReactElement, useState} from "react";
+import {ReactElement} from "react";
 import {Dialog as HeadLessUIDialog} from "@headlessui/react";
 
 export default function Dialog({open, onClose, children}): ReactElement {

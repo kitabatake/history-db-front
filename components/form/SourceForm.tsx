@@ -1,5 +1,6 @@
 import {useForm} from "react-hook-form";
 import classNames from "classnames";
+import {Box, Button, FormControl, FormErrorMessage, FormLabel, Input, Text} from '@chakra-ui/react'
 
 export interface SourceFormData {
     name: string
@@ -13,7 +14,6 @@ export default function SourceForm({defaultData = {name: ""}, onSubmit}: Props) 
     const {register, reset, handleSubmit, formState: {errors}} = useForm<SourceFormData>();
     return (
         <form
-            className="mt-2"
             onSubmit={handleSubmit(data => {
                 onSubmit({
                     name: data.name,
@@ -21,11 +21,9 @@ export default function SourceForm({defaultData = {name: ""}, onSubmit}: Props) 
                 reset();
             })}
         >
-            <div className="mb-3">
-                <label className="mb-1 text-xs tracking-wide text-gold-600 w-12">
-                    名前:
-                </label>
-                <input
+            <FormControl isInvalid={errors.name ? true : false}>
+                <FormLabel htmlFor='email'><Text fontSize='sm'>名前</Text></FormLabel>
+                <Input
                     type="text"
                     {...register("name", { required: true })}
                     className={classNames(
@@ -39,15 +37,20 @@ export default function SourceForm({defaultData = {name: ""}, onSubmit}: Props) 
                     )}
                     defaultValue={defaultData.name}
                 />
-            </div>
-            <div className="text-center">
-                <button
+                <FormErrorMessage>
+                    {errors.name && errors.name.message}
+                </FormErrorMessage>
+            </FormControl>
+            <Box textAlign='center'>
+                <Button
                     type="submit"
-                    className="focus:outline-none text-white text-sm bg-gold-500 hover:bg-gold-600 rounded-lg py-1 px-3"
+                    colorScheme='gold'
+                    size='sm'
+                    mt='4'
                 >
                     送信
-                </button>
-            </div>
+                </Button>
+            </Box>
         </form>
     )
 }

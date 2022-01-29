@@ -1,31 +1,22 @@
-import React from 'react';
+import React, {ReactText} from 'react';
 import NextLink from "next/link";
 import {
-    IconButton,
     Box,
+    BoxProps,
     CloseButton,
-    Flex,
-    Icon,
-    useColorModeValue,
-    Link,
     Drawer,
     DrawerContent,
-    Text,
-    useDisclosure,
-    BoxProps,
+    Flex,
     FlexProps,
+    Icon,
+    IconButton,
+    Link,
+    Text,
+    useColorModeValue,
+    useDisclosure,
 } from '@chakra-ui/react';
-import {
-    FiHome,
-    FiTrendingUp,
-    FiActivity,
-    FiMenu,
-    FiUsers,
-    FiShuffle,
-    FiBook,
-} from 'react-icons/fi';
-import { IconType } from 'react-icons';
-import { ReactText } from 'react';
+import {FiActivity, FiBook, FiHome, FiMenu, FiShuffle, FiUsers,} from 'react-icons/fi';
+import {IconType} from 'react-icons';
 import {useRouter} from "next/router";
 
 interface LinkItemProps {
@@ -44,7 +35,7 @@ const LinkItems: Array<LinkItemProps> = [
 export default function Layout({children}) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     return (
-        <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
+        <Box minH="100vh" bg='gold.100'>
             <SidebarContent
                 onClose={() => onClose}
                 display={{ base: 'none', md: 'block' }}
@@ -118,9 +109,9 @@ const NavItem = ({ icon, children, path, ...rest }: NavItemProps) => {
                     borderRadius="lg"
                     role="group"
                     cursor="pointer"
-                    bg={isActive ? 'yellow.200' : 'inherit'}
+                    bg={isActive ? 'gold.200' : 'inherit'}
                     _hover={{
-                        bg: 'yellow.200'
+                        bg: 'gold.200'
                     }}
                     {...rest}>
                     {icon && (

@@ -1,9 +1,26 @@
 import {ReactElement, useState} from "react";
 import {confirmAlert} from "react-confirm-alert";
-import Dialog from "./Dialog";
 import SourceUpdateForm from "./form/SourceUpdateForm";
 import {useDeleteSourceMutation, useGetSourcesQuery} from "../src/generated/graphql";
 import {GET_SOURCES_QUERY} from "../graphqls/sources";
+
+import {
+    Button,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalHeader,
+    ModalOverlay,
+    Stack,
+    Table,
+    Tbody,
+    Td,
+    Text,
+    Th,
+    Thead,
+    Tr,
+} from '@chakra-ui/react'
 
 export default function SourceList(): ReactElement {
     const {loading, error, data} = useGetSourcesQuery();
@@ -33,50 +50,53 @@ export default function SourceList(): ReactElement {
             {loading && (<p>loading ...</p>)}
             {error && (<p>error ...</p>)}
             {data && (
-                <table className="table-auto w-full">
-                    <thead className="text-xs text-cyan-400 bg-cyan-50 text-left">
-                    <tr>
-                        <th className="p-2">ID</th>
-                        <th>名前</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
+                <Table variant='simple'>
+                    <Thead>
+                    <Tr>
+                        <Th>ID</Th>
+                        <Th>名前</Th>
+                        <Th></Th>
+                    </Tr>
+                    </Thead>
+                    <Tbody>
                     {data.sources.map((source) => (
-                        <tr key={source.id}>
-                            <td className="p-2 font-medium text-gray-800">{source.id}</td>
-                            <td className="p-2 font-medium text-gray-800">{source.name}</td>
-                            <td className="space-x-1">
-                                <button
-                                    className="bg-green-100 hover:bg-green-200 text-green-500 py-1 px-2 text-xs rounded border border-green-200"
-                                    onClick={() => setSourceIdForUpdate(source.id)}
-                                >
-                                    編集
-                                </button>
-                                <button
-                                    className="bg-red-100 hover:bg-red-200 text-red-500 py-1 px-2 text-xs rounded border border-red-200"
-                                    onClick={() => deleteSource(source)}
-                                >
-                                    削除
-                                </button>
-                            </td>
-                        </tr>
+                        <Tr key={source.id}>
+                            <Td><Text fontSize='sm'>{source.id}</Text></Td>
+                            <Td><Text fontSize='sm'>{source.name}</Text></Td>
+                            <Td>
+                                <Stack spacing={1} direction='row'>
+                                    <Button colorScheme='gold' size='xs'  onClick={() => setSourceIdForUpdate(source.id)}>
+                                        編集
+                                    </Button>
+                                    <Button colorScheme='red' size='xs'  onClick={() => deleteSource(source)}>
+                                        削除
+                                    </Button>
+                                </Stack>
+                            </Td>
+                        </Tr>
                     ))}
-                    </tbody>
-                </table>
+                    </Tbody>
+                </Table>
             )}
-            <Dialog
-                open={sourceIdForUpdate != null}
+            <Modal
+                isOpen={sourceIdForUpdate != null}
                 onClose={() => setSourceIdForUpdate(null)}
             >
-                {sourceIdForUpdate && (
-                    <SourceUpdateForm
-                        sourceId={sourceIdForUpdate}
-                        refetchQueriesOnUpdate={[GET_SOURCES_QUERY]}
-                        onSubmit={() => setSourceIdForUpdate(null)}
-                    />
-                )}
-            </Dialog>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>出典編集</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        {sourceIdForUpdate && (
+                            <SourceUpdateForm
+                                sourceId={sourceIdForUpdate}
+                                refetchQueriesOnUpdate={[GET_SOURCES_QUERY]}
+                                onSubmit={() => setSourceIdForUpdate(null)}
+                            />
+                        )}
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
         </>
     );
 }

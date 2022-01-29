@@ -17,9 +17,6 @@ export default function SourceUpdateForm({sourceId, refetchQueriesOnUpdate, onSu
 
     return (
         <>
-            <div className="font-medium text-center text-lg text-gold-800">
-                出典編集
-            </div>
             {data && (
                 <SourceForm
                     defaultData={{name: data.source.name}}

@@ -3,16 +3,17 @@ import SourceCreateForm from "../components/form/SourceCreateForm";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import SourceList from "../components/SourceList";
 import {GET_SOURCES_QUERY} from "../graphqls/sources";
+import {Box, Flex} from "@chakra-ui/react";
 
 export default function Sources(): ReactElement {
     return (
-        <div className="flex gap-x-5 w-full">
-            <div className="w-30">
+        <Flex>
+            <Box w='300px' mr={4}>
                 <SourceCreateForm refetchQueriesOnCreate={[GET_SOURCES_QUERY]}/>
-            </div>
-            <div className="grow bg-white shadow-md rounded-lg">
+            </Box>
+            <Box flex='1' bg='white' rounded="base" boxShadow="md">
                 <SourceList />
-            </div>
-        </div>
+            </Box>
+        </Flex>
     )
 }

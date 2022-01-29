@@ -2,6 +2,7 @@ import {ReactElement} from "react";
 import SourceForm, {SourceFormData} from "./SourceForm";
 import {RefetchQueryDescriptor} from "@apollo/client/core/types";
 import {useCreateSourceMutation} from "../../src/generated/graphql";
+import {Box, Text} from "@chakra-ui/react";
 
 interface Props {
     refetchQueriesOnCreate: RefetchQueryDescriptor[]
@@ -13,16 +14,14 @@ export default function SourceCreateForm({refetchQueriesOnCreate} : Props): Reac
     });
 
     return (
-        <div className="flex flex-col bg-white shadow-md px-8 py-6 rounded-lg">
-            <div className="font-medium self-center text-lg text-gold-800">
-                出典登録
-            </div>
+        <Box bg='white' px='3' py='4' rounded="base" boxShadow="md">
+            <Text mb='2'>出典登録</Text>
             <SourceForm
                 defaultData={{name: ""}}
                 onSubmit={(data: SourceFormData) => {
                     createSource({variables: {name: data.name}});
                 }}
             />
-        </div>
+        </Box>
     )
 }
