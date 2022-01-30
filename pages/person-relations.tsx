@@ -3,16 +3,17 @@ import PersonRelationCreateForm from "../components/form/PersonRelationCreateFor
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import PersonRelationList from "../components/PersonRelationList";
 import {GET_PERSON_RELATIONS_QUERY} from "../graphqls/personRelations";
+import {Box, Flex} from "@chakra-ui/react";
 
 export default function PersonRelations(): ReactElement {
     return (
-        <div className="flex gap-x-5 w-full">
-            <div className="w-30">
+        <Flex>
+            <Box w='300px' mr={4}>
                 <PersonRelationCreateForm refetchQueriesOnCreate={[GET_PERSON_RELATIONS_QUERY]}/>
-            </div>
-            <div className="grow bg-white shadow-md rounded-lg">
+            </Box>
+            <Box flex='1' bg='white' rounded="base" boxShadow="md">
                 <PersonRelationList />
-            </div>
-        </div>
+            </Box>
+        </Flex>
     )
 }

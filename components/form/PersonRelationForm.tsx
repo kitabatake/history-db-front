@@ -1,6 +1,7 @@
 import {ReactElement} from "react";
 import PersonsSelect from "../PersonsSelect";
 import {Controller, useForm} from "react-hook-form";
+import {Box, Button, FormControl, FormLabel, Input, Text} from '@chakra-ui/react'
 
 export interface PersonRelationFormData {
     description: string,
@@ -24,21 +25,16 @@ export default function PersonRelationForm({defaultData = {description: "", pers
                 reset();
             })}
         >
-            <div className="mb-2">
-                <label className="mb-1 text-xs tracking-wide text-gold-600 w-12">
-                    概要:
-                </label>
-                <input
+            <FormControl mb='2'>
+                <FormLabel><Text fontSize='sm'>概要</Text></FormLabel>
+                <Input
                     type="text"
                     {...register("description")}
                     defaultValue={defaultData.description}
-                    className="text-sm p-2 rounded-lg border border-gold-200 bg-gold-50 w-full shrink focus:outline-none focus:border-gold-400"
                 />
-            </div>
-            <div className="mb-3">
-                <label className="mb-1 text-xs tracking-wide text-gold-600 w-12">
-                    人物:
-                </label>
+            </FormControl>
+            <FormControl mb='2'>
+                <FormLabel><Text fontSize='sm'>人物</Text></FormLabel>
                 <Controller
                     name="persons"
                     control={control}
@@ -49,15 +45,17 @@ export default function PersonRelationForm({defaultData = {description: "", pers
                         />
                     )}
                 />
-            </div>
-            <div className="text-center">
-                <button
+            </FormControl>
+            <Box textAlign='center'>
+                <Button
                     type="submit"
-                    className="focus:outline-none text-white text-sm bg-gold-500 hover:bg-gold-600 rounded-lg py-1 px-3"
+                    colorScheme='gold'
+                    size='sm'
+                    mt='4'
                 >
                     送信
-                </button>
-            </div>
+                </Button>
+            </Box>
         </form>
     )
 }

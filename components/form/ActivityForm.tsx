@@ -56,7 +56,7 @@ export default function ActivityForm({defaultData = {description: "", persons: [
             })}
         >
             <FormControl isInvalid={!!errors.description} mb='2'>
-                <FormLabel htmlFor='email'><Text fontSize='sm'>概要</Text></FormLabel>
+                <FormLabel><Text fontSize='sm'>概要</Text></FormLabel>
                 <Textarea
                     {...register("description")}
                     className="text-sm p-2 rounded-lg border border-gold-200 bg-gold-50 w-full shrink focus:outline-none focus:border-gold-400"
@@ -64,7 +64,7 @@ export default function ActivityForm({defaultData = {description: "", persons: [
                 />
             </FormControl>
             <FormControl mb='2'>
-                <FormLabel htmlFor='email'><Text fontSize='sm'>西暦</Text></FormLabel>
+                <FormLabel><Text fontSize='sm'>西暦</Text></FormLabel>
                 <HStack spacing='2'>
                     <HStack spacing='1'>
                         <Input
@@ -103,7 +103,7 @@ export default function ActivityForm({defaultData = {description: "", persons: [
                 </HStack>
             </FormControl>
             <FormControl mb='2'>
-                <FormLabel htmlFor='email'><Text fontSize='sm'>出典</Text></FormLabel>
+                <FormLabel><Text fontSize='sm'>出典</Text></FormLabel>
                 <Controller
                     name="source"
                     control={control}
@@ -118,7 +118,7 @@ export default function ActivityForm({defaultData = {description: "", persons: [
 
             </FormControl>
             <FormControl mb='2'>
-                <FormLabel htmlFor='email'><Text fontSize='sm'>人物</Text></FormLabel>
+                <FormLabel><Text fontSize='sm'>人物</Text></FormLabel>
                 <Controller
                     name="persons"
                     control={control}

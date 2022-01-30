@@ -22,7 +22,7 @@ export default function SourceForm({defaultData = {name: ""}, onSubmit}: Props) 
             })}
         >
             <FormControl isInvalid={!!errors.name}>
-                <FormLabel htmlFor='email'><Text fontSize='sm'>名前</Text></FormLabel>
+                <FormLabel><Text fontSize='sm'>名前</Text></FormLabel>
                 <Input
                     type="text"
                     {...register("name", { required: true })}
