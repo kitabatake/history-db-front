@@ -5,9 +5,9 @@ import {
     useGetPersonAliasesQuery
 } from "../src/generated/graphql";
 import {GET_PERSON_ALIASES_QUERY} from "../graphqls/personAlias";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 import {useForm} from "react-hook-form";
+import {Box, Button, Flex, IconButton, Input, Text} from "@chakra-ui/react";
+import {FiX} from 'react-icons/fi';
 
 interface Props {
     personId: number
@@ -25,39 +25,44 @@ export const PersonAliasList = ({personId}: Props): ReactElement => {
     return (
         <>
             {data && (
-                <div className="flex flex-wrap items-start gap-1 w-full">
+                <Flex wrap='wrap' align='start'>
                     {data.personAliases.map((alias, i) => (
-                        <div key={i} className="p-1 text-xs bg-gold-100 text-gold-500 rounded">
-                            {alias.alias}
-                            <button
-                                className="ml-2"
+                        <Flex alignItems='center' key={i} p={1} rounded='md' bg='gold.100' color='gold.500'>
+                            <Text fontSize='xs'>{alias.alias}</Text>
+                            <IconButton
+                                aria-label='close'
+                                icon={<FiX />}
+                                size='xs'
+                                colorScheme='gold'
+                                ml={2}
                                 onClick={() => deletePersonAliasMutation({
                                     variables: {id: alias.id}
                                 })}
-                            >
-                                <FontAwesomeIcon icon={faTimesCircle} />
-                            </button>
-                        </div>
+                            />
+                        </Flex>
                     ))}
-                    <form
-                        className="p-1 bg-gold-100 w-40 flex rounded ml-2"
-                        onSubmit={handleSubmit(data => {
-                            createPersonAliasMutation({
-                                variables: {
-                                    personId: personId,
-                                    alias: data.alias,
-                                }
-                            })
-                            reset();
-                        })}
-                    >
-                        <input
-                            className="text-xs flex-1 p-1 min-w-0 rounded"
-                            {...register("alias", { required: true })}
-                        />
-                        <button className="text-xs p-1 bg-gold-400 ml-2 rounded text-white">追加</button>
-                    </form>
-                </div>
+                    <Box p={1} bg='green.100' w='140px' rounded='md' ml={2} >
+                        <form
+                            onSubmit={handleSubmit(data => {
+                                createPersonAliasMutation({
+                                    variables: {
+                                        personId: personId,
+                                        alias: data.alias,
+                                    }
+                                })
+                                reset();
+                            })}
+                        >
+                            <Input
+                                size='xs'
+                                w='88px'
+                                bg='white'
+                                {...register("alias", { required: true })}
+                            />
+                            <Button ml={1} colorScheme='green' size='xs'>追加</Button>
+                        </form>
+                    </Box>
+                </Flex>
                 )}
         </>
     )

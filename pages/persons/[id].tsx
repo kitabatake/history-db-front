@@ -3,107 +3,110 @@ import {ReactElement} from "react";
 import Link from "next/link";
 import {useGetPersonWithDetailsQuery} from "../../src/generated/graphql";
 import {PersonAliasList} from "../../components/PersonAliasList";
+import {Grid, GridItem, HStack, Table, Tbody, Td, Text, Th, Thead, Tr} from "@chakra-ui/react";
 
 export default function Persons(): ReactElement {
     const router = useRouter()
     const {id} = router.query;
     const {data} = useGetPersonWithDetailsQuery({variables: {id: Number(id)}});
     return (
-        <div>
+        <>
             {data && (
-                <div className="flex gap-x-5 w-full">
-                    <div className="grow w-1/4 bg-white shadow-md rounded-lg">
-                        <table className="table-fixed w-full">
-                            <colgroup>
-                                <col className="w-12" />
-                                <col className="w-fit" />
-                            </colgroup>
-                            <tbody>
-                            <tr>
-                                <th className="w-30 text-xs text-cyan-400 bg-cyan-50 text-left p-2 border border-cyan-100">ID</th>
-                                <td className="p-2 font-medium text-gray-800 border border-cyan-100">{data.person.id}</td>
-                            </tr>
-                            <tr>
-                                <th className="w-30 text-xs text-cyan-400 bg-cyan-50 text-left p-2 border border-cyan-100">名前</th>
-                                <td className="p-2 font-medium text-gray-800 border border-cyan-100">{data.person.name}</td>
-                            </tr>
-                            <tr>
-                                <th className="w-30 text-xs text-cyan-400 bg-cyan-50 text-left p-2 border border-cyan-100">別名</th>
-                                <td className="p-2 font-medium text-gray-800 w-full border border-cyan-100">
+                <Grid templateColumns='repeat(3, 1fr)' gap={4}>
+                    <GridItem bg='white' rounded="base" boxShadow="md">
+                        <Table size='sm'>
+                            {/*<colgroup>*/}
+                            {/*    <col width='12px' />*/}
+                            {/*    <col className="w-fit" />*/}
+                            {/*</colgroup>*/}
+                            <Tbody>
+                            <Tr>
+                                <Th>ID</Th>
+                                <Td>{data.person.id}</Td>
+                            </Tr>
+                            <Tr>
+                                <Th>名前</Th>
+                                <Td>{data.person.name}</Td>
+                            </Tr>
+                            <Tr>
+                                <Th>別名</Th>
+                                <Td>
                                     <PersonAliasList personId={Number(id)} />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th className="w-30 text-xs text-cyan-400 bg-cyan-50 text-left p-2 border border-cyan-100">説明</th>
-                                <td className="p-2 font-medium text-gray-800 border border-cyan-100">{data.person.description}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div className="w-1/3 bg-white shadow-md rounded-lg p-5">
-                        <div className="font-medium self-center text-gold-800">
+                                </Td>
+                            </Tr>
+                            <Tr>
+                                <Th>説明</Th>
+                                <Td>{data.person.description}</Td>
+                            </Tr>
+                            </Tbody>
+                        </Table>
+                    </GridItem>
+                    <GridItem p={5} bg='white' rounded="base" boxShadow="md">
+                        <Text>
                             関連
-                        </div>
-                        <table className="table-auto w-full mt-3">
-                            <thead className="text-xs text-cyan-400 bg-cyan-50 text-left">
-                            <tr>
-                                <th className="p-2">ID</th>
-                                <th>説明</th>
-                                <th>人物</th>
-                            </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-100">
+                        </Text>
+                        <Table mt={3} size='sm'>
+                            <Thead>
+                            <Tr>
+                                <Th>ID</Th>
+                                <Th>説明</Th>
+                                <Th>人物</Th>
+                            </Tr>
+                            </Thead>
+                            <Tbody>
                             {data.person.relations.map((personRelation) => (
-                                <tr key={personRelation.id}>
-                                    <td className="p-2 font-medium text-gray-800">{personRelation.id}</td>
-                                    <td className="p-2 font-medium text-gray-800">{personRelation.description}</td>
-                                    <td className="p-2 font-medium text-gray-800 space-x-2">
-                                        {personRelation.persons.map((person) => {
-                                            return (
-                                                <Link key={person.id} href={`/persons/${person.id}`}>
-                                                    <a>{person.name}</a>
-                                                </Link>
-                                            )
-                                        })}
-                                    </td>
-                                </tr>
+                                <Tr key={personRelation.id}>
+                                    <Td>{personRelation.id}</Td>
+                                    <Td>{personRelation.description}</Td>
+                                    <Td>
+                                        <HStack spacing={2}>
+                                            {personRelation.persons.map((person) => {
+                                                return (
+                                                    <Link key={person.id} href={`/persons/${person.id}`}>
+                                                        <a>{person.name}</a>
+                                                    </Link>
+                                                )
+                                            })}
+                                        </HStack>
+                                    </Td>
+                                </Tr>
                             ))}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div className="w-1/3 bg-white shadow-md rounded-lg p-5">
-                        <div className="font-medium self-center text-gold-800">
-                            アクティビティ
-                        </div>
-                        <table className="table-auto w-full mt-3">
-                            <thead className="text-xs text-cyan-400 bg-cyan-50 text-left">
-                            <tr>
-                                <th className="p-2">ID</th>
-                                <th>説明</th>
-                                <th>人物</th>
-                            </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-100">
+                            </Tbody>
+                        </Table>
+                    </GridItem>
+                    <GridItem p={5} bg='white' rounded="base" boxShadow="md">
+                        <Text>アクティビティ</Text>
+                        <Table mt={3} size='sm'>
+                            <Thead>
+                            <Tr>
+                                <Th>ID</Th>
+                                <Th>説明</Th>
+                                <Th>人物</Th>
+                            </Tr>
+                            </Thead>
+                            <Tbody>
                             {data.person.activities.map((activity) => (
-                                <tr key={activity.id}>
-                                    <td className="p-2 font-medium text-gray-800">{activity.id}</td>
-                                    <td className="p-2 font-medium text-gray-800">{activity.description}</td>
-                                    <td className="p-2 font-medium text-gray-800 space-x-2">
-                                        {activity.persons.map((person) => {
-                                            return (
-                                                <Link key={person.id} href={`/persons/${person.id}`}>
-                                                    <a>{person.name}</a>
-                                                </Link>
-                                            )
-                                        })}
-                                    </td>
-                                </tr>
+                                <Tr key={activity.id}>
+                                    <Td>{activity.id}</Td>
+                                    <Td>{activity.description}</Td>
+                                    <Td>
+                                        <HStack spacing={2}>
+                                            {activity.persons.map((person) => {
+                                                return (
+                                                    <Link key={person.id} href={`/persons/${person.id}`}>
+                                                        <a>{person.name}</a>
+                                                    </Link>
+                                                )
+                                            })}
+                                        </HStack>
+                                    </Td>
+                                </Tr>
                             ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                            </Tbody>
+                        </Table>
+                    </GridItem>
+                </Grid>
             )}
-        </div>
+        </>
     )
 }
