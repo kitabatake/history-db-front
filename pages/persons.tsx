@@ -3,15 +3,16 @@ import {ReactElement} from "react";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import PersonList from "../components/PersonList";
 import {GET_PERSONS_QUERY} from "../graphqls/persons";
+import {Box, Flex} from "@chakra-ui/react";
 
 export default function Persons(): ReactElement {
     return (
-        <div className="flex gap-x-5 w-full">
-            <div className="w-30">
+        <Flex>
+            <Box w='300px' mr={4}>
                 <PersonCreateForm refetchQueriesOnCreate={[GET_PERSONS_QUERY]}/>
-            </div>
-            <div className="grow bg-white shadow-md rounded-lg">
+            </Box>
+            <Box flex='1' bg='white' rounded="base" boxShadow="md">
                 <PersonList />
-            </div>
-        </div>)
+            </Box>
+        </Flex>)
 }

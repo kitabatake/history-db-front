@@ -1,6 +1,6 @@
 import {ReactElement} from "react";
 import {useForm} from "react-hook-form";
-import classNames from 'classnames'
+import {Box, Button, FormControl, FormLabel, Input, Text, Textarea} from '@chakra-ui/react'
 
 export interface PersonFormData {
     name: string,
@@ -25,43 +25,31 @@ export default function PersonForm({defaultData = {name: "", description: ""}, o
                 reset();
             })}
         >
-            <div className="mb-2">
-                <label className="mb-1 text-xs tracking-wide text-gold-600 w-12">
-                    名前:
-                </label>
-                <input
+            <FormControl isInvalid={!!errors.name} mb={2}>
+                <FormLabel><Text fontSize='sm'>名前</Text></FormLabel>
+                <Input
                     type="text"
                     {...register("name", { required: true })}
-                    className={classNames(
-                        "text-sm p-2 rounded-lg border w-full shrink",
-                        {
-                            'bg-gold-50': !errors.name,
-                            'border-gold-200': !errors.name,
-                            'bg-red-50': errors.name,
-                            'border-red-200': errors.name,
-                        }
-                    )}
                     defaultValue={defaultData.name}
                 />
-            </div>
-            <div className="mb-3">
-                <label className="mb-1 text-xs tracking-wide text-gold-600 w-12">
-                    説明:
-                </label>
-                <textarea
+            </FormControl>
+            <FormControl mb={2}>
+                <FormLabel><Text fontSize='sm'>説明</Text></FormLabel>
+                <Textarea
                     {...register("description")}
-                    className="text-sm p-2 rounded-lg border border-gold-200 bg-gold-50 w-full shrink focus:outline-none focus:border-gold-400"
                     defaultValue={defaultData.description}
                 />
-            </div>
-            <div className="text-center">
-                <button
+            </FormControl>
+            <Box textAlign='center'>
+                <Button
                     type="submit"
-                    className="focus:outline-none text-white text-sm bg-gold-500 hover:bg-gold-600 rounded-lg py-1 px-3"
+                    colorScheme='gold'
+                    size='sm'
+                    mt='4'
                 >
                     送信
-                </button>
-            </div>
+                </Button>
+            </Box>
         </form>
     );
 }

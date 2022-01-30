@@ -1,10 +1,27 @@
 import {ReactElement, useState} from "react";
 import {confirmAlert} from "react-confirm-alert";
 import Link from "next/link";
-import Dialog from "./Dialog";
 import {PersonUpdateForm} from "./form/PersonUpdateForm";
 import {useDeletePersonMutation, useGetPersonsQuery} from "../src/generated/graphql";
 import {GET_PERSONS_QUERY} from "../graphqls/persons";
+
+import {
+    Button,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalHeader,
+    ModalOverlay,
+    Stack,
+    Table,
+    Tbody,
+    Td,
+    Text,
+    Th,
+    Thead,
+    Tr,
+} from '@chakra-ui/react'
 
 export default function PersonList(): ReactElement {
     const {loading, error, data} = useGetPersonsQuery();
@@ -29,59 +46,62 @@ export default function PersonList(): ReactElement {
     }
     return (
         <>
-            {loading && (<p>loading ...</p>)}
-            {error && (<p>error ...</p>)}
+            {loading && (<Text>loading ...</Text>)}
+            {error && (<Text>error ...</Text>)}
             {data && (
-                <table className="table-auto w-full">
-                    <thead className="text-xs text-cyan-400 bg-cyan-50 text-left">
-                    <tr>
-                        <th className="p-2">ID</th>
-                        <th className="p-2">名前</th>
-                        <th className="p-2">説明</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
+                <Table variant='simple'>
+                    <Thead>
+                    <Tr>
+                        <Th className="p-2">ID</Th>
+                        <Th className="p-2">名前</Th>
+                        <Th className="p-2">説明</Th>
+                        <Th></Th>
+                    </Tr>
+                    </Thead>
+                    <Tbody>
                     {data.persons.map((person) => (
-                        <tr key={person.id}>
-                            <td className="p-2 font-medium text-gray-800">{person.id}</td>
-                            <td className="p-2 font-medium text-gray-800">
+                        <Tr key={person.id}>
+                            <Td>{person.id}</Td>
+                            <Td>
                                 <Link href={`/persons/${person.id}`}>
                                     <a>{person.name}</a>
                                 </Link>
-                            </td>
-                            <td className="p-2 font-medium text-gray-800">{person.description}</td>
-                            <td className="space-x-1">
-                                <button
-                                    className="bg-green-100 hover:bg-green-200 text-green-500 py-1 px-2 text-xs rounded border border-green-200"
-                                    onClick={() => setPersonIdForUpdate(person.id)}
-                                >
-                                    編集
-                                </button>
-                                <button
-                                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 text-xs rounded"
-                                    onClick={() => deletePerson(person)}
-                                >
-                                    削除
-                                </button>
-                            </td>
-                        </tr>
+                            </Td>
+                            <Td>{person.description}</Td>
+                            <Td>
+                                <Stack spacing={1} direction='row'>
+                                    <Button colorScheme='gold' size='xs' onClick={() => setPersonIdForUpdate(person.id)}>
+                                        編集
+                                    </Button>
+                                    <Button colorScheme='red' size='xs' onClick={() => deletePerson(person)}>
+                                        削除
+                                    </Button>
+                                </Stack>
+                            </Td>
+                        </Tr>
                     ))}
-                    </tbody>
-                </table>
+                    </Tbody>
+                </Table>
             )}
-            <Dialog
-                open={personIdForUpdate != null}
+            <Modal
+                isOpen={personIdForUpdate != null}
                 onClose={() => setPersonIdForUpdate(null)}
             >
-                {personIdForUpdate && (
-                    <PersonUpdateForm
-                        personId={personIdForUpdate}
-                        refetchQueriesOnUpdate={[GET_PERSONS_QUERY]}
-                        onUpdated={() => setPersonIdForUpdate(null)}
-                    />
-                )}
-            </Dialog>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>人物編集</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        {personIdForUpdate && (
+                            <PersonUpdateForm
+                                personId={personIdForUpdate}
+                                refetchQueriesOnUpdate={[GET_PERSONS_QUERY]}
+                                onUpdated={() => setPersonIdForUpdate(null)}
+                            />
+                        )}
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
         </>
     );
 }

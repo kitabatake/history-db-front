@@ -59,7 +59,6 @@ export default function ActivityForm({defaultData = {description: "", persons: [
                 <FormLabel><Text fontSize='sm'>概要</Text></FormLabel>
                 <Textarea
                     {...register("description")}
-                    className="text-sm p-2 rounded-lg border border-gold-200 bg-gold-50 w-full shrink focus:outline-none focus:border-gold-400"
                     defaultValue={defaultData.description}
                 />
             </FormControl>

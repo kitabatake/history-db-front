@@ -1,5 +1,4 @@
 import {useForm} from "react-hook-form";
-import classNames from "classnames";
 import {Box, Button, FormControl, FormErrorMessage, FormLabel, Input, Text} from '@chakra-ui/react'
 
 export interface SourceFormData {
@@ -26,15 +25,6 @@ export default function SourceForm({defaultData = {name: ""}, onSubmit}: Props) 
                 <Input
                     type="text"
                     {...register("name", { required: true })}
-                    className={classNames(
-                        "text-sm p-2 rounded-lg border w-full shrink",
-                        {
-                            'bg-gold-50': !errors.name,
-                            'border-gold-200': !errors.name,
-                            'bg-red-50': errors.name,
-                            'border-red-200': errors.name,
-                        }
-                    )}
                     defaultValue={defaultData.name}
                 />
                 <FormErrorMessage>

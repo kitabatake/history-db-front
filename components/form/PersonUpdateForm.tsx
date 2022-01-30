@@ -24,9 +24,6 @@ export function PersonUpdateForm({personId, refetchQueriesOnUpdate, onUpdated}: 
     });
     return (
         <>
-            <div className="font-medium text-center text-lg text-gold-800">
-                人物編集
-            </div>
             {data && (
                 <>
                     {error && (
