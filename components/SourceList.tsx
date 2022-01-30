@@ -47,8 +47,8 @@ export default function SourceList(): ReactElement {
 
     return (
         <>
-            {loading && (<p>loading ...</p>)}
-            {error && (<p>error ...</p>)}
+            {loading && (<Text>loading ...</Text>)}
+            {error && (<Text>error ...</Text>)}
             {data && (
                 <Table variant='simple'>
                     <Thead>

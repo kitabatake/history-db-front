@@ -21,7 +21,7 @@ export default function SourceForm({defaultData = {name: ""}, onSubmit}: Props) 
                 reset();
             })}
         >
-            <FormControl isInvalid={errors.name ? true : false}>
+            <FormControl isInvalid={!!errors.name}>
                 <FormLabel htmlFor='email'><Text fontSize='sm'>名前</Text></FormLabel>
                 <Input
                     type="text"

@@ -26,9 +26,6 @@ export default function ActivityUpdateForm({
     });
     return (
         <>
-            <div className="font-medium text-center text-lg text-gold-800">
-                アクティビティ編集
-            </div>
             {data && (
                 <ActivityForm
                     defaultData={{

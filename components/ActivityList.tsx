@@ -1,10 +1,27 @@
 import {ReactElement, useState} from "react";
 import {confirmAlert} from "react-confirm-alert";
-import Dialog from "./Dialog";
 import ActivityUpdateForm from "./form/ActivityUpdateForm";
 import {useDeleteActivityMutation, useGetActivitiesQuery} from "../src/generated/graphql";
 import Link from "next/link";
 import {GET_ACTIVITIES_QUERY} from "../graphqls/activitie";
+
+import {
+    Button,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalHeader,
+    ModalOverlay,
+    Stack,
+    Table,
+    Tbody,
+    Td,
+    Text,
+    Th,
+    Thead,
+    Tr,
+} from '@chakra-ui/react'
 
 export default function ActivityList(): ReactElement {
     const {loading, error, data} = useGetActivitiesQuery();
@@ -30,25 +47,25 @@ export default function ActivityList(): ReactElement {
     }
     return (
         <>
-            {loading && (<p>loading ...</p>)}
-            {error && (<p>error ...</p>)}
+            {loading && (<Text>loading ...</Text>)}
+            {error && (<Text>error ...</Text>)}
             {data && (
-                <table className="table-auto w-full">
-                    <thead className="text-xs text-cyan-400 bg-cyan-50 text-left">
-                    <tr>
-                        <th className="p-2">ID</th>
-                        <th>説明</th>
-                        <th>人物</th>
-                        <th>日時</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
+                <Table variant='simple'>
+                    <Thead>
+                        <Tr>
+                            <Th className="p-2">ID</Th>
+                            <Th>説明</Th>
+                            <Th>人物</Th>
+                            <Th>日時</Th>
+                            <Th></Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
                     {data.activities.map((activity) => (
-                        <tr key={activity.id}>
-                            <td className="p-2 font-medium text-gray-800">{activity.id}</td>
-                            <td className="p-2 font-medium text-gray-800">{activity.description}</td>
-                            <td className="p-2 font-medium text-gray-800 space-x-2">
+                        <Tr key={activity.id}>
+                            <Td className="p-2 font-medium text-gray-800">{activity.id}</Td>
+                            <Td className="p-2 font-medium text-gray-800">{activity.description}</Td>
+                            <Td className="p-2 font-medium text-gray-800 space-x-2">
                                 {activity.persons && activity.persons.map((person) => {
                                     return (
                                         <Link key={person.id} href={`/persons/${person.id}`}>
@@ -56,43 +73,46 @@ export default function ActivityList(): ReactElement {
                                         </Link>
                                     )
                                 })}
-                            </td>
-                            <td>
+                            </Td>
+                            <Td>
                                 {activity.year && (<span>{activity.year}年</span>)}
                                 {activity.month && (<span>{activity.month}月</span>)}
                                 {activity.day && (<span>{activity.day}日</span>)}
-                            </td>
-                            <td className="space-x-1">
-                                <button
-                                    className="bg-green-100 hover:bg-green-200 text-green-500 py-1 px-2 text-xs rounded border border-green-200"
-                                    onClick={() => setActivityIdForUpdate(activity.id)}
-                                >
-                                    編集
-                                </button>
-                                <button
-                                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 text-xs rounded"
-                                    onClick={() => deleteActivity(activity)}
-                                >
-                                    削除
-                                </button>
-                            </td>
-                        </tr>
+                            </Td>
+                            <Td>
+                                <Stack spacing={1} direction='row'>
+                                    <Button colorScheme='gold' size='xs'  onClick={() => setActivityIdForUpdate(activity.id)}>
+                                        編集
+                                    </Button>
+                                    <Button colorScheme='red' size='xs'  onClick={() => deleteActivity(activity)}>
+                                        削除
+                                    </Button>
+                                </Stack>
+                            </Td>
+                        </Tr>
                     ))}
-                    </tbody>
-                </table>
+                    </Tbody>
+                </Table>
             )}
-            <Dialog
-                open={activityIdForUpdate != null}
+            <Modal
+                isOpen={activityIdForUpdate != null}
                 onClose={() => setActivityIdForUpdate(null)}
             >
-                {activityIdForUpdate && (
-                    <ActivityUpdateForm
-                        activityId={activityIdForUpdate}
-                        refetchQueriesOnUpdate={[GET_ACTIVITIES_QUERY]}
-                        onSubmit={() => setActivityIdForUpdate(null)}
-                    />
-                )}
-            </Dialog>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>出典編集</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        {activityIdForUpdate && (
+                            <ActivityUpdateForm
+                                activityId={activityIdForUpdate}
+                                refetchQueriesOnUpdate={[GET_ACTIVITIES_QUERY]}
+                                onSubmit={() => setActivityIdForUpdate(null)}
+                            />
+                        )}
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
         </>
     )
 }

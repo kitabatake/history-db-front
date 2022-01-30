@@ -2,18 +2,18 @@ import {ReactElement} from "react";
 import ActivityCreateForm from "../components/form/ActivityCreateForm";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import ActivityList from "../components/ActivityList";
-// import {Activity} from "../types";
 import {GET_ACTIVITIES_QUERY} from "../graphqls/activitie";
+import {Box, Flex} from "@chakra-ui/react";
 
 export default function Activities(): ReactElement {
     return (
-        <div className="flex gap-x-5 w-full">
-            <div className="w-30">
+        <Flex>
+            <Box w='300px' mr={4}>
                 <ActivityCreateForm refetchQueriesOnCreate={[GET_ACTIVITIES_QUERY]}/>
-            </div>
-            <div className="grow bg-white shadow-md rounded-lg">
+            </Box>
+            <Box flex='1' bg='white' rounded="base" boxShadow="md">
                 <ActivityList />
-            </div>
-        </div>
+            </Box>
+        </Flex>
     )
 }
