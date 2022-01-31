@@ -13,24 +13,19 @@ export default function ActivityCreateForm({refetchQueriesOnCreate}: Props): Rea
     });
 
     return (
-        <div className="flex flex-col bg-white shadow-md px-8 py-6 rounded-lg">
-            <div className="font-medium text-xl text-gold-800">
-                アクティビティ登録
-            </div>
-            <ActivityForm
-                onSubmit={(data: ActivityFormData) => {
-                    createActivity({
-                        variables: {
-                            description: data.description,
-                            year: data.year,
-                            month: data.month,
-                            day: data.day,
-                            personIds: data.persons.map(person => person.value),
-                            sourceId:  data.source ? data.source.value : null
-                        }
-                    });
-                }}
-            />
-        </div>
+        <ActivityForm
+            onSubmit={(data: ActivityFormData) => {
+                createActivity({
+                    variables: {
+                        description: data.description,
+                        year: data.year,
+                        month: data.month,
+                        day: data.day,
+                        personIds: data.persons.map(person => person.value),
+                        sourceId: data.source ? data.source.value : null
+                    }
+                });
+            }}
+        />
     )
 }
