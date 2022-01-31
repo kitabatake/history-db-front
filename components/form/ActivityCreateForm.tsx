@@ -4,16 +4,22 @@ import {RefetchQueryDescriptor} from "@apollo/client/core/types";
 import {useCreateActivityMutation} from "../../src/generated/graphql";
 
 interface Props {
-    refetchQueriesOnCreate: RefetchQueryDescriptor[]
+    refetchQueriesOnCreate: RefetchQueryDescriptor[],
+    defaultData?: {
+        description: string,
+        persons: Array<{value: number, label: string}>,
+    }
+    onSubmit?: () => void
 }
 
-export default function ActivityCreateForm({refetchQueriesOnCreate}: Props): ReactElement {
+export default function ActivityCreateForm({refetchQueriesOnCreate, defaultData, onSubmit}: Props): ReactElement {
     const [createActivity] = useCreateActivityMutation({
         refetchQueries: refetchQueriesOnCreate
     });
 
     return (
         <ActivityForm
+            defaultData={defaultData}
             onSubmit={(data: ActivityFormData) => {
                 createActivity({
                     variables: {
@@ -25,6 +31,9 @@ export default function ActivityCreateForm({refetchQueriesOnCreate}: Props): Rea
                         sourceId: data.source ? data.source.value : null
                     }
                 });
+                if (onSubmit) {
+                    onSubmit()
+                }
             }}
         />
     )
