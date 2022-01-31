@@ -65,7 +65,7 @@ export default function PersonRelationList(): ReactElement {
                             <Td>{personRelation.description}</Td>
                             <Td>
                                 {personRelation.persons && personRelation.persons.map((person) => {
-                                    return (<PersonNameLink id={person.id} name={person.name} />)
+                                    return (<PersonNameLink key={person.id} id={person.id} name={person.name} />)
                                 })}
                             </Td>
                             <Td className="space-x-1">

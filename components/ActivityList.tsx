@@ -67,7 +67,7 @@ export default function ActivityList(): ReactElement {
                             <Td className="p-2 font-medium text-gray-800">{activity.description}</Td>
                             <Td className="p-2 font-medium text-gray-800 space-x-2">
                                 {activity.persons && activity.persons.map((person) => {
-                                    return (<PersonNameLink id={person.id} name={person.name} />)
+                                    return (<PersonNameLink key={person.id} id={person.id} name={person.name} />)
                                 })}
                             </Td>
                             <Td>

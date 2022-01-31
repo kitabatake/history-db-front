@@ -1,9 +1,9 @@
 import {useRouter} from 'next/router'
 import {ReactElement} from "react";
-import Link from "next/link";
 import {useGetPersonWithDetailsQuery} from "../../src/generated/graphql";
 import {PersonAliasList} from "../../components/PersonAliasList";
 import {Grid, GridItem, HStack, Table, Tbody, Td, Text, Th, Thead, Tr} from "@chakra-ui/react";
+import PersonNameLink from "../../components/PersonNameLink";
 
 export default function Persons(): ReactElement {
     const router = useRouter()
@@ -62,9 +62,7 @@ export default function Persons(): ReactElement {
                                         <HStack spacing={2}>
                                             {personRelation.persons.map((person) => {
                                                 return (
-                                                    <Link key={person.id} href={`/persons/${person.id}`}>
-                                                        <a>{person.name}</a>
-                                                    </Link>
+                                                    <PersonNameLink key={person.id} id={person.id} name={person.name} />
                                                 )
                                             })}
                                         </HStack>
@@ -93,9 +91,7 @@ export default function Persons(): ReactElement {
                                         <HStack spacing={2}>
                                             {activity.persons.map((person) => {
                                                 return (
-                                                    <Link key={person.id} href={`/persons/${person.id}`}>
-                                                        <a>{person.name}</a>
-                                                    </Link>
+                                                    <PersonNameLink key={person.id} id={person.id} name={person.name} />
                                                 )
                                             })}
                                         </HStack>
