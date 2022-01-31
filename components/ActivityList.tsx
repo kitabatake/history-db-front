@@ -2,7 +2,6 @@ import {ReactElement, useState} from "react";
 import {confirmAlert} from "react-confirm-alert";
 import ActivityUpdateForm from "./form/ActivityUpdateForm";
 import {useDeleteActivityMutation, useGetActivitiesQuery} from "../src/generated/graphql";
-import Link from "next/link";
 import {GET_ACTIVITIES_QUERY} from "../graphqls/activitie";
 
 import {
@@ -22,6 +21,7 @@ import {
     Thead,
     Tr,
 } from '@chakra-ui/react'
+import PersonNameLink from "./PersonNameLink";
 
 export default function ActivityList(): ReactElement {
     const {loading, error, data} = useGetActivitiesQuery();
@@ -67,11 +67,7 @@ export default function ActivityList(): ReactElement {
                             <Td className="p-2 font-medium text-gray-800">{activity.description}</Td>
                             <Td className="p-2 font-medium text-gray-800 space-x-2">
                                 {activity.persons && activity.persons.map((person) => {
-                                    return (
-                                        <Link key={person.id} href={`/persons/${person.id}`}>
-                                            <a>{person.name}</a>
-                                        </Link>
-                                    )
+                                    return (<PersonNameLink id={person.id} name={person.name} />)
                                 })}
                             </Td>
                             <Td>

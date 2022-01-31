@@ -16,7 +16,6 @@ export default function PersonForm({defaultData = {name: "", description: ""}, o
     const {register, reset, handleSubmit, formState: {errors}} = useForm<PersonFormData>();
     return (
         <form
-            className="mt-2"
             onSubmit={handleSubmit(data => {
                 onSubmit({
                     name: data.name,

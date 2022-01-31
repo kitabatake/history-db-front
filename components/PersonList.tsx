@@ -1,6 +1,5 @@
 import {ReactElement, useState} from "react";
 import {confirmAlert} from "react-confirm-alert";
-import Link from "next/link";
 import {PersonUpdateForm} from "./form/PersonUpdateForm";
 import {useDeletePersonMutation, useGetPersonsQuery} from "../src/generated/graphql";
 import {GET_PERSONS_QUERY} from "../graphqls/persons";
@@ -20,8 +19,9 @@ import {
     Text,
     Th,
     Thead,
-    Tr,
+    Tr
 } from '@chakra-ui/react'
+import PersonNameLink from "./PersonNameLink";
 
 export default function PersonList(): ReactElement {
     const {loading, error, data} = useGetPersonsQuery();
@@ -63,9 +63,7 @@ export default function PersonList(): ReactElement {
                         <Tr key={person.id}>
                             <Td>{person.id}</Td>
                             <Td>
-                                <Link href={`/persons/${person.id}`}>
-                                    <a>{person.name}</a>
-                                </Link>
+                                <PersonNameLink id={person.id} name={person.name} />
                             </Td>
                             <Td>{person.description}</Td>
                             <Td>

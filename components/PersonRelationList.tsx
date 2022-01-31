@@ -1,6 +1,5 @@
 import {ReactElement, useState} from "react";
 import {confirmAlert} from "react-confirm-alert";
-import Link from "next/link";
 import {useDeletePersonRelationMutation, useGetPersonRelationsQuery} from "../src/generated/graphql";
 import {GET_PERSON_RELATIONS_QUERY} from "../graphqls/personRelations";
 
@@ -22,6 +21,7 @@ import {
     Tr,
 } from '@chakra-ui/react'
 import SourceUpdateForm from "./form/SourceUpdateForm";
+import PersonNameLink from "./PersonNameLink";
 
 export default function PersonRelationList(): ReactElement {
     const {loading, error, data} = useGetPersonRelationsQuery();
@@ -65,11 +65,7 @@ export default function PersonRelationList(): ReactElement {
                             <Td>{personRelation.description}</Td>
                             <Td>
                                 {personRelation.persons && personRelation.persons.map((person) => {
-                                    return (
-                                        <Link key={person.id} href={`/persons/${person.id}`}>
-                                            <a>{person.name}</a>
-                                        </Link>
-                                    )
+                                    return (<PersonNameLink id={person.id} name={person.name} />)
                                 })}
                             </Td>
                             <Td className="space-x-1">
