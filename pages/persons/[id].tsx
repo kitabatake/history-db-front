@@ -47,7 +47,7 @@ const PersonInfo = ({person}: { person: GetPersonWithDetailsQueryResult['data'][
                     <Tr>
                         <Th>別名</Th>
                         <Td>
-                            <PersonAliasList personId={Number(person.id)}/>
+                            <PersonAliasList aliases={person.aliases} personId={person.id} />
                         </Td>
                     </Tr>
                     <Tr>
@@ -208,7 +208,7 @@ const Activities = ({person}:  GetPersonWithDetailsQueryResult['data']): ReactEl
     );
 }
 
-export default function Persons(): ReactElement {
+export default function Person(): ReactElement {
     const router = useRouter()
     const {id} = router.query;
     const {data} = useGetPersonWithDetailsQuery({variables: {id: Number(id)}});

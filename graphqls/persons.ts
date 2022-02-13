@@ -16,6 +16,7 @@ export const GET_PERSON_WITH_DETAILS_QUERY = gql`
             id,
             name,
             description,
+            aliases,
             relations {
                 id,
                 description,
@@ -31,10 +32,6 @@ export const GET_PERSON_WITH_DETAILS_QUERY = gql`
                     id,
                     name
                 }
-            },
-            aliases {
-                id,
-                alias
             }
         }
     }`;
@@ -74,4 +71,20 @@ const UPDATE_PERSON_QUERY = gql`
     }
 `;
 
+const ADD_PERSON_ALIAS_QUERY = gql`
+    mutation AddPersonAlias($personId: Int!, $alias: String!) {
+        addPersonAlias(personId: $personId, alias: $alias) {
+            id,
+            name
+        }
+    }
+`;
 
+const REMOVE_PERSON_ALIAS_QUERY = gql`
+    mutation RemovePersonAlias($personId: Int!, $alias: String!) {
+        removePersonAlias(personId: $personId, alias: $alias) {
+            id,
+            name
+        }
+    }
+`;

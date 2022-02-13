@@ -29,20 +29,26 @@ export type Activity = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addPersonAlias: Person;
   createActivity: Activity;
   createPerson: Person;
-  createPersonAlias: PersonAlias;
   createPersonRelation: PersonRelation;
   createSource: Source;
   deleteActivity: Activity;
   deletePerson: Person;
-  deletePersonAlias: PersonAlias;
   deletePersonRelation: PersonRelation;
   deleteSource: Source;
+  removePersonAlias: Person;
   updateActivity: Activity;
   updatePerson: Person;
   updatePersonRelation: PersonRelation;
   updateSource: Source;
+};
+
+
+export type MutationAddPersonAliasArgs = {
+  alias: Scalars['String'];
+  personId: Scalars['Int'];
 };
 
 
@@ -59,12 +65,6 @@ export type MutationCreateActivityArgs = {
 export type MutationCreatePersonArgs = {
   description: Scalars['String'];
   name: Scalars['String'];
-};
-
-
-export type MutationCreatePersonAliasArgs = {
-  alias: Scalars['String'];
-  personId: Scalars['Int'];
 };
 
 
@@ -89,11 +89,6 @@ export type MutationDeletePersonArgs = {
 };
 
 
-export type MutationDeletePersonAliasArgs = {
-  id: Scalars['Int'];
-};
-
-
 export type MutationDeletePersonRelationArgs = {
   id: Scalars['Int'];
 };
@@ -101,6 +96,12 @@ export type MutationDeletePersonRelationArgs = {
 
 export type MutationDeleteSourceArgs = {
   id: Scalars['Int'];
+};
+
+
+export type MutationRemovePersonAliasArgs = {
+  alias: Scalars['String'];
+  personId: Scalars['Int'];
 };
 
 
@@ -137,18 +138,11 @@ export type MutationUpdateSourceArgs = {
 export type Person = {
   __typename?: 'Person';
   activities: Array<Activity>;
-  aliases: Array<PersonAlias>;
+  aliases: Array<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   name: Scalars['String'];
   relations: Array<PersonRelation>;
-};
-
-export type PersonAlias = {
-  __typename?: 'PersonAlias';
-  alias: Scalars['String'];
-  id: Scalars['Int'];
-  person: Person;
 };
 
 export type PersonRelation = {
@@ -163,7 +157,6 @@ export type Query = {
   activities: Array<Activity>;
   activity: Activity;
   person: Person;
-  personAliases: Array<PersonAlias>;
   personRelation: PersonRelation;
   personRelations: Array<PersonRelation>;
   persons: Array<Person>;
@@ -179,11 +172,6 @@ export type QueryActivityArgs = {
 
 export type QueryPersonArgs = {
   id: Scalars['Int'];
-};
-
-
-export type QueryPersonAliasesArgs = {
-  personId: Scalars['Int'];
 };
 
 
@@ -256,28 +244,6 @@ export type DeleteActivityMutationVariables = Exact<{
 
 export type DeleteActivityMutation = { __typename?: 'Mutation', deleteActivity: { __typename?: 'Activity', id: number } };
 
-export type GetPersonAliasesQueryVariables = Exact<{
-  personId: Scalars['Int'];
-}>;
-
-
-export type GetPersonAliasesQuery = { __typename?: 'Query', personAliases: Array<{ __typename?: 'PersonAlias', id: number, alias: string }> };
-
-export type CreatePersonAliasMutationVariables = Exact<{
-  personId: Scalars['Int'];
-  alias: Scalars['String'];
-}>;
-
-
-export type CreatePersonAliasMutation = { __typename?: 'Mutation', createPersonAlias: { __typename?: 'PersonAlias', id: number } };
-
-export type DeletePersonAliasMutationVariables = Exact<{
-  id: Scalars['Int'];
-}>;
-
-
-export type DeletePersonAliasMutation = { __typename?: 'Mutation', deletePersonAlias: { __typename?: 'PersonAlias', id: number } };
-
 export type GetPersonRelationQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -326,7 +292,7 @@ export type GetPersonWithDetailsQueryVariables = Exact<{
 }>;
 
 
-export type GetPersonWithDetailsQuery = { __typename?: 'Query', person: { __typename?: 'Person', id: number, name: string, description?: string | null | undefined, relations: Array<{ __typename?: 'PersonRelation', id: number, description: string, persons: Array<{ __typename?: 'Person', id: number, name: string }> }>, activities: Array<{ __typename?: 'Activity', id: number, description: string, persons: Array<{ __typename?: 'Person', id: number, name: string }> }>, aliases: Array<{ __typename?: 'PersonAlias', id: number, alias: string }> } };
+export type GetPersonWithDetailsQuery = { __typename?: 'Query', person: { __typename?: 'Person', id: number, name: string, description?: string | null | undefined, aliases: Array<string>, relations: Array<{ __typename?: 'PersonRelation', id: number, description: string, persons: Array<{ __typename?: 'Person', id: number, name: string }> }>, activities: Array<{ __typename?: 'Activity', id: number, description: string, persons: Array<{ __typename?: 'Person', id: number, name: string }> }> } };
 
 export type GetPersonsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -356,6 +322,22 @@ export type UpdatePersonMutationVariables = Exact<{
 
 
 export type UpdatePersonMutation = { __typename?: 'Mutation', updatePerson: { __typename?: 'Person', id: number } };
+
+export type AddPersonAliasMutationVariables = Exact<{
+  personId: Scalars['Int'];
+  alias: Scalars['String'];
+}>;
+
+
+export type AddPersonAliasMutation = { __typename?: 'Mutation', addPersonAlias: { __typename?: 'Person', id: number, name: string } };
+
+export type RemovePersonAliasMutationVariables = Exact<{
+  personId: Scalars['Int'];
+  alias: Scalars['String'];
+}>;
+
+
+export type RemovePersonAliasMutation = { __typename?: 'Mutation', removePersonAlias: { __typename?: 'Person', id: number, name: string } };
 
 export type GetSourceQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -613,109 +595,6 @@ export function useDeleteActivityMutation(baseOptions?: Apollo.MutationHookOptio
 export type DeleteActivityMutationHookResult = ReturnType<typeof useDeleteActivityMutation>;
 export type DeleteActivityMutationResult = Apollo.MutationResult<DeleteActivityMutation>;
 export type DeleteActivityMutationOptions = Apollo.BaseMutationOptions<DeleteActivityMutation, DeleteActivityMutationVariables>;
-export const GetPersonAliasesDocument = gql`
-    query getPersonAliases($personId: Int!) {
-  personAliases(personId: $personId) {
-    id
-    alias
-  }
-}
-    `;
-
-/**
- * __useGetPersonAliasesQuery__
- *
- * To run a query within a React component, call `useGetPersonAliasesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetPersonAliasesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetPersonAliasesQuery({
- *   variables: {
- *      personId: // value for 'personId'
- *   },
- * });
- */
-export function useGetPersonAliasesQuery(baseOptions: Apollo.QueryHookOptions<GetPersonAliasesQuery, GetPersonAliasesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetPersonAliasesQuery, GetPersonAliasesQueryVariables>(GetPersonAliasesDocument, options);
-      }
-export function useGetPersonAliasesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPersonAliasesQuery, GetPersonAliasesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetPersonAliasesQuery, GetPersonAliasesQueryVariables>(GetPersonAliasesDocument, options);
-        }
-export type GetPersonAliasesQueryHookResult = ReturnType<typeof useGetPersonAliasesQuery>;
-export type GetPersonAliasesLazyQueryHookResult = ReturnType<typeof useGetPersonAliasesLazyQuery>;
-export type GetPersonAliasesQueryResult = Apollo.QueryResult<GetPersonAliasesQuery, GetPersonAliasesQueryVariables>;
-export const CreatePersonAliasDocument = gql`
-    mutation CreatePersonAlias($personId: Int!, $alias: String!) {
-  createPersonAlias(personId: $personId, alias: $alias) {
-    id
-  }
-}
-    `;
-export type CreatePersonAliasMutationFn = Apollo.MutationFunction<CreatePersonAliasMutation, CreatePersonAliasMutationVariables>;
-
-/**
- * __useCreatePersonAliasMutation__
- *
- * To run a mutation, you first call `useCreatePersonAliasMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreatePersonAliasMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createPersonAliasMutation, { data, loading, error }] = useCreatePersonAliasMutation({
- *   variables: {
- *      personId: // value for 'personId'
- *      alias: // value for 'alias'
- *   },
- * });
- */
-export function useCreatePersonAliasMutation(baseOptions?: Apollo.MutationHookOptions<CreatePersonAliasMutation, CreatePersonAliasMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreatePersonAliasMutation, CreatePersonAliasMutationVariables>(CreatePersonAliasDocument, options);
-      }
-export type CreatePersonAliasMutationHookResult = ReturnType<typeof useCreatePersonAliasMutation>;
-export type CreatePersonAliasMutationResult = Apollo.MutationResult<CreatePersonAliasMutation>;
-export type CreatePersonAliasMutationOptions = Apollo.BaseMutationOptions<CreatePersonAliasMutation, CreatePersonAliasMutationVariables>;
-export const DeletePersonAliasDocument = gql`
-    mutation DeletePersonAlias($id: Int!) {
-  deletePersonAlias(id: $id) {
-    id
-  }
-}
-    `;
-export type DeletePersonAliasMutationFn = Apollo.MutationFunction<DeletePersonAliasMutation, DeletePersonAliasMutationVariables>;
-
-/**
- * __useDeletePersonAliasMutation__
- *
- * To run a mutation, you first call `useDeletePersonAliasMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeletePersonAliasMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deletePersonAliasMutation, { data, loading, error }] = useDeletePersonAliasMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useDeletePersonAliasMutation(baseOptions?: Apollo.MutationHookOptions<DeletePersonAliasMutation, DeletePersonAliasMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<DeletePersonAliasMutation, DeletePersonAliasMutationVariables>(DeletePersonAliasDocument, options);
-      }
-export type DeletePersonAliasMutationHookResult = ReturnType<typeof useDeletePersonAliasMutation>;
-export type DeletePersonAliasMutationResult = Apollo.MutationResult<DeletePersonAliasMutation>;
-export type DeletePersonAliasMutationOptions = Apollo.BaseMutationOptions<DeletePersonAliasMutation, DeletePersonAliasMutationVariables>;
 export const GetPersonRelationDocument = gql`
     query GetPersonRelation($id: Int!) {
   personRelation(id: $id) {
@@ -941,6 +820,7 @@ export const GetPersonWithDetailsDocument = gql`
     id
     name
     description
+    aliases
     relations {
       id
       description
@@ -956,10 +836,6 @@ export const GetPersonWithDetailsDocument = gql`
         id
         name
       }
-    }
-    aliases {
-      id
-      alias
     }
   }
 }
@@ -1131,6 +1007,76 @@ export function useUpdatePersonMutation(baseOptions?: Apollo.MutationHookOptions
 export type UpdatePersonMutationHookResult = ReturnType<typeof useUpdatePersonMutation>;
 export type UpdatePersonMutationResult = Apollo.MutationResult<UpdatePersonMutation>;
 export type UpdatePersonMutationOptions = Apollo.BaseMutationOptions<UpdatePersonMutation, UpdatePersonMutationVariables>;
+export const AddPersonAliasDocument = gql`
+    mutation AddPersonAlias($personId: Int!, $alias: String!) {
+  addPersonAlias(personId: $personId, alias: $alias) {
+    id
+    name
+  }
+}
+    `;
+export type AddPersonAliasMutationFn = Apollo.MutationFunction<AddPersonAliasMutation, AddPersonAliasMutationVariables>;
+
+/**
+ * __useAddPersonAliasMutation__
+ *
+ * To run a mutation, you first call `useAddPersonAliasMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddPersonAliasMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addPersonAliasMutation, { data, loading, error }] = useAddPersonAliasMutation({
+ *   variables: {
+ *      personId: // value for 'personId'
+ *      alias: // value for 'alias'
+ *   },
+ * });
+ */
+export function useAddPersonAliasMutation(baseOptions?: Apollo.MutationHookOptions<AddPersonAliasMutation, AddPersonAliasMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddPersonAliasMutation, AddPersonAliasMutationVariables>(AddPersonAliasDocument, options);
+      }
+export type AddPersonAliasMutationHookResult = ReturnType<typeof useAddPersonAliasMutation>;
+export type AddPersonAliasMutationResult = Apollo.MutationResult<AddPersonAliasMutation>;
+export type AddPersonAliasMutationOptions = Apollo.BaseMutationOptions<AddPersonAliasMutation, AddPersonAliasMutationVariables>;
+export const RemovePersonAliasDocument = gql`
+    mutation RemovePersonAlias($personId: Int!, $alias: String!) {
+  removePersonAlias(personId: $personId, alias: $alias) {
+    id
+    name
+  }
+}
+    `;
+export type RemovePersonAliasMutationFn = Apollo.MutationFunction<RemovePersonAliasMutation, RemovePersonAliasMutationVariables>;
+
+/**
+ * __useRemovePersonAliasMutation__
+ *
+ * To run a mutation, you first call `useRemovePersonAliasMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemovePersonAliasMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removePersonAliasMutation, { data, loading, error }] = useRemovePersonAliasMutation({
+ *   variables: {
+ *      personId: // value for 'personId'
+ *      alias: // value for 'alias'
+ *   },
+ * });
+ */
+export function useRemovePersonAliasMutation(baseOptions?: Apollo.MutationHookOptions<RemovePersonAliasMutation, RemovePersonAliasMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemovePersonAliasMutation, RemovePersonAliasMutationVariables>(RemovePersonAliasDocument, options);
+      }
+export type RemovePersonAliasMutationHookResult = ReturnType<typeof useRemovePersonAliasMutation>;
+export type RemovePersonAliasMutationResult = Apollo.MutationResult<RemovePersonAliasMutation>;
+export type RemovePersonAliasMutationOptions = Apollo.BaseMutationOptions<RemovePersonAliasMutation, RemovePersonAliasMutationVariables>;
 export const GetSourceDocument = gql`
     query getSource($id: Int!) {
   source(id: $id) {
