@@ -1,17 +1,16 @@
 import {ReactElement} from "react";
-import PropTypes from "prop-types";
 import AsyncSelect from "react-select/async";
 import {apolloClient} from "../apolloClient";
 import {gql} from "@apollo/client";
 
-type Option = {label: string, value: number}
+type Option = { label: string, value: number }
 const searchPersonsQuery = gql`
-query SearchPersons($nameForSearch: String!) {
-    persons(nameForSearch: $nameForSearch) {
-        id,
-        name
+    query SearchPersons($nameForSearch: String!) {
+        persons(nameForSearch: $nameForSearch) {
+            id,
+            name
+        }
     }
-} 
 `;
 
 function loadPersonOptions(input, callback) {
@@ -32,7 +31,12 @@ function loadPersonOptions(input, callback) {
     });
 }
 
-function PersonsSelect({value, onChange}): ReactElement {
+interface PersonsSelectProps {
+    value: Option[],
+    onChange: (Option) => void,
+}
+
+export const PersonsSelect = ({value, onChange}: PersonsSelectProps): ReactElement => {
     return (
         <AsyncSelect<Option, true>
             loadOptions={loadPersonOptions}
@@ -43,9 +47,17 @@ function PersonsSelect({value, onChange}): ReactElement {
     )
 }
 
-PersonsSelect.propTypes = {
-    value: PropTypes.array,
-    onChange: PropTypes.func.isRequired
+interface PersonSelectProps {
+    value: Option,
+    onChange: (Option) => void,
 }
 
-export default PersonsSelect;
+export const PersonSelect = ({value, onChange}: PersonSelectProps): ReactElement => {
+    return (
+        <AsyncSelect<Option, false>
+            loadOptions={loadPersonOptions}
+            value={value}
+            onChange={onChange}
+        />
+    )
+}

@@ -102,3 +102,11 @@ const REMOVE_PERSON_ALIAS_QUERY = gql`
         }
     }
 `;
+
+const ADD_RELATED_PERSON_QUERY = gql`
+    mutation AddRelatedPerson($fromId: Int!, $toId: Int!, $label: String!) {
+        addRelatedPerson(fromId: $fromId, toId: $toId, label: $label) {
+            id
+        }
+    }
+`;

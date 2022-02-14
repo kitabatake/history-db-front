@@ -1,5 +1,5 @@
 import {ReactElement} from "react";
-import PersonsSelect from "../PersonsSelect";
+import {PersonsSelect} from "../PersonsSelect";
 import {Controller, useForm} from "react-hook-form";
 import {Box, Button, FormControl, FormLabel, Input, Text} from '@chakra-ui/react'
 

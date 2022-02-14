@@ -5,21 +5,26 @@ import RelatedPersonForm from "./RelatedPersonForm";
 
 interface Props {
     refetchQueriesOnCreate: RefetchQueryDescriptor[],
-    onSubmit?: () => void
+    onSubmit?: () => void,
+    from?: {value: number, label: string}
 }
 
-export default function PersonRelationCreateForm({refetchQueriesOnCreate, onSubmit}: Props): ReactElement {
+export default function RelatedPersonCreateForm({refetchQueriesOnCreate, onSubmit, from}: Props): ReactElement {
     const [addRelatedPersonMutation] = useAddRelatedPersonMutation({
         refetchQueries: refetchQueriesOnCreate
     });
 
     return (
         <RelatedPersonForm
+            defaultData={from
+                ? {label: "", from: from, to: null}
+                : {label: "", from: null, to: null}
+            }
             onSubmit={(data) => {
                 addRelatedPersonMutation({
                     variables: {
-                        fromId: data.fromId,
-                        toId: data.toId,
+                        fromId: data.from.value,
+                        toId: data.to.value,
                         label: data.label
                     }
                 });

@@ -368,6 +368,15 @@ export type RemovePersonAliasMutationVariables = Exact<{
 
 export type RemovePersonAliasMutation = { __typename?: 'Mutation', removePersonAlias: { __typename?: 'Person', id: number, name: string } };
 
+export type AddRelatedPersonMutationVariables = Exact<{
+  fromId: Scalars['Int'];
+  toId: Scalars['Int'];
+  label: Scalars['String'];
+}>;
+
+
+export type AddRelatedPersonMutation = { __typename?: 'Mutation', addRelatedPerson: { __typename?: 'Person', id: number } };
+
 export type GetSourceQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -1145,6 +1154,41 @@ export function useRemovePersonAliasMutation(baseOptions?: Apollo.MutationHookOp
 export type RemovePersonAliasMutationHookResult = ReturnType<typeof useRemovePersonAliasMutation>;
 export type RemovePersonAliasMutationResult = Apollo.MutationResult<RemovePersonAliasMutation>;
 export type RemovePersonAliasMutationOptions = Apollo.BaseMutationOptions<RemovePersonAliasMutation, RemovePersonAliasMutationVariables>;
+export const AddRelatedPersonDocument = gql`
+    mutation AddRelatedPerson($fromId: Int!, $toId: Int!, $label: String!) {
+  addRelatedPerson(fromId: $fromId, toId: $toId, label: $label) {
+    id
+  }
+}
+    `;
+export type AddRelatedPersonMutationFn = Apollo.MutationFunction<AddRelatedPersonMutation, AddRelatedPersonMutationVariables>;
+
+/**
+ * __useAddRelatedPersonMutation__
+ *
+ * To run a mutation, you first call `useAddRelatedPersonMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddRelatedPersonMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addRelatedPersonMutation, { data, loading, error }] = useAddRelatedPersonMutation({
+ *   variables: {
+ *      fromId: // value for 'fromId'
+ *      toId: // value for 'toId'
+ *      label: // value for 'label'
+ *   },
+ * });
+ */
+export function useAddRelatedPersonMutation(baseOptions?: Apollo.MutationHookOptions<AddRelatedPersonMutation, AddRelatedPersonMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddRelatedPersonMutation, AddRelatedPersonMutationVariables>(AddRelatedPersonDocument, options);
+      }
+export type AddRelatedPersonMutationHookResult = ReturnType<typeof useAddRelatedPersonMutation>;
+export type AddRelatedPersonMutationResult = Apollo.MutationResult<AddRelatedPersonMutation>;
+export type AddRelatedPersonMutationOptions = Apollo.BaseMutationOptions<AddRelatedPersonMutation, AddRelatedPersonMutationVariables>;
 export const GetSourceDocument = gql`
     query getSource($id: Int!) {
   source(id: $id) {

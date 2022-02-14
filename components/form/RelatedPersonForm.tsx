@@ -1,0 +1,76 @@
+import {ReactElement} from "react";
+import {PersonSelect} from "../PersonsSelect";
+import {Controller, useForm} from "react-hook-form";
+import {Box, Button, FormControl, FormLabel, Input, Text} from '@chakra-ui/react'
+
+export interface RelatedPersonFormData {
+    label: string,
+    from: {value: number, label: string},
+    to: {value: number, label: string}
+}
+interface Props {
+    defaultData?: RelatedPersonFormData,
+    onSubmit: (RelatedPersonFormData) => void
+}
+
+export default function RelatedPersonForm({defaultData = {label: "", from: null, to: null}, onSubmit}: Props): ReactElement {
+    const {register, control, reset, handleSubmit, formState: {errors}} = useForm<RelatedPersonFormData>();
+    return (
+        <form
+            className="mt-2"
+            onSubmit={handleSubmit(data => {
+                onSubmit({
+                    label: data.label,
+                    from: data.from,
+                    to: data.to
+                });
+                reset();
+            })}
+        >
+            <FormControl mb='2'>
+                <FormLabel><Text fontSize='sm'>from</Text></FormLabel>
+                <Controller
+                    name="from"
+                    control={control}
+                    defaultValue={defaultData.from}
+                    render={({ field }) =>(
+                        <PersonSelect
+                            {...field}
+                        />
+                    )}
+                />
+            </FormControl>
+            <FormControl mb='2'>
+                <FormLabel><Text fontSize='sm'>to</Text></FormLabel>
+                <Controller
+                    name="to"
+                    control={control}
+                    defaultValue={defaultData.to}
+                    render={({ field }) =>(
+                        <PersonSelect
+                            {...field}
+                        />
+                    )}
+                />
+            </FormControl>
+            <FormControl mb='2'>
+                <FormLabel><Text fontSize='sm'>ラベル</Text></FormLabel>
+                <Input
+                    type="text"
+                    {...register("label")}
+                    defaultValue={defaultData.label}
+                />
+            </FormControl>
+            <Box textAlign='center'>
+                <Button
+                    type="submit"
+                    colorScheme='gold'
+                    size='sm'
+                    mt='4'
+                >
+                    送信
+                </Button>
+            </Box>
+        </form>
+    )
+}

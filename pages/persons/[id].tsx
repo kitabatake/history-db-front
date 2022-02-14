@@ -33,8 +33,8 @@ import {
 import PersonNameLink from "../../components/PersonNameLink";
 import {PersonUpdateForm} from "../../components/form/PersonUpdateForm";
 import ActivityCreateForm from "../../components/form/ActivityCreateForm";
-import PersonRelationCreateForm from "../../components/form/PersonRelationCreateForm";
 import {FiX} from "react-icons/fi";
+import RelatedPersonCreateForm from "../../components/form/RelatedPersonCreateForm";
 
 const PersonInfo = ({person}: { person: GetPersonWithDetailsQueryResult['data']['person'] }): ReactElement => {
     const [personIdForUpdate, setPersonIdForUpdate] = useState(null);
@@ -154,13 +154,14 @@ const RelatedPersons = ({person}:  GetPersonWithDetailsQueryResult['data']): Rea
                     <ModalHeader>関連追加</ModalHeader>
                     <ModalCloseButton/>
                     <ModalBody>
-                        <PersonRelationCreateForm
+                        <RelatedPersonCreateForm
                             refetchQueriesOnCreate={[GET_PERSON_WITH_DETAILS_QUERY]}
+                            from={{value: person.id, label: person.name}}
                             onSubmit={onClose}
-                            defaultData={{
-                                description: '',
-                                persons: [{value: person.id, label: person.name}]
-                            }}
+                            // defaultData={{
+                            //     description: '',
+                            //     persons: [{value: person.id, label: person.name}]
+                            // }}
                         />
                     </ModalBody>
                 </ModalContent>
