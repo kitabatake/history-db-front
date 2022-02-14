@@ -25,6 +25,14 @@ export const GET_PERSON_WITH_DETAILS_QUERY = gql`
                     name
                 }
             },
+            relatedPersons {
+                id,
+                label,
+                person {
+                    id,
+                    name
+                }
+            }
             activities {
                 id,
                 description,

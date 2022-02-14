@@ -100,19 +100,15 @@ const PersonRelations = ({person}:  GetPersonWithDetailsQueryResult['data']): Re
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {person.relations.map((personRelation) => (
-                        <Tr key={personRelation.id}>
-                            <Td>{personRelation.id}</Td>
-                            <Td>{personRelation.description}</Td>
+                    {person.relatedPersons.map((relatedPerson) => (
+                        <Tr key={relatedPerson.id}>
+                            <Td>{relatedPerson.id}</Td>
+                            <Td>{relatedPerson.label}</Td>
                             <Td>
-                                <HStack spacing={2}>
-                                    {personRelation.persons.map((person) => {
-                                        return (
-                                            <PersonNameLink key={person.id} id={person.id}
-                                                            name={person.name}/>
-                                        )
-                                    })}
-                                </HStack>
+                                <PersonNameLink
+                                    key={relatedPerson.person.id}
+                                    id={relatedPerson.person.id}
+                                    name={relatedPerson.person.name}/>
                             </Td>
                         </Tr>
                     ))}

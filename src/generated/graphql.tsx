@@ -30,6 +30,7 @@ export type Activity = {
 export type Mutation = {
   __typename?: 'Mutation';
   addPersonAlias: Person;
+  addRelatedPerson: Person;
   createActivity: Activity;
   createPerson: Person;
   createPersonRelation: PersonRelation;
@@ -39,6 +40,7 @@ export type Mutation = {
   deletePersonRelation: PersonRelation;
   deleteSource: Source;
   removePersonAlias: Person;
+  removeRelatedPerson: Scalars['Int'];
   updateActivity: Activity;
   updatePerson: Person;
   updatePersonRelation: PersonRelation;
@@ -49,6 +51,13 @@ export type Mutation = {
 export type MutationAddPersonAliasArgs = {
   alias: Scalars['String'];
   personId: Scalars['Int'];
+};
+
+
+export type MutationAddRelatedPersonArgs = {
+  fromId: Scalars['Int'];
+  label: Scalars['String'];
+  toId: Scalars['Int'];
 };
 
 
@@ -105,6 +114,11 @@ export type MutationRemovePersonAliasArgs = {
 };
 
 
+export type MutationRemoveRelatedPersonArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type MutationUpdateActivityArgs = {
   day?: InputMaybe<Scalars['Int']>;
   description: Scalars['String'];
@@ -142,6 +156,7 @@ export type Person = {
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   name: Scalars['String'];
+  relatedPersons: Array<RelatedPerson>;
   relations: Array<PersonRelation>;
 };
 
@@ -192,6 +207,13 @@ export type QuerySourceArgs = {
 
 export type QuerySourcesArgs = {
   nameForSearch?: InputMaybe<Scalars['String']>;
+};
+
+export type RelatedPerson = {
+  __typename?: 'RelatedPerson';
+  id: Scalars['Int'];
+  label: Scalars['String'];
+  person: Person;
 };
 
 export type Source = {
@@ -292,7 +314,7 @@ export type GetPersonWithDetailsQueryVariables = Exact<{
 }>;
 
 
-export type GetPersonWithDetailsQuery = { __typename?: 'Query', person: { __typename?: 'Person', id: number, name: string, description?: string | null | undefined, aliases: Array<string>, relations: Array<{ __typename?: 'PersonRelation', id: number, description: string, persons: Array<{ __typename?: 'Person', id: number, name: string }> }>, activities: Array<{ __typename?: 'Activity', id: number, description: string, persons: Array<{ __typename?: 'Person', id: number, name: string }> }> } };
+export type GetPersonWithDetailsQuery = { __typename?: 'Query', person: { __typename?: 'Person', id: number, name: string, description?: string | null | undefined, aliases: Array<string>, relations: Array<{ __typename?: 'PersonRelation', id: number, description: string, persons: Array<{ __typename?: 'Person', id: number, name: string }> }>, relatedPersons: Array<{ __typename?: 'RelatedPerson', id: number, label: string, person: { __typename?: 'Person', id: number, name: string } }>, activities: Array<{ __typename?: 'Activity', id: number, description: string, persons: Array<{ __typename?: 'Person', id: number, name: string }> }> } };
 
 export type GetPersonsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -825,6 +847,14 @@ export const GetPersonWithDetailsDocument = gql`
       id
       description
       persons {
+        id
+        name
+      }
+    }
+    relatedPersons {
+      id
+      label
+      person {
         id
         name
       }
