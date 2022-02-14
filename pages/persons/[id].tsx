@@ -1,6 +1,10 @@
 import {useRouter} from 'next/router'
 import {ReactElement, useState} from "react";
-import {GetPersonWithDetailsQueryResult, useGetPersonWithDetailsQuery} from "../../src/generated/graphql";
+import {
+    GetPersonWithDetailsQueryResult,
+    useGetPersonWithDetailsQuery,
+    useRemoveRelatedPersonMutation
+} from "../../src/generated/graphql";
 import {GET_PERSON_WITH_DETAILS_QUERY} from "../../graphqls/persons";
 import {PersonAliasList} from "../../components/PersonAliasList";
 import {
@@ -9,6 +13,7 @@ import {
     Grid,
     GridItem,
     HStack,
+    IconButton,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -29,6 +34,7 @@ import PersonNameLink from "../../components/PersonNameLink";
 import {PersonUpdateForm} from "../../components/form/PersonUpdateForm";
 import ActivityCreateForm from "../../components/form/ActivityCreateForm";
 import PersonRelationCreateForm from "../../components/form/PersonRelationCreateForm";
+import {FiX} from "react-icons/fi";
 
 const PersonInfo = ({person}: { person: GetPersonWithDetailsQueryResult['data']['person'] }): ReactElement => {
     const [personIdForUpdate, setPersonIdForUpdate] = useState(null);
@@ -84,7 +90,10 @@ const PersonInfo = ({person}: { person: GetPersonWithDetailsQueryResult['data'][
     )
 }
 
-const PersonRelations = ({person}:  GetPersonWithDetailsQueryResult['data']): ReactElement => {
+const RelatedPersons = ({person}:  GetPersonWithDetailsQueryResult['data']): ReactElement => {
+    const [removeRelatedPersonMutation] = useRemoveRelatedPersonMutation({
+        refetchQueries: [GET_PERSON_WITH_DETAILS_QUERY]
+    });
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
         <>
@@ -95,8 +104,9 @@ const PersonRelations = ({person}:  GetPersonWithDetailsQueryResult['data']): Re
                 <Thead>
                     <Tr>
                         <Th>ID</Th>
-                        <Th>説明</Th>
+                        <Th>ラベル</Th>
                         <Th>人物</Th>
+                        <Th></Th>
                     </Tr>
                 </Thead>
                 <Tbody>
@@ -109,6 +119,22 @@ const PersonRelations = ({person}:  GetPersonWithDetailsQueryResult['data']): Re
                                     key={relatedPerson.person.id}
                                     id={relatedPerson.person.id}
                                     name={relatedPerson.person.name}/>
+                            </Td>
+                            <Td>
+                                <IconButton
+                                    aria-label='close'
+                                    icon={<FiX />}
+                                    size='xs'
+                                    colorScheme='gold'
+                                    ml={2}
+                                    onClick={() => {
+                                        removeRelatedPersonMutation({
+                                            variables: {
+                                                id: relatedPerson.id
+                                            }
+                                        })
+                                    }}
+                                />
                             </Td>
                         </Tr>
                     ))}
@@ -216,7 +242,7 @@ export default function Person(): ReactElement {
                         <PersonInfo person={data.person} />
                     </GridItem>
                     <GridItem p={5} bg='white' rounded="base" boxShadow="md">
-                        <PersonRelations person={data.person} />
+                        <RelatedPersons person={data.person} />
                     </GridItem>
                     <GridItem p={5} bg='white' rounded="base" boxShadow="md">
                         <Activities person={data.person} />

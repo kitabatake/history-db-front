@@ -71,6 +71,12 @@ const CREATE_PERSON_QUERY = gql`
     }
 `;
 
+const REMOVE_RELATED_PERSON = gql`
+    mutation RemoveRelatedPerson($id: Int!) {
+        removeRelatedPerson(id: $id)
+    }
+`
+
 const UPDATE_PERSON_QUERY = gql`
     mutation UpdatePerson($id: Int!, $name: String!, $description: String!) {
         updatePerson(id: $id, name: $name, description: $description) {

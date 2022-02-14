@@ -336,6 +336,13 @@ export type CreatePersonMutationVariables = Exact<{
 
 export type CreatePersonMutation = { __typename?: 'Mutation', createPerson: { __typename?: 'Person', id: number, name: string } };
 
+export type RemoveRelatedPersonMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type RemoveRelatedPersonMutation = { __typename?: 'Mutation', removeRelatedPerson: number };
+
 export type UpdatePersonMutationVariables = Exact<{
   id: Scalars['Int'];
   name: Scalars['String'];
@@ -1002,6 +1009,37 @@ export function useCreatePersonMutation(baseOptions?: Apollo.MutationHookOptions
 export type CreatePersonMutationHookResult = ReturnType<typeof useCreatePersonMutation>;
 export type CreatePersonMutationResult = Apollo.MutationResult<CreatePersonMutation>;
 export type CreatePersonMutationOptions = Apollo.BaseMutationOptions<CreatePersonMutation, CreatePersonMutationVariables>;
+export const RemoveRelatedPersonDocument = gql`
+    mutation RemoveRelatedPerson($id: Int!) {
+  removeRelatedPerson(id: $id)
+}
+    `;
+export type RemoveRelatedPersonMutationFn = Apollo.MutationFunction<RemoveRelatedPersonMutation, RemoveRelatedPersonMutationVariables>;
+
+/**
+ * __useRemoveRelatedPersonMutation__
+ *
+ * To run a mutation, you first call `useRemoveRelatedPersonMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveRelatedPersonMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeRelatedPersonMutation, { data, loading, error }] = useRemoveRelatedPersonMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRemoveRelatedPersonMutation(baseOptions?: Apollo.MutationHookOptions<RemoveRelatedPersonMutation, RemoveRelatedPersonMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveRelatedPersonMutation, RemoveRelatedPersonMutationVariables>(RemoveRelatedPersonDocument, options);
+      }
+export type RemoveRelatedPersonMutationHookResult = ReturnType<typeof useRemoveRelatedPersonMutation>;
+export type RemoveRelatedPersonMutationResult = Apollo.MutationResult<RemoveRelatedPersonMutation>;
+export type RemoveRelatedPersonMutationOptions = Apollo.BaseMutationOptions<RemoveRelatedPersonMutation, RemoveRelatedPersonMutationVariables>;
 export const UpdatePersonDocument = gql`
     mutation UpdatePerson($id: Int!, $name: String!, $description: String!) {
   updatePerson(id: $id, name: $name, description: $description) {
