@@ -105,9 +105,9 @@ const RelatedPersons = ({person}:  GetPersonWithDetailsQuery): ReactElement => {
                 <Thead>
                     <Tr>
                         <Th>ID</Th>
-                        <Th>ラベル</Th>
                         <Th>向き</Th>
                         <Th>人物</Th>
+                        <Th>ラベル</Th>
                         <Th></Th>
                     </Tr>
                 </Thead>
@@ -115,7 +115,6 @@ const RelatedPersons = ({person}:  GetPersonWithDetailsQuery): ReactElement => {
                     {person.relatedPersons.map((relatedPerson) => (
                         <Tr key={relatedPerson.id}>
                             <Td>{relatedPerson.id}</Td>
-                            <Td>{relatedPerson.label}</Td>
                             <Td>
                                 {relatedPerson.direction == RelationshipDirection.Inward && <FiArrowLeft />}
                                 {relatedPerson.direction == RelationshipDirection.Outward && <FiArrowRight />}
@@ -126,6 +125,7 @@ const RelatedPersons = ({person}:  GetPersonWithDetailsQuery): ReactElement => {
                                     id={relatedPerson.person.id}
                                     name={relatedPerson.person.name}/>
                             </Td>
+                            <Td>{relatedPerson.label}</Td>
                             <Td>
                                 <IconButton
                                     aria-label='close'
