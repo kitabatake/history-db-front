@@ -15,7 +15,7 @@ import {
     useColorModeValue,
     useDisclosure,
 } from '@chakra-ui/react';
-import {FiActivity, FiBook, FiHome, FiMenu, FiShuffle, FiUsers,} from 'react-icons/fi';
+import {FiActivity, FiBook, FiHome, FiMenu, FiUsers,} from 'react-icons/fi';
 import {IconType} from 'react-icons';
 import {useRouter} from "next/router";
 
@@ -28,7 +28,6 @@ const LinkItems: Array<LinkItemProps> = [
     { name: 'Home', path: '/', icon: FiHome },
     { name: '人物', path: '/persons', icon: FiUsers },
     { name: 'アクティビティ', path: '/activities', icon: FiActivity },
-    { name: '関連', path: '/person-relations', icon: FiShuffle },
     { name: '出典', path: '/sources', icon: FiBook },
 ];
 
