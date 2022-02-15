@@ -2,6 +2,7 @@ import {useRouter} from 'next/router'
 import {ReactElement, useState} from "react";
 import {
     GetPersonWithDetailsQuery,
+    RelationshipDirection,
     useGetPersonWithDetailsQuery,
     useRemoveRelatedPersonMutation
 } from "../../src/generated/graphql";
@@ -33,7 +34,7 @@ import {
 import PersonNameLink from "../../components/PersonNameLink";
 import {PersonUpdateForm} from "../../components/form/PersonUpdateForm";
 import ActivityCreateForm from "../../components/form/ActivityCreateForm";
-import {FiX} from "react-icons/fi";
+import {FiArrowLeft, FiArrowRight, FiX} from "react-icons/fi";
 import RelatedPersonCreateForm from "../../components/form/RelatedPersonCreateForm";
 
 const PersonInfo = ({person}: { person: GetPersonWithDetailsQuery['person'] }): ReactElement => {
@@ -105,6 +106,7 @@ const RelatedPersons = ({person}:  GetPersonWithDetailsQuery): ReactElement => {
                     <Tr>
                         <Th>ID</Th>
                         <Th>ラベル</Th>
+                        <Th>向き</Th>
                         <Th>人物</Th>
                         <Th></Th>
                     </Tr>
@@ -114,6 +116,10 @@ const RelatedPersons = ({person}:  GetPersonWithDetailsQuery): ReactElement => {
                         <Tr key={relatedPerson.id}>
                             <Td>{relatedPerson.id}</Td>
                             <Td>{relatedPerson.label}</Td>
+                            <Td>
+                                {relatedPerson.direction == RelationshipDirection.Inward && <FiArrowLeft />}
+                                {relatedPerson.direction == RelationshipDirection.Outward && <FiArrowRight />}
+                            </Td>
                             <Td>
                                 <PersonNameLink
                                     key={relatedPerson.person.id}

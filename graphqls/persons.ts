@@ -20,6 +20,7 @@ export const GET_PERSON_WITH_DETAILS_QUERY = gql`
             relatedPersons {
                 id,
                 label,
+                direction,
                 person {
                     id,
                     name

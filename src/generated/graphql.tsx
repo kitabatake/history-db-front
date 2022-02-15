@@ -175,10 +175,16 @@ export type QuerySourcesArgs = {
 
 export type RelatedPerson = {
   __typename?: 'RelatedPerson';
+  direction: RelationshipDirection;
   id: Scalars['Int'];
   label: Scalars['String'];
   person: Person;
 };
+
+export enum RelationshipDirection {
+  Inward = 'INWARD',
+  Outward = 'OUTWARD'
+}
 
 export type Source = {
   __typename?: 'Source';
@@ -242,7 +248,7 @@ export type GetPersonWithDetailsQueryVariables = Exact<{
 }>;
 
 
-export type GetPersonWithDetailsQuery = { __typename?: 'Query', person: { __typename?: 'Person', id: number, name: string, description?: string | null | undefined, aliases: Array<string>, relatedPersons: Array<{ __typename?: 'RelatedPerson', id: number, label: string, person: { __typename?: 'Person', id: number, name: string } }>, activities: Array<{ __typename?: 'Activity', id: number, description: string, persons: Array<{ __typename?: 'Person', id: number, name: string }> }> } };
+export type GetPersonWithDetailsQuery = { __typename?: 'Query', person: { __typename?: 'Person', id: number, name: string, description?: string | null | undefined, aliases: Array<string>, relatedPersons: Array<{ __typename?: 'RelatedPerson', id: number, label: string, direction: RelationshipDirection, person: { __typename?: 'Person', id: number, name: string } }>, activities: Array<{ __typename?: 'Activity', id: number, description: string, persons: Array<{ __typename?: 'Person', id: number, name: string }> }> } };
 
 export type GetPersonsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -615,6 +621,7 @@ export const GetPersonWithDetailsDocument = gql`
     relatedPersons {
       id
       label
+      direction
       person {
         id
         name
