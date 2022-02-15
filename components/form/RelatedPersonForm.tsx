@@ -2,19 +2,20 @@ import {ReactElement} from "react";
 import {PersonSelect} from "../PersonsSelect";
 import {Controller, useForm} from "react-hook-form";
 import {Box, Button, FormControl, FormLabel, Input, Text} from '@chakra-ui/react'
+import {SelectOption} from "../../lib/types/form";
 
 export interface RelatedPersonFormData {
     label: string,
-    from: {value: number, label: string},
-    to: {value: number, label: string}
+    from?: SelectOption,
+    to?: SelectOption
 }
 interface Props {
     defaultData?: RelatedPersonFormData,
-    onSubmit: (RelatedPersonFormData) => void
+    onSubmit: (data: RelatedPersonFormData) => void
 }
 
-export default function RelatedPersonForm({defaultData = {label: "", from: null, to: null}, onSubmit}: Props): ReactElement {
-    const {register, control, reset, handleSubmit, formState: {errors}} = useForm<RelatedPersonFormData>();
+export default function RelatedPersonForm({defaultData = {label: "", from: undefined, to: undefined}, onSubmit}: Props): ReactElement {
+    const {register, control, reset, handleSubmit} = useForm<RelatedPersonFormData>();
     return (
         <form
             className="mt-2"

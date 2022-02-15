@@ -1,7 +1,7 @@
 import {useRouter} from 'next/router'
 import {ReactElement, useState} from "react";
 import {
-    GetPersonWithDetailsQueryResult,
+    GetPersonWithDetailsQuery,
     useGetPersonWithDetailsQuery,
     useRemoveRelatedPersonMutation
 } from "../../src/generated/graphql";
@@ -36,8 +36,8 @@ import ActivityCreateForm from "../../components/form/ActivityCreateForm";
 import {FiX} from "react-icons/fi";
 import RelatedPersonCreateForm from "../../components/form/RelatedPersonCreateForm";
 
-const PersonInfo = ({person}: { person: GetPersonWithDetailsQueryResult['data']['person'] }): ReactElement => {
-    const [personIdForUpdate, setPersonIdForUpdate] = useState(null);
+const PersonInfo = ({person}: { person: GetPersonWithDetailsQuery['person'] }): ReactElement => {
+    const [personIdForUpdate, setPersonIdForUpdate] = useState<number|null>(null);
     return (
         <>
             <Table size='sm'>
@@ -90,7 +90,7 @@ const PersonInfo = ({person}: { person: GetPersonWithDetailsQueryResult['data'][
     )
 }
 
-const RelatedPersons = ({person}:  GetPersonWithDetailsQueryResult['data']): ReactElement => {
+const RelatedPersons = ({person}:  GetPersonWithDetailsQuery): ReactElement => {
     const [removeRelatedPersonMutation] = useRemoveRelatedPersonMutation({
         refetchQueries: [GET_PERSON_WITH_DETAILS_QUERY]
     });
@@ -170,7 +170,7 @@ const RelatedPersons = ({person}:  GetPersonWithDetailsQueryResult['data']): Rea
     );
 }
 
-const Activities = ({person}:  GetPersonWithDetailsQueryResult['data']): ReactElement => {
+const Activities = ({person}: GetPersonWithDetailsQuery): ReactElement => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
         <>

@@ -2,12 +2,13 @@ import {ReactElement} from "react";
 import ActivityForm, {ActivityFormData} from "./ActivityForm";
 import {RefetchQueryDescriptor} from "@apollo/client/core/types";
 import {useCreateActivityMutation} from "../../src/generated/graphql";
+import {SelectOption} from "../../lib/types/form";
 
 interface Props {
     refetchQueriesOnCreate: RefetchQueryDescriptor[],
     defaultData?: {
         description: string,
-        persons: Array<{value: number, label: string}>,
+        persons: Array<SelectOption>,
     }
     onSubmit?: () => void
 }

@@ -6,21 +6,23 @@ import {range} from "../../lib/util";
 import {SEARCH_SOURCES_QUERY} from "../../graphqls/sources";
 import {Controller, useForm} from "react-hook-form";
 import {Box, Button, FormControl, FormLabel, HStack, Input, Select, Text, Textarea} from '@chakra-ui/react'
+import {SelectOption} from "../../lib/types/form";
+import {Source} from "../../src/generated/graphql";
 
 export interface ActivityFormData {
     description: string,
-    persons: Array<{value: number, label: string}>,
-    source?: {value: number, label: string},
+    persons: Array<SelectOption>,
+    source?: SelectOption,
     year?: number,
     month?: number,
     day?: number
 }
 interface Props {
     defaultData?: ActivityFormData,
-    onSubmit: (ActivityFormData) => void
+    onSubmit: (data: ActivityFormData) => void
 }
 
-function loadSourceOptions(input, callback) {
+function loadSourceOptions(input: string, callback: (options: SelectOption[]) => void) {
     if (!input) {
         return Promise.resolve({options: []});
     }
@@ -29,7 +31,7 @@ function loadSourceOptions(input, callback) {
         query: SEARCH_SOURCES_QUERY,
         variables: {nameForSearch: input}
     }).then((response) => {
-        callback(response.data.sources.map(source => {
+        callback(response.data.sources.map((source: Source) => {
             return {
                 value: source.id,
                 label: source.name
