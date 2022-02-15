@@ -305,6 +305,13 @@ export type AddRelatedPersonMutationVariables = Exact<{
 
 export type AddRelatedPersonMutation = { __typename?: 'Mutation', addRelatedPerson: { __typename?: 'Person', id: number } };
 
+export type SearchPersonsQueryVariables = Exact<{
+  nameForSearch: Scalars['String'];
+}>;
+
+
+export type SearchPersonsQuery = { __typename?: 'Query', persons: Array<{ __typename?: 'Person', id: number, name: string }> };
+
 export type GetSourceQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -927,6 +934,42 @@ export function useAddRelatedPersonMutation(baseOptions?: Apollo.MutationHookOpt
 export type AddRelatedPersonMutationHookResult = ReturnType<typeof useAddRelatedPersonMutation>;
 export type AddRelatedPersonMutationResult = Apollo.MutationResult<AddRelatedPersonMutation>;
 export type AddRelatedPersonMutationOptions = Apollo.BaseMutationOptions<AddRelatedPersonMutation, AddRelatedPersonMutationVariables>;
+export const SearchPersonsDocument = gql`
+    query SearchPersons($nameForSearch: String!) {
+  persons(nameForSearch: $nameForSearch) {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useSearchPersonsQuery__
+ *
+ * To run a query within a React component, call `useSearchPersonsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchPersonsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchPersonsQuery({
+ *   variables: {
+ *      nameForSearch: // value for 'nameForSearch'
+ *   },
+ * });
+ */
+export function useSearchPersonsQuery(baseOptions: Apollo.QueryHookOptions<SearchPersonsQuery, SearchPersonsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchPersonsQuery, SearchPersonsQueryVariables>(SearchPersonsDocument, options);
+      }
+export function useSearchPersonsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchPersonsQuery, SearchPersonsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchPersonsQuery, SearchPersonsQueryVariables>(SearchPersonsDocument, options);
+        }
+export type SearchPersonsQueryHookResult = ReturnType<typeof useSearchPersonsQuery>;
+export type SearchPersonsLazyQueryHookResult = ReturnType<typeof useSearchPersonsLazyQuery>;
+export type SearchPersonsQueryResult = Apollo.QueryResult<SearchPersonsQuery, SearchPersonsQueryVariables>;
 export const GetSourceDocument = gql`
     query getSource($id: Int!) {
   source(id: $id) {

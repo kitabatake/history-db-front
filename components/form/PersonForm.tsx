@@ -9,7 +9,7 @@ export interface PersonFormData {
 
 interface Props {
     defaultData?: PersonFormData,
-    onSubmit: (PersonFormData) => void
+    onSubmit: (data: PersonFormData) => void
 }
 
 export default function PersonForm({defaultData = {name: "", description: ""}, onSubmit}: Props): ReactElement {

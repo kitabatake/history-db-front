@@ -2,7 +2,7 @@ import {ReactElement, useState} from "react";
 import {confirmAlert} from "react-confirm-alert";
 import ActivityUpdateForm from "./form/ActivityUpdateForm";
 import {useDeleteActivityMutation, useGetActivitiesQuery} from "../src/generated/graphql";
-import {GET_ACTIVITIES_QUERY} from "../graphqls/activitie";
+import {GET_ACTIVITIES_QUERY} from "../graphqls/activities";
 
 import {
     Button,

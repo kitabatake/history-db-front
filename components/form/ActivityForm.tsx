@@ -1,6 +1,6 @@
 import {ReactElement} from "react";
 import AsyncSelect from "react-select/async";
-import {PersonsSelect} from "../PersonsSelect";
+import PersonsSelect from "./PersonsSelect";
 import {apolloClient} from "../../apolloClient";
 import {range} from "../../lib/util";
 import {SEARCH_SOURCES_QUERY} from "../../graphqls/sources";

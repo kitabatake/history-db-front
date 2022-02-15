@@ -2,7 +2,7 @@ import {ReactElement} from "react";
 import ActivityCreateForm from "../components/form/ActivityCreateForm";
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import ActivityList from "../components/ActivityList";
-import {GET_ACTIVITIES_QUERY} from "../graphqls/activitie";
+import {GET_ACTIVITIES_QUERY} from "../graphqls/activities";
 import {Box, Flex, Text} from "@chakra-ui/react";
 
 export default function Activities(): ReactElement {

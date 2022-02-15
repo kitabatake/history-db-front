@@ -1,7 +1,7 @@
 import {RefetchQueryDescriptor} from "@apollo/client/core/types";
 import ActivityForm, {ActivityFormData} from "./ActivityForm";
 import {useGetActivityQuery, useUpdateActivityMutation} from "../../src/generated/graphql";
-import {GET_ACTIVITY_QUERY} from "../../graphqls/activitie";
+import {GET_ACTIVITY_QUERY} from "../../graphqls/activities";
 
 interface Props {
     activityId: number,
