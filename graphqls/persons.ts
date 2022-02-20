@@ -28,11 +28,7 @@ export const GET_PERSON_WITH_DETAILS_QUERY = gql`
             }
             activities {
                 id,
-                description,
-                persons {
-                    id,
-                    name
-                }
+                description
             }
         }
     }`;

@@ -2,13 +2,13 @@ import {ReactElement} from "react";
 import ActivityForm, {ActivityFormData} from "./ActivityForm";
 import {RefetchQueryDescriptor} from "@apollo/client/core/types";
 import {useCreateActivityMutation} from "../../src/generated/graphql";
-import {SelectOption} from "../../lib/types/form";
 
 interface Props {
     refetchQueriesOnCreate: RefetchQueryDescriptor[],
     defaultData?: {
+        name: string,
         description: string,
-        persons: Array<SelectOption>,
+        // persons: Array<SelectOption>,
     }
     onSubmit?: () => void
 }
@@ -24,12 +24,8 @@ export default function ActivityCreateForm({refetchQueriesOnCreate, defaultData,
             onSubmit={(data: ActivityFormData) => {
                 createActivity({
                     variables: {
+                        name: data.name,
                         description: data.description,
-                        year: data.year,
-                        month: data.month,
-                        day: data.day,
-                        personIds: data.persons.map(person => person.value),
-                        sourceId: data.source ? data.source.value : null
                     }
                 });
                 if (onSubmit) {
