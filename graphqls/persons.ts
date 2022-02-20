@@ -99,3 +99,11 @@ const ADD_RELATED_PERSON_QUERY = gql`
         }
     }
 `;
+
+const ADD_RELATIONSHI_TO_ACTIVITY = gql`
+    mutation AddRelationshipToActivity($personId: Int!, $activityId: Int!, $label: String!) {
+        addRelationshipToActivity(personId:$personId, activityId:$activityId, label: $label){
+            id
+        }
+    }
+`;

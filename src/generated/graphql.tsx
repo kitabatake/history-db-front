@@ -31,6 +31,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   addPersonAlias: Person;
   addRelatedPerson: Person;
+  addRelationshipToActivity: Person;
   createActivity: Activity;
   createPerson: Person;
   createSource: Source;
@@ -55,6 +56,13 @@ export type MutationAddRelatedPersonArgs = {
   fromId: Scalars['Int'];
   label: Scalars['String'];
   toId: Scalars['Int'];
+};
+
+
+export type MutationAddRelationshipToActivityArgs = {
+  activityId: Scalars['Int'];
+  label: Scalars['String'];
+  personId: Scalars['Int'];
 };
 
 
@@ -144,6 +152,11 @@ export type Query = {
 };
 
 
+export type QueryActivitiesArgs = {
+  nameForSearch?: InputMaybe<Scalars['String']>;
+};
+
+
 export type QueryPersonArgs = {
   id: Scalars['Int'];
 };
@@ -186,6 +199,13 @@ export type GetActivitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetActivitiesQuery = { __typename?: 'Query', activities: Array<{ __typename?: 'Activity', id: number, name: string, description: string }> };
+
+export type SearchActivitiesQueryVariables = Exact<{
+  nameForSearch: Scalars['String'];
+}>;
+
+
+export type SearchActivitiesQuery = { __typename?: 'Query', activities: Array<{ __typename?: 'Activity', id: number, name: string }> };
 
 export type CreateActivityMutationVariables = Exact<{
   name: Scalars['String'];
@@ -277,6 +297,15 @@ export type AddRelatedPersonMutationVariables = Exact<{
 
 export type AddRelatedPersonMutation = { __typename?: 'Mutation', addRelatedPerson: { __typename?: 'Person', id: number } };
 
+export type AddRelationshipToActivityMutationVariables = Exact<{
+  personId: Scalars['Int'];
+  activityId: Scalars['Int'];
+  label: Scalars['String'];
+}>;
+
+
+export type AddRelationshipToActivityMutation = { __typename?: 'Mutation', addRelationshipToActivity: { __typename?: 'Person', id: number } };
+
 export type SearchPersonsQueryVariables = Exact<{
   nameForSearch: Scalars['String'];
 }>;
@@ -362,6 +391,42 @@ export function useGetActivitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetActivitiesQueryHookResult = ReturnType<typeof useGetActivitiesQuery>;
 export type GetActivitiesLazyQueryHookResult = ReturnType<typeof useGetActivitiesLazyQuery>;
 export type GetActivitiesQueryResult = Apollo.QueryResult<GetActivitiesQuery, GetActivitiesQueryVariables>;
+export const SearchActivitiesDocument = gql`
+    query SearchActivities($nameForSearch: String!) {
+  activities(nameForSearch: $nameForSearch) {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useSearchActivitiesQuery__
+ *
+ * To run a query within a React component, call `useSearchActivitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchActivitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchActivitiesQuery({
+ *   variables: {
+ *      nameForSearch: // value for 'nameForSearch'
+ *   },
+ * });
+ */
+export function useSearchActivitiesQuery(baseOptions: Apollo.QueryHookOptions<SearchActivitiesQuery, SearchActivitiesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchActivitiesQuery, SearchActivitiesQueryVariables>(SearchActivitiesDocument, options);
+      }
+export function useSearchActivitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchActivitiesQuery, SearchActivitiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchActivitiesQuery, SearchActivitiesQueryVariables>(SearchActivitiesDocument, options);
+        }
+export type SearchActivitiesQueryHookResult = ReturnType<typeof useSearchActivitiesQuery>;
+export type SearchActivitiesLazyQueryHookResult = ReturnType<typeof useSearchActivitiesLazyQuery>;
+export type SearchActivitiesQueryResult = Apollo.QueryResult<SearchActivitiesQuery, SearchActivitiesQueryVariables>;
 export const CreateActivityDocument = gql`
     mutation CreateActivity($name: String!, $description: String) {
   createActivity(name: $name, description: $description) {
@@ -790,6 +855,45 @@ export function useAddRelatedPersonMutation(baseOptions?: Apollo.MutationHookOpt
 export type AddRelatedPersonMutationHookResult = ReturnType<typeof useAddRelatedPersonMutation>;
 export type AddRelatedPersonMutationResult = Apollo.MutationResult<AddRelatedPersonMutation>;
 export type AddRelatedPersonMutationOptions = Apollo.BaseMutationOptions<AddRelatedPersonMutation, AddRelatedPersonMutationVariables>;
+export const AddRelationshipToActivityDocument = gql`
+    mutation AddRelationshipToActivity($personId: Int!, $activityId: Int!, $label: String!) {
+  addRelationshipToActivity(
+    personId: $personId
+    activityId: $activityId
+    label: $label
+  ) {
+    id
+  }
+}
+    `;
+export type AddRelationshipToActivityMutationFn = Apollo.MutationFunction<AddRelationshipToActivityMutation, AddRelationshipToActivityMutationVariables>;
+
+/**
+ * __useAddRelationshipToActivityMutation__
+ *
+ * To run a mutation, you first call `useAddRelationshipToActivityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddRelationshipToActivityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addRelationshipToActivityMutation, { data, loading, error }] = useAddRelationshipToActivityMutation({
+ *   variables: {
+ *      personId: // value for 'personId'
+ *      activityId: // value for 'activityId'
+ *      label: // value for 'label'
+ *   },
+ * });
+ */
+export function useAddRelationshipToActivityMutation(baseOptions?: Apollo.MutationHookOptions<AddRelationshipToActivityMutation, AddRelationshipToActivityMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddRelationshipToActivityMutation, AddRelationshipToActivityMutationVariables>(AddRelationshipToActivityDocument, options);
+      }
+export type AddRelationshipToActivityMutationHookResult = ReturnType<typeof useAddRelationshipToActivityMutation>;
+export type AddRelationshipToActivityMutationResult = Apollo.MutationResult<AddRelationshipToActivityMutation>;
+export type AddRelationshipToActivityMutationOptions = Apollo.BaseMutationOptions<AddRelationshipToActivityMutation, AddRelationshipToActivityMutationVariables>;
 export const SearchPersonsDocument = gql`
     query SearchPersons($nameForSearch: String!) {
   persons(nameForSearch: $nameForSearch) {

@@ -8,6 +8,16 @@ export const GET_ACTIVITIES_QUERY = gql`
             description,
         }
 }`;
+
+export const SEARCH_ACTIVITIES_QUERY = gql`
+    query SearchActivities($nameForSearch: String!) {
+        activities(nameForSearch: $nameForSearch) {
+            id,
+            name
+        }
+    }
+`;
+
 //
 // export const GET_ACTIVITY_QUERY = gql`
 //     query getActivity($id: Int!) {

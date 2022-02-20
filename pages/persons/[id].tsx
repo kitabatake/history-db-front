@@ -13,7 +13,6 @@ import {
     Flex,
     Grid,
     GridItem,
-    HStack,
     IconButton,
     Modal,
     ModalBody,
@@ -33,9 +32,9 @@ import {
 } from "@chakra-ui/react";
 import PersonNameLink from "../../components/PersonNameLink";
 import {PersonUpdateForm} from "../../components/form/PersonUpdateForm";
-import ActivityCreateForm from "../../components/form/ActivityCreateForm";
 import {FiArrowLeft, FiArrowRight, FiX} from "react-icons/fi";
 import RelatedPersonCreateForm from "../../components/form/RelatedPersonCreateForm";
+import AddPersonActivityRelationshipForm from "../../components/form/AddPersonActivityRelationshipForm";
 
 const PersonInfo = ({person}: { person: GetPersonWithDetailsQuery['person'] }): ReactElement => {
     const [personIdForUpdate, setPersonIdForUpdate] = useState<number|null>(null);
@@ -186,7 +185,7 @@ const Activities = ({person}: GetPersonWithDetailsQuery): ReactElement => {
                     <Tr>
                         <Th>ID</Th>
                         <Th>説明</Th>
-                        <Th>人物</Th>
+                        {/*<Th>人物</Th>*/}
                     </Tr>
                 </Thead>
                 <Tbody>
@@ -195,14 +194,14 @@ const Activities = ({person}: GetPersonWithDetailsQuery): ReactElement => {
                             <Td>{activity.id}</Td>
                             <Td>{activity.description}</Td>
                             <Td>
-                                <HStack spacing={2}>
-                                    {activity.persons.map((person) => {
-                                        return (
-                                            <PersonNameLink key={person.id} id={person.id}
-                                                            name={person.name}/>
-                                        )
-                                    })}
-                                </HStack>
+                                {/*<HStack spacing={2}>*/}
+                                {/*    {activity.persons.map((person) => {*/}
+                                {/*        return (*/}
+                                {/*            <PersonNameLink key={person.id} id={person.id}*/}
+                                {/*                            name={person.name}/>*/}
+                                {/*        )*/}
+                                {/*    })}*/}
+                                {/*</HStack>*/}
                             </Td>
                         </Tr>
                     ))}
@@ -222,13 +221,14 @@ const Activities = ({person}: GetPersonWithDetailsQuery): ReactElement => {
                     <ModalHeader>アクティビティ追加</ModalHeader>
                     <ModalCloseButton/>
                     <ModalBody>
-                        <ActivityCreateForm
-                            refetchQueriesOnCreate={[GET_PERSON_WITH_DETAILS_QUERY]}
+                        <AddPersonActivityRelationshipForm
+                            refetchQueries={[GET_PERSON_WITH_DETAILS_QUERY]}
+                            personId={person.id}
                             onSubmit={onClose}
-                            defaultData={{
-                                description: '',
-                                persons: [{value: person.id, label: person.name}]
-                            }}
+                            // defaultData={{
+                            //     description: '',
+                            //     persons: [{value: person.id, label: person.name}]
+                            // }}
                         />
                     </ModalBody>
                 </ModalContent>
