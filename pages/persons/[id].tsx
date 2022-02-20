@@ -184,25 +184,16 @@ const Activities = ({person}: GetPersonWithDetailsQuery): ReactElement => {
                 <Thead>
                     <Tr>
                         <Th>ID</Th>
-                        <Th>説明</Th>
-                        {/*<Th>人物</Th>*/}
+                        <Th>ラベル</Th>
+                        <Th>アクティビティ</Th>
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {person.activities.map((activity) => (
-                        <Tr key={activity.id}>
-                            <Td>{activity.id}</Td>
-                            <Td>{activity.description}</Td>
-                            <Td>
-                                {/*<HStack spacing={2}>*/}
-                                {/*    {activity.persons.map((person) => {*/}
-                                {/*        return (*/}
-                                {/*            <PersonNameLink key={person.id} id={person.id}*/}
-                                {/*                            name={person.name}/>*/}
-                                {/*        )*/}
-                                {/*    })}*/}
-                                {/*</HStack>*/}
-                            </Td>
+                    {person.relatedActivities.map((relatedActivity) => (
+                        <Tr key={relatedActivity.id}>
+                            <Td>{relatedActivity.id}</Td>
+                            <Td>{relatedActivity.label}</Td>
+                            <Td>{relatedActivity.activity.name}</Td>
                         </Tr>
                     ))}
                 </Tbody>

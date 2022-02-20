@@ -139,6 +139,7 @@ export type Person = {
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   name: Scalars['String'];
+  relatedActivities: Array<RelatedActivity>;
   relatedPersons: Array<RelatedPerson>;
 };
 
@@ -174,6 +175,13 @@ export type QuerySourceArgs = {
 
 export type QuerySourcesArgs = {
   nameForSearch?: InputMaybe<Scalars['String']>;
+};
+
+export type RelatedActivity = {
+  __typename?: 'RelatedActivity';
+  activity: Activity;
+  id: Scalars['Int'];
+  label: Scalars['String'];
 };
 
 export type RelatedPerson = {
@@ -234,7 +242,7 @@ export type GetPersonWithDetailsQueryVariables = Exact<{
 }>;
 
 
-export type GetPersonWithDetailsQuery = { __typename?: 'Query', person: { __typename?: 'Person', id: number, name: string, description?: string | null | undefined, aliases: Array<string>, relatedPersons: Array<{ __typename?: 'RelatedPerson', id: number, label: string, direction: RelationshipDirection, person: { __typename?: 'Person', id: number, name: string } }>, activities: Array<{ __typename?: 'Activity', id: number, description: string }> } };
+export type GetPersonWithDetailsQuery = { __typename?: 'Query', person: { __typename?: 'Person', id: number, name: string, description?: string | null | undefined, aliases: Array<string>, relatedPersons: Array<{ __typename?: 'RelatedPerson', id: number, label: string, direction: RelationshipDirection, person: { __typename?: 'Person', id: number, name: string } }>, relatedActivities: Array<{ __typename?: 'RelatedActivity', id: number, label: string, activity: { __typename?: 'Activity', id: number, name: string } }> } };
 
 export type GetPersonsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -545,9 +553,13 @@ export const GetPersonWithDetailsDocument = gql`
         name
       }
     }
-    activities {
+    relatedActivities {
       id
-      description
+      label
+      activity {
+        id
+        name
+      }
     }
   }
 }
