@@ -1,7 +1,9 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {Elements} from "../lib/types/graph";
 import {Elements as GraphqlElements, useGetGraphQuery} from "../src/generated/graphql";
 import cytoscape, {Core} from "cytoscape";
+import {Box, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay} from "@chakra-ui/react";
+import PersonModal from "./modal/PersonModal";
 
 const renderGraph = (elementId: string, elements: Elements, targetNodeId: number): Core => {
     const style = [
@@ -54,12 +56,14 @@ const renderGraph = (elementId: string, elements: Elements, targetNodeId: number
         componentSpacing: 1000,
     }
 
-    return cytoscape({
+    const cy = cytoscape({
         container: document.getElementById(elementId),
         elements: elements,
         style: style,
         layout: layout,
     })
+
+    return cy;
 }
 
 type Props = {
@@ -90,6 +94,7 @@ const adjustElements = (elements: GraphqlElements): Elements => {
 
 export default function Graph({targetNodeId}: Props) {
     const ELEMENT_ID_FOR_GRAPH = 'graph'
+    const [selectedNodeId, setSelectedNodeId] = useState<number|null>(null);
     const {data} = useGetGraphQuery({
         variables: {
             targetNodeId: targetNodeId
@@ -98,14 +103,36 @@ export default function Graph({targetNodeId}: Props) {
 
     useEffect(() => {
         if (data != null) {
-            renderGraph(ELEMENT_ID_FOR_GRAPH, adjustElements(data.graph), targetNodeId)
+            const cy = renderGraph(ELEMENT_ID_FOR_GRAPH, adjustElements(data.graph), targetNodeId)
+            cy.on('tap', 'node', function(evt){
+                var node = evt.target;
+                // console.log(node.data('label'));
+                if (node.data('label') == 'Person') {
+                    setSelectedNodeId(Number(node.id()));
+                }
+            });
         }
     }, [data])
 
-    const cyStyle = {
-        height: '100%',
-        width: '100%',
-    }
-
-    return <div id={ELEMENT_ID_FOR_GRAPH} style={cyStyle}/>
+    return (
+        <Box position="relative" w="100%" h="100%">
+            <Box id={ELEMENT_ID_FOR_GRAPH}  w="100%" h="100%" />
+            <Modal
+                size='sm'
+                isOpen={selectedNodeId != null}
+                onClose={() => setSelectedNodeId(null)}
+            >
+                <ModalOverlay/>
+                <ModalContent>
+                    <ModalHeader>人物情報</ModalHeader>
+                    <ModalCloseButton/>
+                    <ModalBody>
+                        {selectedNodeId && (
+                            <PersonModal personId={selectedNodeId} />
+                        )}
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+        </Box>
+    )
 }

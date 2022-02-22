@@ -284,7 +284,7 @@ export default function Person(): ReactElement {
                             </GridItem>
                         </Grid>
                     </Box>
-                    <Box pt="12vh" w="100%" h="100vh">
+                    <Box pt="12vh" w="100%" h="92vh">
                         <Graph targetNodeId={data.person.id} />
                     </Box>
                 </>
