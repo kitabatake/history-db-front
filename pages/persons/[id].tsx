@@ -9,6 +9,7 @@ import {
 import {GET_PERSON_WITH_DETAILS_QUERY} from "../../graphqls/persons";
 import {PersonAliasList} from "../../components/PersonAliasList";
 import {
+    Box,
     Button,
     Flex,
     Grid,
@@ -35,6 +36,7 @@ import {PersonUpdateForm} from "../../components/form/PersonUpdateForm";
 import {FiArrowLeft, FiArrowRight, FiX} from "react-icons/fi";
 import RelatedPersonCreateForm from "../../components/form/RelatedPersonCreateForm";
 import AddPersonActivityRelationshipForm from "../../components/form/AddPersonActivityRelationshipForm";
+import Graph from "../../components/Graph";
 
 const PersonInfo = ({person}: { person: GetPersonWithDetailsQuery['person'] }): ReactElement => {
     const [personIdForUpdate, setPersonIdForUpdate] = useState<number|null>(null);
@@ -232,20 +234,37 @@ export default function Person(): ReactElement {
     const router = useRouter()
     const {id} = router.query;
     const {data} = useGetPersonWithDetailsQuery({variables: {id: Number(id)}});
+    const elements = {
+        nodes:[
+            //グラフの点、ノードのidが必須で、他の属性は機能によって調整するばよい
+            {data: {id: '172', name: 'Tom Cruise', label: 'Person'}},
+            {data: {id: '183', name: 'POPO', label: 'Person'}},
+        ],
+        edges:[
+            //グラフの線、エッジはsource(開始点id)とtarget(終了点id)は必須で、他の属性も追加可能
+            {data: {source: '172', target: '183', relationship: 'Acted_In'}}
+        ],
+    }
+
     return (
         <>
             {data && (
-                <Grid templateColumns='repeat(3, 1fr)' gap={4}>
-                    <GridItem bg='white' rounded="base" boxShadow="md">
-                        <PersonInfo person={data.person} />
-                    </GridItem>
-                    <GridItem p={5} bg='white' rounded="base" boxShadow="md">
-                        <RelatedPersons person={data.person} />
-                    </GridItem>
-                    <GridItem p={5} bg='white' rounded="base" boxShadow="md">
-                        <Activities person={data.person} />
-                    </GridItem>
-                </Grid>
+                <>
+                    <Grid templateColumns='repeat(3, 1fr)' gap={4}>
+                        <GridItem bg='white' rounded="base" boxShadow="md">
+                            <PersonInfo person={data.person} />
+                        </GridItem>
+                        <GridItem p={5} bg='white' rounded="base" boxShadow="md">
+                            <RelatedPersons person={data.person} />
+                        </GridItem>
+                        <GridItem p={5} bg='white' rounded="base" boxShadow="md">
+                            <Activities person={data.person} />
+                        </GridItem>
+                    </Grid>
+                    <Box mt={10} w="100%" h="60vh">
+                        <Graph targetNodeId={data.person.id} />
+                    </Box>
+                </>
             )}
         </>
     )

@@ -27,6 +27,19 @@ export type Activity = {
   year?: Maybe<Scalars['Int']>;
 };
 
+export type Edge = {
+  __typename?: 'Edge';
+  relationship: Scalars['String'];
+  source: Scalars['Int'];
+  target: Scalars['Int'];
+};
+
+export type Elements = {
+  __typename?: 'Elements';
+  edges: Array<Edge>;
+  nodes: Array<Node>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addPersonAlias: Person;
@@ -132,6 +145,13 @@ export type MutationUpdateSourceArgs = {
   name: Scalars['String'];
 };
 
+export type Node = {
+  __typename?: 'Node';
+  id: Scalars['Int'];
+  label: Scalars['String'];
+  name: Scalars['String'];
+};
+
 export type Person = {
   __typename?: 'Person';
   activities: Array<Activity>;
@@ -146,6 +166,7 @@ export type Person = {
 export type Query = {
   __typename?: 'Query';
   activities: Array<Activity>;
+  graph: Elements;
   person: Person;
   persons: Array<Person>;
   source: Source;
@@ -155,6 +176,11 @@ export type Query = {
 
 export type QueryActivitiesArgs = {
   nameForSearch?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryGraphArgs = {
+  targetNodeId: Scalars['Int'];
 };
 
 
@@ -229,6 +255,13 @@ export type DeleteActivityMutationVariables = Exact<{
 
 
 export type DeleteActivityMutation = { __typename?: 'Mutation', deleteActivity: number };
+
+export type GetGraphQueryVariables = Exact<{
+  targetNodeId: Scalars['Int'];
+}>;
+
+
+export type GetGraphQuery = { __typename?: 'Query', graph: { __typename?: 'Elements', nodes: Array<{ __typename?: 'Node', id: number, name: string, label: string }>, edges: Array<{ __typename?: 'Edge', source: number, target: number, relationship: string }> } };
 
 export type GetPersonQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -500,6 +533,50 @@ export function useDeleteActivityMutation(baseOptions?: Apollo.MutationHookOptio
 export type DeleteActivityMutationHookResult = ReturnType<typeof useDeleteActivityMutation>;
 export type DeleteActivityMutationResult = Apollo.MutationResult<DeleteActivityMutation>;
 export type DeleteActivityMutationOptions = Apollo.BaseMutationOptions<DeleteActivityMutation, DeleteActivityMutationVariables>;
+export const GetGraphDocument = gql`
+    query getGraph($targetNodeId: Int!) {
+  graph(targetNodeId: $targetNodeId) {
+    nodes {
+      id
+      name
+      label
+    }
+    edges {
+      source
+      target
+      relationship
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetGraphQuery__
+ *
+ * To run a query within a React component, call `useGetGraphQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGraphQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGraphQuery({
+ *   variables: {
+ *      targetNodeId: // value for 'targetNodeId'
+ *   },
+ * });
+ */
+export function useGetGraphQuery(baseOptions: Apollo.QueryHookOptions<GetGraphQuery, GetGraphQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGraphQuery, GetGraphQueryVariables>(GetGraphDocument, options);
+      }
+export function useGetGraphLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGraphQuery, GetGraphQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGraphQuery, GetGraphQueryVariables>(GetGraphDocument, options);
+        }
+export type GetGraphQueryHookResult = ReturnType<typeof useGetGraphQuery>;
+export type GetGraphLazyQueryHookResult = ReturnType<typeof useGetGraphLazyQuery>;
+export type GetGraphQueryResult = Apollo.QueryResult<GetGraphQuery, GetGraphQueryVariables>;
 export const GetPersonDocument = gql`
     query getPerson($id: Int!) {
   person(id: $id) {
