@@ -1,7 +1,7 @@
 import {ReactElement, useState} from "react";
 import {confirmAlert} from "react-confirm-alert";
 import {PersonUpdateForm} from "./form/PersonUpdateForm";
-import {useDeletePersonMutation, useGetPersonsQuery} from "../src/generated/graphql";
+import {GetPersonsQuery, useDeletePersonMutation, useGetPersonsQuery} from "../src/generated/graphql";
 import {GET_PERSONS_QUERY} from "../graphqls/persons";
 
 import {
@@ -25,11 +25,11 @@ import PersonNameLink from "./PersonNameLink";
 
 export default function PersonList(): ReactElement {
     const {loading, error, data} = useGetPersonsQuery();
-    const [personIdForUpdate, setPersonIdForUpdate] = useState(null);
+    const [personIdForUpdate, setPersonIdForUpdate] = useState<number|null>(null);
     const [deletePersonMutation] = useDeletePersonMutation({
         refetchQueries: [GET_PERSONS_QUERY]
     });
-    const deletePerson = (person) => {
+    const deletePerson = (person: GetPersonsQuery['persons'][0]) => {
         confirmAlert({
             message: `人物「${person.name}」を本当に削除しますか？`,
             buttons: [
