@@ -1,7 +1,66 @@
 import React, {useEffect} from "react";
 import {Elements} from "../lib/types/graph";
-import {renderGraph} from "../lib/renderGraph";
 import {Elements as GraphqlElements, useGetGraphQuery} from "../src/generated/graphql";
+import cytoscape, {Core} from "cytoscape";
+
+const renderGraph = (elementId: string, elements: Elements, targetNodeId: number): Core => {
+    const style = [
+        {
+            selector: 'node[label = "Person"]',
+            css: {
+                'background-color': '#6FB1FC',
+                content: 'data(name)',
+                'font-size': '4rem',
+                width: 3,
+                height: 3,
+                color: '#000000',
+            },
+        },
+        {
+            selector: 'node[label = "Activity"]',
+            css: {
+                'background-color': '#B56239',
+                content: 'data(name)',
+                'font-size': '4rem',
+                width: 3,
+                height: 3,
+                color: '#000000',
+            },
+        },
+        {
+            selector: `node[id = "${targetNodeId}"]`,
+            css: {
+                'font-size': '6rem',
+                width: 6,
+                height: 6,
+            },
+        },
+        {
+            selector: 'edge',
+            css: {
+                content: 'data(relationship)',
+                width: 0.2,
+                'font-size': '3rem',
+                'curve-style': 'bezier',
+                'target-arrow-shape': 'triangle',
+                'arrow-scale': 0.2,
+                color: '#a5a5a5',
+            },
+        },
+    ]
+
+    const layout = {
+        name: 'cose',
+        componentSpacing: 1000,
+    }
+
+    return cytoscape({
+        container: document.getElementById(elementId),
+        elements: elements,
+        style: style,
+        layout: layout,
+    })
+}
 
 type Props = {
     targetNodeId: number
@@ -39,7 +98,7 @@ export default function Graph({targetNodeId}: Props) {
 
     useEffect(() => {
         if (data != null) {
-            renderGraph(ELEMENT_ID_FOR_GRAPH, adjustElements(data.graph))
+            renderGraph(ELEMENT_ID_FOR_GRAPH, adjustElements(data.graph), targetNodeId)
         }
     }, [data])
 
