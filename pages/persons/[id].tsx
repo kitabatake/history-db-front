@@ -11,6 +11,7 @@ import {PersonAliasList} from "../../components/PersonAliasList";
 import {
     Box,
     Button,
+    Collapse,
     Flex,
     Grid,
     GridItem,
@@ -33,41 +34,56 @@ import {
 } from "@chakra-ui/react";
 import PersonNameLink from "../../components/PersonNameLink";
 import {PersonUpdateForm} from "../../components/form/PersonUpdateForm";
-import {FiArrowLeft, FiArrowRight, FiX} from "react-icons/fi";
+import {FiArrowLeft, FiArrowRight, FiChevronDown, FiChevronUp, FiX} from "react-icons/fi";
 import RelatedPersonCreateForm from "../../components/form/RelatedPersonCreateForm";
 import AddPersonActivityRelationshipForm from "../../components/form/AddPersonActivityRelationshipForm";
 import Graph from "../../components/Graph";
+import {GET_GRAPH_QUERY} from "../../graphqls/graph";
 
 const PersonInfo = ({person}: { person: GetPersonWithDetailsQuery['person'] }): ReactElement => {
     const [personIdForUpdate, setPersonIdForUpdate] = useState<number|null>(null);
+    const { isOpen, onToggle } = useDisclosure()
     return (
-        <>
-            <Table size='sm'>
-                <Tbody>
-                    <Tr>
-                        <Th>ID</Th>
-                        <Td>{person.id}</Td>
-                    </Tr>
-                    <Tr>
-                        <Th>名前</Th>
-                        <Td>{person.name}</Td>
-                    </Tr>
-                    <Tr>
-                        <Th>別名</Th>
-                        <Td>
-                            <PersonAliasList aliases={person.aliases} personId={person.id} />
-                        </Td>
-                    </Tr>
-                    <Tr>
-                        <Th>説明</Th>
-                        <Td whiteSpace='pre-wrap'>{person.description}</Td>
-                    </Tr>
-                </Tbody>
-            </Table>
+        <Box bg='white' rounded="base" boxShadow="md">
             <Flex p={4}>
-                <Spacer/>
-                <Button size='xs' colorScheme='gold' onClick={() => setPersonIdForUpdate(person.id)}>編集</Button>
+                <Text>基本情報</Text>
+                <Spacer />
+                <IconButton
+                    size="sm"
+                    aria-label="open"
+                    variant="outline"
+                    icon={isOpen ? <FiChevronUp /> : <FiChevronDown /> }
+                    onClick={() => onToggle()}
+                />
             </Flex>
+            <Collapse in={isOpen}>
+                <Table size='sm' mt={4}>
+                    <Tbody>
+                        <Tr>
+                            <Th>ID</Th>
+                            <Td>{person.id}</Td>
+                        </Tr>
+                        <Tr>
+                            <Th>名前</Th>
+                            <Td>{person.name}</Td>
+                        </Tr>
+                        <Tr>
+                            <Th>別名</Th>
+                            <Td>
+                                <PersonAliasList aliases={person.aliases} personId={person.id} />
+                            </Td>
+                        </Tr>
+                        <Tr>
+                            <Th>説明</Th>
+                            <Td whiteSpace='pre-wrap'>{person.description}</Td>
+                        </Tr>
+                    </Tbody>
+                </Table>
+                <Flex p={4}>
+                    <Spacer/>
+                    <Button size='xs' colorScheme='gold' onClick={() => setPersonIdForUpdate(person.id)}>編集</Button>
+                </Flex>
+            </Collapse>
             <Modal
                 size='xl'
                 isOpen={personIdForUpdate != null}
@@ -88,7 +104,7 @@ const PersonInfo = ({person}: { person: GetPersonWithDetailsQuery['person'] }): 
                     </ModalBody>
                 </ModalContent>
             </Modal>
-        </>
+        </Box>
     )
 }
 
@@ -96,65 +112,76 @@ const RelatedPersons = ({person}:  GetPersonWithDetailsQuery): ReactElement => {
     const [removeRelatedPersonMutation] = useRemoveRelatedPersonMutation({
         refetchQueries: [GET_PERSON_WITH_DETAILS_QUERY]
     });
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure()
+    const { isOpen, onToggle} = useDisclosure()
     return (
-        <>
-            <Text>
-                関連
-            </Text>
-            <Table mt={3} size='sm'>
-                <Thead>
-                    <Tr>
-                        <Th>ID</Th>
-                        <Th>向き</Th>
-                        <Th>人物</Th>
-                        <Th>ラベル</Th>
-                        <Th></Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
-                    {person.relatedPersons.map((relatedPerson) => (
-                        <Tr key={relatedPerson.id}>
-                            <Td>{relatedPerson.id}</Td>
-                            <Td>
-                                {relatedPerson.direction == RelationshipDirection.Inward && <FiArrowLeft />}
-                                {relatedPerson.direction == RelationshipDirection.Outward && <FiArrowRight />}
-                            </Td>
-                            <Td>
-                                <PersonNameLink
-                                    key={relatedPerson.person.id}
-                                    id={relatedPerson.person.id}
-                                    name={relatedPerson.person.name}/>
-                            </Td>
-                            <Td>{relatedPerson.label}</Td>
-                            <Td>
-                                <IconButton
-                                    aria-label='close'
-                                    icon={<FiX />}
-                                    size='xs'
-                                    colorScheme='gold'
-                                    ml={2}
-                                    onClick={() => {
-                                        removeRelatedPersonMutation({
-                                            variables: {
-                                                id: relatedPerson.id
-                                            }
-                                        })
-                                    }}
-                                />
-                            </Td>
-                        </Tr>
-                    ))}
-                </Tbody>
-            </Table>
-            <Flex p={4}>
-                <Spacer/>
-                <Button size='xs' colorScheme='gold' onClick={onOpen}>追加</Button>
+        <Box p={4} bg='white' rounded="base" boxShadow="md">
+            <Flex>
+                <Text>関連</Text>
+                <Spacer />
+                <IconButton
+                    size="sm"
+                    aria-label="open"
+                    variant="outline"
+                    icon={isOpen ? <FiChevronUp /> : <FiChevronDown /> }
+                    onClick={() => onToggle()}
+                />
             </Flex>
+            <Collapse in={isOpen}>
+                <Table mt={3} size='sm'>
+                    <Thead>
+                        <Tr>
+                            <Th>ID</Th>
+                            <Th>向き</Th>
+                            <Th>人物</Th>
+                            <Th>ラベル</Th>
+                            <Th></Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        {person.relatedPersons.map((relatedPerson) => (
+                            <Tr key={relatedPerson.id}>
+                                <Td>{relatedPerson.id}</Td>
+                                <Td>
+                                    {relatedPerson.direction == RelationshipDirection.Inward && <FiArrowLeft />}
+                                    {relatedPerson.direction == RelationshipDirection.Outward && <FiArrowRight />}
+                                </Td>
+                                <Td>
+                                    <PersonNameLink
+                                        key={relatedPerson.person.id}
+                                        id={relatedPerson.person.id}
+                                        name={relatedPerson.person.name}/>
+                                </Td>
+                                <Td>{relatedPerson.label}</Td>
+                                <Td>
+                                    <IconButton
+                                        aria-label='close'
+                                        icon={<FiX />}
+                                        size='xs'
+                                        colorScheme='gold'
+                                        ml={2}
+                                        onClick={() => {
+                                            removeRelatedPersonMutation({
+                                                variables: {
+                                                    id: relatedPerson.id
+                                                }
+                                            })
+                                        }}
+                                    />
+                                </Td>
+                            </Tr>
+                        ))}
+                    </Tbody>
+                </Table>
+                <Flex>
+                    <Spacer/>
+                    <Button size='xs' colorScheme='gold' onClick={onOpenModal}>追加</Button>
+                </Flex>
+            </Collapse>
             <Modal
                 size='xl'
-                isOpen={isOpen}
-                onClose={onClose}
+                isOpen={isOpenModal}
+                onClose={onCloseModal}
             >
                 <ModalOverlay/>
                 <ModalContent>
@@ -162,52 +189,61 @@ const RelatedPersons = ({person}:  GetPersonWithDetailsQuery): ReactElement => {
                     <ModalCloseButton/>
                     <ModalBody>
                         <RelatedPersonCreateForm
-                            refetchQueriesOnCreate={[GET_PERSON_WITH_DETAILS_QUERY]}
+                            refetchQueriesOnCreate={[GET_PERSON_WITH_DETAILS_QUERY, GET_GRAPH_QUERY]}
                             from={{value: person.id, label: person.name}}
-                            onSubmit={onClose}
-                            // defaultData={{
-                            //     description: '',
-                            //     persons: [{value: person.id, label: person.name}]
-                            // }}
+                            onSubmit={onCloseModal}
                         />
                     </ModalBody>
                 </ModalContent>
             </Modal>
-        </>
+        </Box>
     );
 }
 
 const Activities = ({person}: GetPersonWithDetailsQuery): ReactElement => {
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure()
+    const { isOpen, onToggle} = useDisclosure()
     return (
-        <>
-            <Text>アクティビティ</Text>
-            <Table mt={3} size='sm'>
-                <Thead>
-                    <Tr>
-                        <Th>ID</Th>
-                        <Th>ラベル</Th>
-                        <Th>アクティビティ</Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
-                    {person.relatedActivities.map((relatedActivity) => (
-                        <Tr key={relatedActivity.id}>
-                            <Td>{relatedActivity.id}</Td>
-                            <Td>{relatedActivity.label}</Td>
-                            <Td>{relatedActivity.activity.name}</Td>
-                        </Tr>
-                    ))}
-                </Tbody>
-            </Table>
-            <Flex p={4}>
-                <Spacer/>
-                <Button size='xs' colorScheme='gold' onClick={onOpen}>追加</Button>
+        <Box p={4} bg='white' rounded="base" boxShadow="md">
+            <Flex>
+                <Text>アクティビティ</Text>
+                <Spacer />
+                <IconButton
+                    size="sm"
+                    aria-label="open"
+                    variant="outline"
+                    icon={isOpen ? <FiChevronUp /> : <FiChevronDown /> }
+                    onClick={() => onToggle()}
+                />
             </Flex>
+            <Collapse in={isOpen}>
+                <Table mt={3} size='sm'>
+                    <Thead>
+                        <Tr>
+                            <Th>ID</Th>
+                            <Th>ラベル</Th>
+                            <Th>アクティビティ</Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        {person.relatedActivities.map((relatedActivity) => (
+                            <Tr key={relatedActivity.id}>
+                                <Td>{relatedActivity.id}</Td>
+                                <Td>{relatedActivity.label}</Td>
+                                <Td>{relatedActivity.activity.name}</Td>
+                            </Tr>
+                        ))}
+                    </Tbody>
+                </Table>
+                <Flex>
+                    <Spacer/>
+                    <Button size='xs' colorScheme='gold' onClick={onOpenModal}>追加</Button>
+                </Flex>
+            </Collapse>
             <Modal
                 size='xl'
-                isOpen={isOpen}
-                onClose={onClose}
+                isOpen={isOpenModal}
+                onClose={onCloseModal}
             >
                 <ModalOverlay/>
                 <ModalContent>
@@ -215,18 +251,14 @@ const Activities = ({person}: GetPersonWithDetailsQuery): ReactElement => {
                     <ModalCloseButton/>
                     <ModalBody>
                         <AddPersonActivityRelationshipForm
-                            refetchQueries={[GET_PERSON_WITH_DETAILS_QUERY]}
+                            refetchQueries={[GET_PERSON_WITH_DETAILS_QUERY, GET_GRAPH_QUERY]}
                             personId={person.id}
-                            onSubmit={onClose}
-                            // defaultData={{
-                            //     description: '',
-                            //     persons: [{value: person.id, label: person.name}]
-                            // }}
+                            onSubmit={onCloseModal}
                         />
                     </ModalBody>
                 </ModalContent>
             </Modal>
-        </>
+        </Box>
     );
 }
 
@@ -234,38 +266,29 @@ export default function Person(): ReactElement {
     const router = useRouter()
     const {id} = router.query;
     const {data} = useGetPersonWithDetailsQuery({variables: {id: Number(id)}});
-    const elements = {
-        nodes:[
-            //グラフの点、ノードのidが必須で、他の属性は機能によって調整するばよい
-            {data: {id: '172', name: 'Tom Cruise', label: 'Person'}},
-            {data: {id: '183', name: 'POPO', label: 'Person'}},
-        ],
-        edges:[
-            //グラフの線、エッジはsource(開始点id)とtarget(終了点id)は必須で、他の属性も追加可能
-            {data: {source: '172', target: '183', relationship: 'Acted_In'}}
-        ],
-    }
 
     return (
-        <>
+        <Box position="relative">
             {data && (
                 <>
-                    <Grid templateColumns='repeat(3, 1fr)' gap={4}>
-                        <GridItem bg='white' rounded="base" boxShadow="md">
-                            <PersonInfo person={data.person} />
-                        </GridItem>
-                        <GridItem p={5} bg='white' rounded="base" boxShadow="md">
-                            <RelatedPersons person={data.person} />
-                        </GridItem>
-                        <GridItem p={5} bg='white' rounded="base" boxShadow="md">
-                            <Activities person={data.person} />
-                        </GridItem>
-                    </Grid>
-                    <Box mt={10} w="100%" h="60vh">
+                    <Box position="absolute" w="100%" zIndex={10}>
+                        <Grid templateColumns='repeat(3, 1fr)' gap={4}>
+                            <GridItem>
+                                <PersonInfo person={data.person} />
+                            </GridItem>
+                            <GridItem>
+                                <RelatedPersons person={data.person} />
+                            </GridItem>
+                            <GridItem>
+                                <Activities person={data.person} />
+                            </GridItem>
+                        </Grid>
+                    </Box>
+                    <Box pt="12vh" w="100%" h="100vh">
                         <Graph targetNodeId={data.person.id} />
                     </Box>
                 </>
             )}
-        </>
+        </Box>
     )
 }
