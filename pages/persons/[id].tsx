@@ -42,7 +42,7 @@ import {GET_GRAPH_QUERY} from "../../graphqls/graph";
 
 const PersonInfo = ({person}: { person: GetPersonWithDetailsQuery['person'] }): ReactElement => {
     const [personIdForUpdate, setPersonIdForUpdate] = useState<number|null>(null);
-    const { isOpen, onToggle } = useDisclosure()
+    const { isOpen, onToggle } = useDisclosure({defaultIsOpen: true})
     return (
         <Box bg='white' rounded="base" boxShadow="md">
             <Flex p={4}>
@@ -57,7 +57,7 @@ const PersonInfo = ({person}: { person: GetPersonWithDetailsQuery['person'] }): 
                 />
             </Flex>
             <Collapse in={isOpen}>
-                <Table size='sm' mt={4}>
+                <Table size='sm'>
                     <Tbody>
                         <Tr>
                             <Th>ID</Th>
@@ -140,7 +140,7 @@ const RelatedPersons = ({person}:  GetPersonWithDetailsQuery): ReactElement => {
                     </Thead>
                     <Tbody>
                         {person.relatedPersons.map((relatedPerson) => (
-                            <Tr key={relatedPerson.id}>
+                            <Tr key={`${person.id}:${relatedPerson.id}`}>
                                 <Td>{relatedPerson.id}</Td>
                                 <Td>
                                     {relatedPerson.direction == RelationshipDirection.Inward && <FiArrowLeft />}

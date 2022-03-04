@@ -3,7 +3,7 @@ import Layout from "../components/Layout";
 import {ApolloProvider,} from "@apollo/client";
 import {apolloClient} from "../apolloClient";
 import Head from "next/head";
-// 1. Import `extendTheme`
+import {useRouter} from "next/router";
 import {ChakraProvider, extendTheme} from '@chakra-ui/react'
 
 // 2. Call `extendTheme` and pass your custom values
@@ -121,6 +121,8 @@ const theme = extendTheme({
 })
 
 function MyApp({Component, pageProps}) {
+    const router = useRouter();
+    console.log(router.asPath);
     return (
         <ApolloProvider client={apolloClient}>
             <Head>
@@ -130,7 +132,7 @@ function MyApp({Component, pageProps}) {
             </Head>
             <ChakraProvider theme={theme}>
                 <Layout>
-                    <Component {...pageProps} />
+                    <Component {...pageProps} key={router.asPath} />
                 </Layout>
             </ChakraProvider>
         </ApolloProvider>

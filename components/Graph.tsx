@@ -101,6 +101,11 @@ export default function Graph({targetNodeId}: Props) {
         }
     })
 
+    // const dynamicRoute = useRouter().asPath
+    // useEffect(() => {
+    //     setSelectedNodeId(null) // When the dynamic route change reset the state
+    // }, [dynamicRoute])
+
     useEffect(() => {
         if (data != null) {
             const cy = renderGraph(ELEMENT_ID_FOR_GRAPH, adjustElements(data.graph), targetNodeId)
