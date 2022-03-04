@@ -6,7 +6,7 @@ import {
     useGetPersonWithDetailsQuery,
     useRemoveRelatedPersonMutation
 } from "../../src/generated/graphql";
-import {GET_PERSON_WITH_DETAILS_QUERY} from "../../graphqls/persons";
+import {GET_PERSON_FOR_GRAPH_QUERY, GET_PERSON_WITH_DETAILS_QUERY} from "../../graphqls/persons";
 import {PersonAliasList} from "../../components/PersonAliasList";
 import {
     Box,
@@ -38,7 +38,6 @@ import {FiArrowLeft, FiArrowRight, FiChevronDown, FiChevronUp, FiX} from "react-
 import RelatedPersonCreateForm from "../../components/form/RelatedPersonCreateForm";
 import AddPersonActivityRelationshipForm from "../../components/form/AddPersonActivityRelationshipForm";
 import Graph from "../../components/Graph";
-import {GET_GRAPH_QUERY} from "../../graphqls/graph";
 
 const PersonInfo = ({person}: { person: GetPersonWithDetailsQuery['person'] }): ReactElement => {
     const [personIdForUpdate, setPersonIdForUpdate] = useState<number|null>(null);
@@ -189,7 +188,7 @@ const RelatedPersons = ({person}:  GetPersonWithDetailsQuery): ReactElement => {
                     <ModalCloseButton/>
                     <ModalBody>
                         <RelatedPersonCreateForm
-                            refetchQueriesOnCreate={[GET_PERSON_WITH_DETAILS_QUERY, GET_GRAPH_QUERY]}
+                            refetchQueriesOnCreate={[GET_PERSON_WITH_DETAILS_QUERY, GET_PERSON_FOR_GRAPH_QUERY]}
                             from={{value: person.id, label: person.name}}
                             onSubmit={onCloseModal}
                         />
@@ -251,7 +250,7 @@ const Activities = ({person}: GetPersonWithDetailsQuery): ReactElement => {
                     <ModalCloseButton/>
                     <ModalBody>
                         <AddPersonActivityRelationshipForm
-                            refetchQueries={[GET_PERSON_WITH_DETAILS_QUERY, GET_GRAPH_QUERY]}
+                            refetchQueries={[GET_PERSON_WITH_DETAILS_QUERY, GET_PERSON_FOR_GRAPH_QUERY]}
                             personId={person.id}
                             onSubmit={onCloseModal}
                         />

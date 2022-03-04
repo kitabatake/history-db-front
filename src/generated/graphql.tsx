@@ -23,6 +23,7 @@ export type Activity = {
   id: Scalars['Int'];
   month?: Maybe<Scalars['Int']>;
   name: Scalars['String'];
+  relatedPersons: Array<RelatedPerson>;
   source?: Maybe<Source>;
   year?: Maybe<Scalars['Int']>;
 };
@@ -206,6 +207,7 @@ export type QuerySourcesArgs = {
 export type RelatedActivity = {
   __typename?: 'RelatedActivity';
   activity: Activity;
+  direction: RelationshipDirection;
   id: Scalars['Int'];
   label: Scalars['String'];
 };
@@ -276,6 +278,13 @@ export type GetPersonWithDetailsQueryVariables = Exact<{
 
 
 export type GetPersonWithDetailsQuery = { __typename?: 'Query', person: { __typename?: 'Person', id: number, name: string, description?: string | null | undefined, aliases: Array<string>, relatedPersons: Array<{ __typename?: 'RelatedPerson', id: number, label: string, direction: RelationshipDirection, person: { __typename?: 'Person', id: number, name: string } }>, relatedActivities: Array<{ __typename?: 'RelatedActivity', id: number, label: string, activity: { __typename?: 'Activity', id: number, name: string } }> } };
+
+export type GetPersonForGraphQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetPersonForGraphQuery = { __typename?: 'Query', person: { __typename?: 'Person', id: number, name: string, relatedPersons: Array<{ __typename?: 'RelatedPerson', id: number, label: string, direction: RelationshipDirection, person: { __typename?: 'Person', id: number, name: string, relatedPersons: Array<{ __typename?: 'RelatedPerson', id: number, label: string, direction: RelationshipDirection, person: { __typename?: 'Person', id: number, name: string } }> } }>, relatedActivities: Array<{ __typename?: 'RelatedActivity', id: number, label: string, direction: RelationshipDirection, activity: { __typename?: 'Activity', id: number, name: string, relatedPersons: Array<{ __typename?: 'RelatedPerson', id: number, label: string, direction: RelationshipDirection, person: { __typename?: 'Person', id: number, name: string } }> } }> } };
 
 export type GetPersonsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -669,6 +678,78 @@ export function useGetPersonWithDetailsLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type GetPersonWithDetailsQueryHookResult = ReturnType<typeof useGetPersonWithDetailsQuery>;
 export type GetPersonWithDetailsLazyQueryHookResult = ReturnType<typeof useGetPersonWithDetailsLazyQuery>;
 export type GetPersonWithDetailsQueryResult = Apollo.QueryResult<GetPersonWithDetailsQuery, GetPersonWithDetailsQueryVariables>;
+export const GetPersonForGraphDocument = gql`
+    query getPersonForGraph($id: Int!) {
+  person(id: $id) {
+    id
+    name
+    relatedPersons {
+      id
+      label
+      direction
+      person {
+        id
+        name
+        relatedPersons {
+          id
+          label
+          direction
+          person {
+            id
+            name
+          }
+        }
+      }
+    }
+    relatedActivities {
+      id
+      label
+      direction
+      activity {
+        id
+        name
+        relatedPersons {
+          id
+          label
+          direction
+          person {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetPersonForGraphQuery__
+ *
+ * To run a query within a React component, call `useGetPersonForGraphQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPersonForGraphQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPersonForGraphQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetPersonForGraphQuery(baseOptions: Apollo.QueryHookOptions<GetPersonForGraphQuery, GetPersonForGraphQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPersonForGraphQuery, GetPersonForGraphQueryVariables>(GetPersonForGraphDocument, options);
+      }
+export function useGetPersonForGraphLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPersonForGraphQuery, GetPersonForGraphQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPersonForGraphQuery, GetPersonForGraphQueryVariables>(GetPersonForGraphDocument, options);
+        }
+export type GetPersonForGraphQueryHookResult = ReturnType<typeof useGetPersonForGraphQuery>;
+export type GetPersonForGraphLazyQueryHookResult = ReturnType<typeof useGetPersonForGraphLazyQuery>;
+export type GetPersonForGraphQueryResult = Apollo.QueryResult<GetPersonForGraphQuery, GetPersonForGraphQueryVariables>;
 export const GetPersonsDocument = gql`
     query GetPersons {
   persons {

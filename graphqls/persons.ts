@@ -37,6 +37,50 @@ export const GET_PERSON_WITH_DETAILS_QUERY = gql`
         }
     }`;
 
+export const GET_PERSON_FOR_GRAPH_QUERY = gql`
+    query getPersonForGraph($id: Int!) {
+        person(id: $id) {
+            id,
+            name,
+            relatedPersons {
+                id,
+                label,
+                direction,
+                person {
+                    id,
+                    name,
+                    relatedPersons {
+                        id,
+                        label,
+                        direction,
+                        person {
+                            id,
+                            name,
+                        }
+                    }
+                }
+            },
+            relatedActivities {
+                id,
+                label,
+                direction,
+                activity {
+                    id,
+                    name,
+                    relatedPersons {
+                        id,
+                        label,
+                        direction,
+                        person {
+                            id,
+                            name,
+                        }
+                    }
+                }
+            }
+        }
+    }`;
+
 export const GET_PERSONS_QUERY = gql`
     query GetPersons {
         persons {

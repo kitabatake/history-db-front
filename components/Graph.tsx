@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {Elements} from "../lib/types/graph";
-import {Elements as GraphqlElements, useGetGraphQuery} from "../src/generated/graphql";
+import {Edge, Elements, Node} from "../lib/types/graph";
+import {GetPersonForGraphQuery, useGetPersonForGraphQuery} from "../src/generated/graphql";
 import cytoscape, {Core} from "cytoscape";
 import {Box, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay} from "@chakra-ui/react";
 import PersonModal from "./modal/PersonModal";
@@ -56,72 +56,126 @@ const renderGraph = (elementId: string, elements: Elements, targetNodeId: number
         componentSpacing: 1000,
     }
 
-    const cy = cytoscape({
+    return cytoscape({
         container: document.getElementById(elementId),
         elements: elements,
         style: style,
         layout: layout,
     })
-
-    return cy;
 }
 
 type Props = {
     targetNodeId: number
 }
 
-const adjustElements = (elements: GraphqlElements): Elements => {
+const relatedPersonToNode = (relatedPerson: any): Node => {
     return {
-        nodes: elements.nodes.map((node) => {
-            return {
-                data: {
-                    ...node,
-                    id: node.id.toString()
-                }
+        data: {
+            id: relatedPerson.person.id.toString(),
+            name: relatedPerson.person.name,
+            label: 'Person',
+        }
+    }
+}
+
+const relatedPersonToEdge = (personId: number, relatedPerson: any): Edge => {
+    return {
+        data: {
+            relationship: relatedPerson.label,
+            source: relatedPerson.direction == 'OUTWARD' ? personId.toString() : relatedPerson.person.id.toString(),
+            target: relatedPerson.direction == 'OUTWARD' ? relatedPerson.person.id.toString() : personId.toString(),
+        }
+    }
+}
+
+const relatedActivityToNode = (relatedActivity: any): Node => {
+    return {
+        data: {
+            id: relatedActivity.activity.id.toString(),
+            name: relatedActivity.activity.name,
+            label: 'Activity',
+        }
+    }
+}
+
+const relatedActivityToEdge = (personId: number, relatedActivity: any): Edge => {
+    return {
+        data: {
+            relationship: relatedActivity.label,
+            source: relatedActivity.direction == 'OUTWARD' ? personId.toString() : relatedActivity.activity.id.toString(),
+            target: relatedActivity.direction == 'OUTWARD' ? relatedActivity.activity.id.toString() : personId.toString(),
+        }
+    }
+}
+
+const adjustElements = (data: GetPersonForGraphQuery): Elements => {
+    const nodes = [
+        {
+            data: {
+                id: data.person.id.toString(),
+                name: data.person.name,
+                label: 'Person'
             }
-        }),
-        edges: elements.edges.map((edge) => {
-            return {
-                data: {
-                    ...edge,
-                    source: edge.source.toString(),
-                    target: edge.target.toString()
-                }
-            }
-        })
+        }
+    ];
+    const edges: Edge[] = [];
+    const addedEdges = new Map<number, boolean>();
+    data.person.relatedPersons.forEach(relatedPerson => {
+        if (addedEdges.has(relatedPerson.id)) return;
+        addedEdges.set(relatedPerson.id, true);
+        nodes.push(relatedPersonToNode(relatedPerson));
+        edges.push(relatedPersonToEdge(data.person.id, relatedPerson))
+        relatedPerson.person.relatedPersons.forEach(relatedPerson2 => {
+            if (addedEdges.has(relatedPerson2.id)) return;
+            addedEdges.set(relatedPerson2.id, true);
+            nodes.push(relatedPersonToNode(relatedPerson2));
+            edges.push(relatedPersonToEdge(relatedPerson.person.id, relatedPerson2))
+        });
+    })
+
+    data.person.relatedActivities.forEach(relatedActivity => {
+        if (addedEdges.has(relatedActivity.id)) return;
+        addedEdges.set(relatedActivity.id, true);
+        nodes.push(relatedActivityToNode(relatedActivity));
+        edges.push(relatedActivityToEdge(data.person.id, relatedActivity))
+
+        relatedActivity.activity.relatedPersons.forEach(relatedPerson => {
+            if (addedEdges.has(relatedPerson.id)) return;
+            addedEdges.set(relatedPerson.id, true);
+            nodes.push(relatedPersonToNode(relatedPerson));
+            edges.push(relatedPersonToEdge(relatedActivity.activity.id, relatedPerson))
+        });
+    })
+    return {
+        nodes: nodes,
+        edges: edges
     }
 }
 
 export default function Graph({targetNodeId}: Props) {
     const ELEMENT_ID_FOR_GRAPH = 'graph'
-    const [selectedNodeId, setSelectedNodeId] = useState<number|null>(null);
-    const {data} = useGetGraphQuery({
+    const [selectedNodeId, setSelectedNodeId] = useState<number | null>(null);
+    const {data} = useGetPersonForGraphQuery({
         variables: {
-            targetNodeId: targetNodeId
+            id: targetNodeId
         }
     })
 
-    // const dynamicRoute = useRouter().asPath
-    // useEffect(() => {
-    //     setSelectedNodeId(null) // When the dynamic route change reset the state
-    // }, [dynamicRoute])
-
     useEffect(() => {
         if (data != null) {
-            const cy = renderGraph(ELEMENT_ID_FOR_GRAPH, adjustElements(data.graph), targetNodeId)
-            cy.on('tap', 'node', function(evt){
-                var node = evt.target;
-                // console.log(node.data('label'));
+            const cy = renderGraph(ELEMENT_ID_FOR_GRAPH, adjustElements(data), targetNodeId)
+            cy.on('tap', 'node', function (evt) {
+                const node = evt.target;
                 if (node.data('label') == 'Person') {
                     setSelectedNodeId(Number(node.id()));
                 }
             });
         }
-    }, [data])
+    }, [targetNodeId, data])
 
     return (
         <Box position="relative" w="100%" h="100%">
-            <Box id={ELEMENT_ID_FOR_GRAPH}  w="100%" h="100%" />
+            <Box id={ELEMENT_ID_FOR_GRAPH} w="100%" h="100%"/>
             <Modal
                 size='sm'
                 isOpen={selectedNodeId != null}
@@ -133,7 +187,7 @@ export default function Graph({targetNodeId}: Props) {
                     <ModalCloseButton/>
                     <ModalBody>
                         {selectedNodeId && (
-                            <PersonModal personId={selectedNodeId} />
+                            <PersonModal personId={selectedNodeId}/>
                         )}
                     </ModalBody>
                 </ModalContent>
